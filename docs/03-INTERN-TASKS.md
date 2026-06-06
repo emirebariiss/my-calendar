@@ -3,12 +3,16 @@
 Bu doküman, projeye yeni başlayan yazılım mühendisi stajyeri için sprint bazlı adım adım görevleri içerir.
 
 **Nasıl kullanılır:**
-1. Sprint'leri sırayla tamamla (Sprint 0 → Sprint 6)
+1. Sprint'leri sırayla tamamla (Sprint 0 → Sprint 7)
 2. Her görevi bitirdikten sonra checkbox'ı işaretle
-3. Takıldığın yerde önce `docs/` klasöründeki ilgili dokümana bak
-4. Her sprint sonunda kısa bir demo hazırla
+3. **Biten sprintler için önce** [`docs/completed/`](./completed/README.md) klasöründeki detaylı rehberi oku
+4. Cursor kullanıyorsan `.cursor/AGENTS.md` ve `.cursor/rules/` dosyalarına bak
+5. Takıldığın yerde `docs/` klasöründeki ilgili dokümana bak
+6. Her sprint sonunda kısa bir demo hazırla
 
 **Tahmini süre:** 3–4 hafta (part-time)
+
+**Güncel durum:** Sprint 0–4 tamamlandı. Sprint 5'ten devam et.
 
 ---
 
@@ -18,11 +22,11 @@ Bu doküman, projeye yeni başlayan yazılım mühendisi stajyeri için sprint b
 
 ### Görevler
 
-- [ ] **0.1** Next.js projesi oluştur
+- [x] **0.1** Next.js projesi oluştur
   ```bash
   npx create-next-app@latest . --typescript --tailwind --eslint --app --src-dir --import-alias "@/*"
   ```
-- [ ] **0.2** Klasör yapısını oluştur (`docs/01-ARCHITECTURE.md` referans al)
+- [x] **0.2** Klasör yapısını oluştur (`docs/01-ARCHITECTURE.md` referans al)
   - `src/components/ui/`
   - `src/components/layout/`
   - `src/data/`
@@ -30,21 +34,23 @@ Bu doküman, projeye yeni başlayan yazılım mühendisi stajyeri için sprint b
   - `src/lib/types/`
   - `src/lib/utils/`
   - `src/providers/`
-- [ ] **0.3** TypeScript strict mode'un açık olduğunu doğrula (`tsconfig.json`)
-- [ ] **0.4** Temel layout bileşenlerini yaz
+- [x] **0.3** TypeScript strict mode'un açık olduğunu doğrula (`tsconfig.json`)
+- [x] **0.4** Temel layout bileşenlerini yaz
   - `Sidebar` — navigasyon linkleri: Dashboard, Takvim, Görevler, Süreçler, Hatırlatmalar
   - `Header` — sayfa başlığı + basit kullanıcı alanı (mock)
   - `RootLayout` — sidebar + header + main content
-- [ ] **0.5** Boş sayfa route'larını oluştur
+- [x] **0.5** Boş sayfa route'larını oluştur
   - `/` → "Dashboard — yakında"
   - `/calendar` → "Takvim — yakında"
   - `/tasks` → "Görevler — yakında"
   - `/workflows` → "Süreçler — yakında"
   - `/reminders` → "Hatırlatmalar — yakında"
-- [ ] **0.6** Aktif route'u sidebar'da vurgula (usePathname)
-- [ ] **0.7** `npm run dev` ile çalıştığını doğrula
+- [x] **0.6** Aktif route'u sidebar'da vurgula (usePathname)
+- [x] **0.7** `npm run dev` ile çalıştığını doğrula
 
-**Kabul kriteri:** Tüm sayfalar arası navigasyon çalışıyor, responsive sidebar görünüyor.
+**Kabul kriteri:** ✅ Tüm sayfalar arası navigasyon çalışıyor, responsive sidebar görünüyor.
+
+📖 Detaylı açıklama → [`docs/completed/sprint-0-proje-kurulumu.md`](./completed/sprint-0-proje-kurulumu.md)
 
 ---
 
@@ -54,32 +60,34 @@ Bu doküman, projeye yeni başlayan yazılım mühendisi stajyeri için sprint b
 
 ### Görevler
 
-- [ ] **1.1** TypeScript interface'lerini yaz (`docs/02-MOCK-DATA.md` referans al)
+- [x] **1.1** TypeScript interface'lerini yaz (`docs/02-MOCK-DATA.md` referans al)
   - `src/lib/types/event.ts` → `CalendarEvent`, `EventType`, `EventStatus`
   - `src/lib/types/task.ts` → `Task`, `TaskStatus`, `TaskPriority`
   - `src/lib/types/workflow.ts` → `Workflow`, `WorkflowStep`, `StepStatus`
   - `src/lib/types/reminder.ts` → `Reminder`, `ReminderTargetType`, `ReminderRecurrence`
   - `src/lib/types/index.ts` → barrel export
-- [ ] **1.2** Mock JSON dosyalarını oluştur (`src/data/`)
+- [x] **1.2** Mock JSON dosyalarını oluştur (`src/data/`)
   - `events.json` — en az 5 kayıt (farklı tipler ve tarihler)
   - `tasks.json` — en az 8 kayıt (deadline'lı + deadline'sız karışık)
   - `workflows.json` — en az 3 kayıt (1 tamamlanmış, 1 aktif, 1 yeni)
   - `reminders.json` — en az 5 kayıt (event, task, step hedefli)
-- [ ] **1.3** Mock loader yaz
+- [x] **1.3** Mock loader yaz
   - `src/lib/mock/loader.ts` → `loadEvents()`, `loadTasks()`, `loadWorkflows()`, `loadReminders()`
-- [ ] **1.4** Tarih yardımcı fonksiyonları yaz (`src/lib/utils/date.ts`)
+- [x] **1.4** Tarih yardımcı fonksiyonları yaz (`src/lib/utils/date.ts`)
   - `formatDate(date, format?)` — Türkçe tarih formatı
   - `formatTime(date)` — saat:dakika
   - `isToday(date)` — bugün mü?
   - `isOverdue(deadline)` — geçmiş mi?
   - `isUpcoming(date, days?)` — önümüzdeki N gün içinde mi?
-- [ ] **1.5** Filtre/sıralama yardımcıları (`src/lib/utils/filters.ts`)
+- [x] **1.5** Filtre/sıralama yardımcıları (`src/lib/utils/filters.ts`)
   - `filterByStatus(items, status)`
   - `sortByPriority(tasks)`
   - `getOverdueTasks(tasks)`
   - `getActiveWorkflows(workflows)`
 
-**Kabul kriteri:** JSON dosyaları import edilebiliyor, tip hatası yok, utility fonksiyonlar basit test ile doğrulanmış.
+**Kabul kriteri:** ✅ JSON dosyaları import edilebiliyor, tip hatası yok, utility fonksiyonlar hazır.
+
+📖 Detaylı açıklama → [`docs/completed/sprint-1-tipler-ve-mock-veri.md`](./completed/sprint-1-tipler-ve-mock-veri.md)
 
 ---
 
@@ -89,31 +97,33 @@ Bu doküman, projeye yeni başlayan yazılım mühendisi stajyeri için sprint b
 
 ### Görevler
 
-- [ ] **2.1** `AppProvider` context oluştur (`src/providers/AppProvider.tsx`)
+- [x] **2.1** `AppProvider` context oluştur (`src/providers/AppProvider.tsx`)
   - State: `events`, `tasks`, `workflows`, `reminders`
   - Actions: `add*`, `update*`, `delete*` (her entity için)
   - İlk yükleme: mock JSON'dan
-- [ ] **2.2** Custom hook'ları yaz
+- [x] **2.2** Custom hook'ları yaz
   - `useEvents()` — events state + CRUD
   - `useTasks()` — tasks state + CRUD
   - `useWorkflows()` — workflows state + CRUD
   - `useReminders()` — reminders state + CRUD
-- [ ] **2.3** Paylaşılan UI bileşenleri (`src/components/ui/`)
+- [x] **2.3** Paylaşılan UI bileşenleri (`src/components/ui/`)
   - `Badge` — status ve priority için renkli etiket
   - `Card` — içerik kartı
   - `EmptyState` — veri yokken gösterilecek mesaj
   - `ProgressBar` — workflow ilerleme çubuğu
-- [ ] **2.4** Dashboard bileşenleri (`src/components/dashboard/`)
+- [x] **2.4** Dashboard bileşenleri (`src/components/dashboard/`)
   - `TodayTasks` — bugün deadline'ı olan veya in_progress task'lar
   - `UpcomingEvents` — önümüzdeki 7 gün event'leri
   - `ActiveWorkflows` — status: active workflow'lar + ilerleme
   - `OverdueSection` — gecikmiş task ve step'ler
-- [ ] **2.5** Dashboard sayfasını birleştir (`src/app/page.tsx`)
+- [x] **2.5** Dashboard sayfasını birleştir (`src/app/page.tsx`)
   - 4 bölümü grid layout ile yerleştir
   - Her bölümde "Tümünü gör →" linki ilgili sayfaya yönlendirsin
-- [ ] **2.6** Boş state'leri handle et (hiç task yoksa EmptyState göster)
+- [x] **2.6** Boş state'leri handle et (hiç task yoksa EmptyState göster)
 
-**Kabul kriteri:** Ana sayfa mock veriden gerçek özet bilgileri gösteriyor. Overdue bölümü gecikmiş işleri doğru listeliyor.
+**Kabul kriteri:** ✅ Ana sayfa mock veriden gerçek özet bilgileri gösteriyor. Overdue bölümü gecikmiş işleri doğru listeliyor.
+
+📖 Detaylı açıklama → [`docs/completed/sprint-2-global-state-ve-dashboard.md`](./completed/sprint-2-global-state-ve-dashboard.md)
 
 ---
 
@@ -123,27 +133,29 @@ Bu doküman, projeye yeni başlayan yazılım mühendisi stajyeri için sprint b
 
 ### Görevler
 
-- [ ] **3.1** `TaskItem` bileşeni
+- [x] **3.1** `TaskItem` bileşeni
   - Başlık, öncelik badge, durum badge, deadline (varsa)
   - Deadline yoksa "Süresiz" etiketi göster
   - Overdue ise kırmızı vurgu
   - Checkbox ile done/not_started toggle
-- [ ] **3.2** `TaskList` bileşeni
+- [x] **3.2** `TaskList` bileşeni
   - TaskItem listesi
   - Durum filtresi: Tümü / Yapılmadı / Devam ediyor / Tamamlandı
   - Öncelik filtresi: Tümü / Düşük / Orta / Yüksek
-- [ ] **3.3** `TaskForm` modal/drawer
+- [x] **3.3** `TaskForm` modal/drawer
   - Alanlar: başlık*, açıklama, durum, öncelik, deadline (opsiyonel)
   - Validasyon: başlık zorunlu
   - Create ve Edit modu
-- [ ] **3.4** Görevler sayfası (`src/app/tasks/page.tsx`)
+- [x] **3.4** Görevler sayfası (`src/app/tasks/page.tsx`)
   - Üstte "Yeni Görev" butonu
   - TaskList + filtreler
   - TaskForm modal entegrasyonu
-- [ ] **3.5** Görev silme — onay dialog'u ile
-- [ ] **3.6** Dashboard'daki TodayTasks ve OverdueSection'ı canlı state'e bağla
+- [x] **3.5** Görev silme — onay dialog'u ile
+- [x] **3.6** Dashboard'daki TodayTasks ve OverdueSection'ı canlı state'e bağla
 
-**Kabul kriteri:** Görev CRUD tam çalışıyor. Deadline'sız görevler listede görünüyor. Filtreler doğru çalışıyor.
+**Kabul kriteri:** ✅ Görev CRUD tam çalışıyor. Deadline'sız görevler listede görünüyor. Filtreler doğru çalışıyor.
+
+📖 Detaylı açıklama → [`docs/completed/sprint-3-gorev-sistemi.md`](./completed/sprint-3-gorev-sistemi.md)
 
 ---
 
@@ -153,24 +165,24 @@ Bu doküman, projeye yeni başlayan yazılım mühendisi stajyeri için sprint b
 
 ### Görevler
 
-- [ ] **4.1** Takvim kütüphanesi kararı ver ve kur
+- [x] **4.1** Takvim kütüphanesi kararı ver ve kur
   - Seçenek A: `@fullcalendar/react` (hızlı, feature-rich)
   - Seçenek B: Custom grid (daha fazla kontrol, daha fazla iş)
   - Kararı `docs/01-ARCHITECTURE.md`'deki "Karar Kayıtları" bölümüne not et
-- [ ] **4.2** `EventCard` bileşeni — event özeti (başlık, saat, tip rengi)
-- [ ] **4.3** `EventForm` modal
+- [x] **4.2** `EventCard` bileşeni — event özeti (başlık, saat, tip rengi)
+- [x] **4.3** `EventForm` modal
   - Alanlar: başlık*, açıklama, tip, başlangıç/bitiş, all-day toggle
   - Event tipine göre renk otomatik atansın
-- [ ] **4.4** `CalendarView` bileşeni
+- [x] **4.4** `CalendarView` bileşeni
   - Gün / hafta / ay görünüm toggle
   - Event'leri takvimde göster
   - Event'e tıklayınca detay / düzenleme
-- [ ] **4.5** Sürükle-bırak ile event taşıma (kütüphane destekliyorsa)
+- [x] **4.5** Sürükle-bırak ile event taşıma (kütüphane destekliyorsa)
   - Taşıma sonrası `updateEvent` çağrılsın
-- [ ] **4.6** Takvim sayfası (`src/app/calendar/page.tsx`)
+- [x] **4.6** Takvim sayfası (`src/app/calendar/page.tsx`)
   - CalendarView + "Yeni Event" butonu
   - EventForm entegrasyonu
-- [ ] **4.7** Event tipi renk haritası tanımla
+- [x] **4.7** Event tipi renk haritası tanımla
   ```typescript
   const EVENT_COLORS = {
     meeting: '#3B82F6',
@@ -180,7 +192,9 @@ Bu doküman, projeye yeni başlayan yazılım mühendisi stajyeri için sprint b
   };
   ```
 
-**Kabul kriteri:** 3 görünüm modu çalışıyor. Event ekleme/düzenleme/silme yapılabiliyor. Event tipleri renk ile ayırt ediliyor.
+**Kabul kriteri:** ✅ 3 görünüm modu çalışıyor. Event ekleme/düzenleme/silme yapılabiliyor. Event tipleri renk ile ayırt ediliyor.
+
+📖 Detaylı açıklama → [`docs/completed/sprint-4-takvim-sistemi.md`](./completed/sprint-4-takvim-sistemi.md)
 
 ---
 

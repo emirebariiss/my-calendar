@@ -1,0 +1,40 @@
+---
+description: React bileşen ve sayfa pattern'leri
+globs: src/**/*.tsx
+alwaysApply: false
+---
+
+# React Pattern'leri
+
+## CRUD sayfa yapısı (tasks, calendar referans al)
+
+```tsx
+// Sayfa: orkestrasyon (state + handler)
+const [formOpen, setFormOpen] = useState(false);
+const [formMode, setFormMode] = useState<"create" | "edit">("create");
+const [editingItem, setEditingItem] = useState<Entity>();
+const [deletingItem, setDeletingItem] = useState<Entity>();
+
+// Bileşenler: TaskList, TaskForm, ConfirmDialog
+```
+
+- **Sayfa** (`app/*/page.tsx`): state, handler, layout
+- **Liste** (`*List.tsx`): filtre + map
+- **Item** (`*Item.tsx`): tek satır/kart
+- **Form** (`*Form.tsx`): Modal içinde create/edit
+- Silme: `ConfirmDialog` ile onay
+
+## Paylaşılan UI
+
+`src/components/ui/` — Button, Modal, Card, Badge, EmptyState, ProgressBar, ConfirmDialog
+
+Yeni primitive eklemeden önce burada var mı kontrol et.
+
+## Import
+
+- `@/components/...` `@/hooks/...` `@/lib/types`
+- Tipler: `import type { Task } from "@/lib/types"`
+
+## Erişilebilirlik
+
+`aria-label`, `role="dialog"`, semantic HTML, form `label htmlFor` eşleşmesi

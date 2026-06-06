@@ -10,7 +10,7 @@
 | Veri | Mock JSON | `src/data/` klasörü |
 | State | React Context veya Zustand | Basit MVP için Context yeterli |
 | Tarih | date-fns veya dayjs | Hafif, tree-shakeable |
-| Takvim UI | FullCalendar veya custom grid | Sprint 2'de karar verilecek |
+| Takvim UI | FullCalendar 6 | `@fullcalendar/react` + daygrid/timegrid/interaction |
 
 ## Klasör Yapısı
 
@@ -138,5 +138,49 @@ Tek store veya feature bazlı slice'lar.
 |-------|-------|---------|
 | Backend yok | Mock JSON | Hızlı MVP, stajyer odaklı frontend |
 | App Router | Evet | Next.js modern standart |
+| State | React Context | MVP için yeterli, Zustand gerekmedi |
 | Persist yok | MVP'de hayır | Scope küçük tutulsun |
 | i18n | Sadece TR | MVP kapsamı |
+| Takvim kütüphanesi | FullCalendar 6 | Gün/hafta/ay + drag-drop hazır |
+
+## Güncel Uygulama Durumu (Sprint 4 sonrası)
+
+### Tamamlanan modüller
+
+| Modül | Durum | Dosyalar |
+|-------|-------|----------|
+| Layout + Navigasyon | ✅ | `components/layout/` |
+| Mock veri + tipler | ✅ | `data/`, `lib/types/`, `lib/mock/` |
+| Global state | ✅ | `providers/AppProvider.tsx` |
+| Dashboard | ✅ | `components/dashboard/`, `app/page.tsx` |
+| Görev CRUD | ✅ | `components/tasks/`, `app/tasks/page.tsx` |
+| Takvim + Event CRUD | ✅ | `components/calendar/`, `app/calendar/page.tsx` |
+| Workflow liste + detay (read-only) | 🔶 | `app/workflows/` — Sprint 5 |
+| Hatırlatma liste (read-only) | 🔶 | `app/reminders/page.tsx` — Sprint 6 |
+
+### Bileşen envanteri
+
+```
+src/components/
+├── layout/     Sidebar, Header, AppShell
+├── ui/         Badge, Button, Card, ConfirmDialog, EmptyState, Modal, ProgressBar
+├── calendar/   CalendarView, EventForm, EventCard
+├── dashboard/  TodayTasks, UpcomingEvents, ActiveWorkflows, OverdueSection
+└── tasks/      TaskItem, TaskList, TaskForm
+```
+
+Detaylı sprint açıklamaları → [`docs/completed/`](./completed/README.md)
+
+## Cursor AI Yapılandırması
+
+```
+.cursor/
+├── AGENTS.md                          # Agent proje rehberi
+└── rules/
+    ├── project-conventions.mdc        # Her zaman aktif — stack + sprint durumu
+    ├── react-patterns.mdc             # src/**/*.tsx
+    ├── mock-data-and-state.mdc        # data, types, hooks, providers
+    ├── docs-and-sprints.mdc           # docs/**, README
+    ├── calendar-module.mdc            # takvim modülü
+    └── workflow-module.mdc            # workflow modülü (Sprint 5)
+```

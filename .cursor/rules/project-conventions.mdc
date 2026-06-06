@@ -1,46 +1,40 @@
 ---
-description: My Calendar projesi için temel geliştirme kuralları
+description: My Calendar — temel proje kuralları ve güncel sprint durumu
 alwaysApply: true
 ---
 
 # My Calendar — Proje Kuralları
 
-## Genel
+## Ürün
 
-- Next.js App Router + TypeScript + Tailwind CSS kullan
-- Backend/API yok; tüm veri `src/data/*.json` mock dosyalarından gelir
-- Yeni özellik eklemeden önce `docs/` klasöründeki ilgili dokümana bak
+Takvim + görev + süreç (workflow) birleşimi. Mock JSON; backend/API yok.
 
-## Kod Standartları
+## Stack
 
-- Functional React bileşenleri; class component kullanma
-- Her entity için `src/lib/types/` altında TypeScript interface tanımla
-- Mock veriyi doğrudan component içinde hardcode etme; `src/data/` veya `src/lib/mock/` üzerinden import et
-- Türkçe UI metinleri kullan (buton, label, hata mesajları)
+Next.js 15 App Router · TypeScript strict · Tailwind CSS 4 · FullCalendar 6 · date-fns · React Context (`AppProvider`)
 
-## Dosya Organizasyonu
+## Sprint durumu (güncel)
 
-```
-src/components/{feature}/   → feature bazlı bileşenler (calendar/, tasks/, workflows/)
-src/hooks/                  → useTasks, useCalendarEvents gibi custom hooks
-src/lib/types/              → Event, Task, Workflow, Reminder tipleri
-src/data/                   → events.json, tasks.json, workflows.json, reminders.json
-```
+| Tamamlandı | Sıradaki |
+|------------|----------|
+| 0–4 (kurulum, mock, dashboard, görev CRUD, takvim) | **Sprint 5** — workflow CRUD + step yönetimi |
 
-## State Yönetimi
+Kaynak: `docs/03-INTERN-TASKS.md` · Biten sprint rehberleri: `docs/completed/`
 
-- Sayfa içi state: `useState` / `useReducer`
-- Paylaşılan mock veri: Context veya Zustand (mimari dokümana uy)
-- Mock veri değişiklikleri session boyunca bellekte kalabilir; persist gerekmez (MVP)
+## Kod ilkeleri
 
-## UI
+- Functional components; `"use client"` sadece hook/event gerektiğinde
+- Mock veri `src/data/*.json` + `src/lib/mock/loader.ts`; component içinde hardcode etme
+- CRUD: `AppProvider` → `use{Entity}` hook → feature bileşenleri
+- Türkçe UI; label sabitleri `src/lib/types/` içinde (`TASK_STATUS_LABELS` vb.)
+- Küçük odaklı diff; mevcut pattern'i kopyala (tasks/, calendar/)
 
-- Tailwind utility class'ları tercih et
-- Responsive: mobile-first
-- Erişilebilirlik: semantic HTML, `aria-label`, klavye navigasyonu
+## Dokümantasyon (her sprint sonrası)
 
-## PR / Commit
+1. `docs/completed/sprint-N-*.md` — öğrenciye anlatır gibi detaylı rehber
+2. `docs/03-INTERN-TASKS.md` — checkbox güncelle
+3. `docs/04-MVP-CHECKLIST.md` + `README.md` + `docs/01-ARCHITECTURE.md`
 
-- Küçük, odaklı değişiklikler
-- Commit mesajı: `feat:`, `fix:`, `docs:`, `refactor:` prefix kullan
-- Her sprint görevi için ayrı branch: `feat/sprint-1-calendar-setup`
+## Commit
+
+`feat:` `fix:` `docs:` prefix · branch: `feat/sprint-N-konu`

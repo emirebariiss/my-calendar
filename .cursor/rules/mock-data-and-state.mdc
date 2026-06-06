@@ -1,0 +1,36 @@
+---
+description: Mock veri, tipler ve global state kuralları
+globs: src/data/**,src/lib/types/**,src/lib/mock/**,src/providers/**,src/hooks/**
+alwaysApply: false
+---
+
+# Mock Veri ve State
+
+## Veri akışı
+
+```
+src/data/*.json → loader.ts → AppProvider (useState) → use{Entity}() → components
+```
+
+## Yeni entity CRUD eklerken
+
+1. Tip: `src/lib/types/{entity}.ts` + `index.ts` export
+2. Mock JSON: `src/data/{entity}.json` (şema: `docs/02-MOCK-DATA.md`)
+3. Loader: `load{Entity}()` in `src/lib/mock/loader.ts`
+4. AppProvider: state + `add/update/delete` + `createId("prefix", prev)`
+5. Hook: `src/hooks/use{Entity}.ts` — ince wrapper
+
+## ID formatı
+
+`{prefix}-{3-digit}` → `task-001`, `evt-007`, `wf-002`, `step-003`
+
+## Önemli ürün kuralları
+
+- Task `deadline` opsiyonel — deadline'sız görevler aktif listede kalmalı
+- Workflow: multi-step; her step bağımsız status + dueDate + notes
+- Reminder: `targetType` = event | task | workflow_step
+- Tarihler ISO 8601; formatlama `src/lib/utils/date.ts`
+
+## Persist
+
+MVP'de localStorage/API yok. Session boyunca bellekte kalır; sayfa yenilenince JSON'a döner.

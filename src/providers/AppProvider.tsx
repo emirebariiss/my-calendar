@@ -14,6 +14,9 @@ interface AppContextValue {
   tasks: Task[];
   workflows: Workflow[];
   reminders: Reminder[];
+  addEvent: (event: Omit<CalendarEvent, "id" | "createdAt" | "updatedAt">) => void;
+  updateEvent: (id: string, updates: Partial<CalendarEvent>) => void;
+  deleteEvent: (id: string) => void;
   addTask: (task: Omit<Task, "id" | "createdAt" | "updatedAt">) => void;
   updateTask: (id: string, updates: Partial<Task>) => void;
   deleteTask: (id: string) => void;
@@ -30,10 +33,39 @@ function createId(prefix: string, items: { id: string }[]): string {
 }
 
 export function AppProvider({ children }: { children: React.ReactNode }) {
-  const [events] = useState<CalendarEvent[]>(() => loadEvents());
+  const [events, setEvents] = useState<CalendarEvent[]>(() => loadEvents());
   const [tasks, setTasks] = useState<Task[]>(() => loadTasks());
   const [workflows] = useState<Workflow[]>(() => loadWorkflows());
   const [reminders] = useState<Reminder[]>(() => loadReminders());
+
+  const addEvent = (
+    event: Omit<CalendarEvent, "id" | "createdAt" | "updatedAt">
+  ) => {
+    const now = new Date().toISOString();
+    setEvents((prev) => [
+      ...prev,
+      {
+        ...event,
+        id: createId("evt", prev),
+        createdAt: now,
+        updatedAt: now,
+      },
+    ]);
+  };
+
+  const updateEvent = (id: string, updates: Partial<CalendarEvent>) => {
+    setEvents((prev) =>
+      prev.map((event) =>
+        event.id === id
+          ? { ...event, ...updates, updatedAt: new Date().toISOString() }
+          : event
+      )
+    );
+  };
+
+  const deleteEvent = (id: string) => {
+    setEvents((prev) => prev.filter((event) => event.id !== id));
+  };
 
   const addTask = (task: Omit<Task, "id" | "createdAt" | "updatedAt">) => {
     const now = new Date().toISOString();
@@ -50,11 +82,25 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
 
   const updateTask = (id: string, updates: Partial<Task>) => {
     setTasks((prev) =>
-      prev.map((task) =>
-        task.id === id
-          ? { ...task, ...updates, updatedAt: new Date().toISOString() }
-          : task
-      )
+      prev.map((task) => {
+        if (task.id !== id) return task;
+
+        const next: Task = {
+          ...task,
+          ...updates,
+          updatedAt: new Date().toISOString(),
+        };
+
+        if (updates.status === "done" && !next.completedAt) {
+          next.completedAt = new Date().toISOString();
+        }
+
+        if (updates.status && updates.status !== "done") {
+          next.completedAt = undefined;
+        }
+
+        return next;
+      })
     );
   };
 
@@ -68,6 +114,9 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       tasks,
       workflows,
       reminders,
+      addEvent,
+      updateEvent,
+      deleteEvent,
       addTask,
       updateTask,
       deleteTask,

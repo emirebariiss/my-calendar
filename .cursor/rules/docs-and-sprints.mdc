@@ -1,0 +1,41 @@
+---
+description: Dokümantasyon ve sprint tamamlama kuralları
+globs: docs/**,README.md
+alwaysApply: false
+---
+
+# Dokümantasyon Kuralları
+
+## Stajyer devri
+
+Proje bir yazılım mühendisi stajyerine devredilecek. Her tamamlanan sprint için `docs/completed/` altında **öğrenciye anlatır gibi** detaylı rehber yaz:
+
+- Ne yaptık / neden yaptık
+- Hangi dosyalar önemli
+- Kod örnekleri ve veri akışı
+- Test senaryoları + SSS
+- Sonraki adım linki
+
+## Sprint bitince güncelle
+
+| Dosya | Ne |
+|-------|-----|
+| `docs/completed/sprint-N-*.md` | Yeni rehber |
+| `docs/completed/README.md` | İndeks + ilerleme |
+| `docs/03-INTERN-TASKS.md` | Checkbox + kabul kriteri |
+| `docs/04-MVP-CHECKLIST.md` | Madde durumları + özet tablo |
+| `docs/01-ARCHITECTURE.md` | Bileşen envanteri, karar kayıtları |
+| `README.md` | Sprint tablosu, MVP %, proje yapısı |
+
+## Doküman hiyerarşisi
+
+- `00-PRODUCT.md` — ürün vizyonu
+- `01-ARCHITECTURE.md` — teknik mimari
+- `02-MOCK-DATA.md` — JSON şemaları
+- `03-INTERN-TASKS.md` — aktif görev listesi (tek kaynak)
+- `04-MVP-CHECKLIST.md` — kabul kriterleri
+- `05-ROADMAP.md` — V1+ özellikler
+
+## Dil
+
+Dokümantasyon Türkçe. Teknik terimler (CRUD, hook, context) kullanılabilir.

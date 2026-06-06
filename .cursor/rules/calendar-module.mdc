@@ -1,0 +1,31 @@
+---
+description: Takvim modülü — FullCalendar ve event CRUD
+globs: src/components/calendar/**,src/app/calendar/**,src/lib/utils/calendar.ts
+alwaysApply: false
+---
+
+# Takvim Modülü
+
+## Kütüphane
+
+FullCalendar 6 — `CalendarView.tsx` sarmalayıcı. Ay: `dayGridPlugin`, gün/hafta: `timeGridPlugin`, drag/select: `interactionPlugin`.
+
+## Dönüşüm
+
+`CalendarEvent` ↔ FullCalendar formatı: `src/lib/utils/calendar.ts`
+
+- `toFullCalendarEvent()` — render için
+- `buildEventPayload()` — form → entity
+- Renk: `EVENT_COLORS[type]` (`src/lib/types/event.ts`)
+
+## Etkileşimler
+
+- `select` → yeni event formu (tarih dolu)
+- `eventClick` → düzenle
+- `eventDrop` → `updateEvent(id, { startAt, endAt, allDay })`
+
+## Stil
+
+FullCalendar override: `src/app/globals.css` → `.calendar-wrapper .fc`
+
+Yeni stil eklemeden önce bu sınıfı kullan.
