@@ -1,0 +1,66 @@
+[
+  {
+    "id": "rem-001",
+    "title": "Toplantı hatırlatması",
+    "targetType": "event",
+    "targetId": "evt-001",
+    "triggerAt": "2026-06-09T09:45:00",
+    "recurrence": "once",
+    "isActive": true,
+    "message": "15 dakika sonra toplantı başlıyor",
+    "createdAt": "2026-06-01T08:00:00"
+  },
+  {
+    "id": "rem-002",
+    "title": "Günlük görev kontrolü",
+    "targetType": "task",
+    "targetId": "task-001",
+    "triggerAt": "2026-06-06T08:00:00",
+    "recurrence": "daily",
+    "isActive": true,
+    "message": "React hooks makalesini okumayı unutma",
+    "createdAt": "2026-06-05T10:00:00"
+  },
+  {
+    "id": "rem-003",
+    "title": "CV gönderim deadline",
+    "targetType": "workflow_step",
+    "targetId": "step-002",
+    "triggerAt": "2026-06-07T09:00:00",
+    "recurrence": "once",
+    "isActive": true,
+    "message": "Yarın CV gönderim son günü!",
+    "createdAt": "2026-06-01T08:00:00"
+  },
+  {
+    "id": "rem-004",
+    "title": "Haftalık planlama",
+    "targetType": "task",
+    "targetId": "task-008",
+    "triggerAt": "2026-06-07T18:00:00",
+    "recurrence": "weekly",
+    "isActive": true,
+    "message": "Haftalık meal plan hazırla",
+    "createdAt": "2026-06-06T07:00:00"
+  },
+  {
+    "id": "rem-005",
+    "title": "Mentor görüşmesi hatırlatması",
+    "targetType": "event",
+    "targetId": "evt-005",
+    "triggerAt": "2026-06-11T14:45:00",
+    "recurrence": "once",
+    "isActive": true,
+    "createdAt": "2026-06-03T11:00:00"
+  },
+  {
+    "id": "rem-006",
+    "title": "Eski hatırlatma (pasif)",
+    "targetType": "task",
+    "targetId": "task-003",
+    "triggerAt": "2026-06-01T09:00:00",
+    "recurrence": "once",
+    "isActive": false,
+    "createdAt": "2026-05-30T10:00:00"
+  }
+]

@@ -1,0 +1,128 @@
+[
+  {
+    "id": "wf-001",
+    "title": "Şirkete başvuru — Acme Corp",
+    "description": "Yaz stajı başvuru süreci",
+    "status": "active",
+    "tags": ["work"],
+    "steps": [
+      {
+        "id": "step-001",
+        "order": 1,
+        "title": "Online başvuru formu",
+        "status": "completed",
+        "dueDate": "2026-06-01",
+        "completedAt": "2026-05-28T16:00:00",
+        "notes": "Başvuru numarası: APP-2026-4521"
+      },
+      {
+        "id": "step-002",
+        "order": 2,
+        "title": "CV ve motivasyon mektubu gönderimi",
+        "status": "in_progress",
+        "dueDate": "2026-06-08",
+        "reminderIds": ["rem-003"]
+      },
+      {
+        "id": "step-003",
+        "order": 3,
+        "title": "Teknik mülakat",
+        "status": "pending",
+        "dueDate": "2026-06-15"
+      },
+      {
+        "id": "step-004",
+        "order": 4,
+        "title": "Sonuç bildirimi",
+        "status": "pending"
+      }
+    ],
+    "createdAt": "2026-05-25T10:00:00",
+    "updatedAt": "2026-06-06T08:00:00"
+  },
+  {
+    "id": "wf-002",
+    "title": "Dil öğrenme — İngilizce B2",
+    "description": "3 aylık İngilizce gelişim planı",
+    "status": "active",
+    "tags": ["study", "personal"],
+    "steps": [
+      {
+        "id": "step-005",
+        "order": 1,
+        "title": "Seviye testi yap",
+        "status": "completed",
+        "dueDate": "2026-05-20",
+        "completedAt": "2026-05-18T14:00:00",
+        "notes": "Mevcut seviye: B1"
+      },
+      {
+        "id": "step-006",
+        "order": 2,
+        "title": "Günlük 1 saat çalışma rutini",
+        "status": "in_progress",
+        "dueDate": "2026-06-30"
+      },
+      {
+        "id": "step-007",
+        "order": 3,
+        "title": "Haftalık konuşma pratiği",
+        "status": "pending",
+        "dueDate": "2026-06-14"
+      },
+      {
+        "id": "step-008",
+        "order": 4,
+        "title": "B2 seviye testi",
+        "status": "pending",
+        "dueDate": "2026-08-15"
+      }
+    ],
+    "createdAt": "2026-05-15T10:00:00",
+    "updatedAt": "2026-06-06T07:00:00"
+  },
+  {
+    "id": "wf-003",
+    "title": "Ev taşınma süreci",
+    "description": "Yeni eve taşınma checklist",
+    "status": "completed",
+    "tags": ["personal"],
+    "steps": [
+      {
+        "id": "step-009",
+        "order": 1,
+        "title": "Yeni ev araştırması",
+        "status": "completed",
+        "dueDate": "2026-04-01",
+        "completedAt": "2026-03-28T10:00:00"
+      },
+      {
+        "id": "step-010",
+        "order": 2,
+        "title": "Sözleşme imzalama",
+        "status": "completed",
+        "dueDate": "2026-04-15",
+        "completedAt": "2026-04-12T11:00:00"
+      },
+      {
+        "id": "step-011",
+        "order": 3,
+        "title": "Taşınma firması ayarla",
+        "status": "completed",
+        "dueDate": "2026-05-01",
+        "completedAt": "2026-04-28T09:00:00"
+      },
+      {
+        "id": "step-012",
+        "order": 4,
+        "title": "Adres değişikliği bildirimleri",
+        "status": "completed",
+        "dueDate": "2026-05-10",
+        "completedAt": "2026-05-08T15:00:00"
+      }
+    ],
+    "createdAt": "2026-03-01T08:00:00",
+    "updatedAt": "2026-05-10T15:00:00",
+    "completedAt": "2026-05-10T15:00:00"
+  }
+]

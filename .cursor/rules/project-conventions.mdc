@@ -1,0 +1,46 @@
+---
+description: My Calendar projesi için temel geliştirme kuralları
+alwaysApply: true
+---
+
+# My Calendar — Proje Kuralları
+
+## Genel
+
+- Next.js App Router + TypeScript + Tailwind CSS kullan
+- Backend/API yok; tüm veri `src/data/*.json` mock dosyalarından gelir
+- Yeni özellik eklemeden önce `docs/` klasöründeki ilgili dokümana bak
+
+## Kod Standartları
+
+- Functional React bileşenleri; class component kullanma
+- Her entity için `src/lib/types/` altında TypeScript interface tanımla
+- Mock veriyi doğrudan component içinde hardcode etme; `src/data/` veya `src/lib/mock/` üzerinden import et
+- Türkçe UI metinleri kullan (buton, label, hata mesajları)
+
+## Dosya Organizasyonu
+
+```
+src/components/{feature}/   → feature bazlı bileşenler (calendar/, tasks/, workflows/)
+src/hooks/                  → useTasks, useCalendarEvents gibi custom hooks
+src/lib/types/              → Event, Task, Workflow, Reminder tipleri
+src/data/                   → events.json, tasks.json, workflows.json, reminders.json
+```
+
+## State Yönetimi
+
+- Sayfa içi state: `useState` / `useReducer`
+- Paylaşılan mock veri: Context veya Zustand (mimari dokümana uy)
+- Mock veri değişiklikleri session boyunca bellekte kalabilir; persist gerekmez (MVP)
+
+## UI
+
+- Tailwind utility class'ları tercih et
+- Responsive: mobile-first
+- Erişilebilirlik: semantic HTML, `aria-label`, klavye navigasyonu
+
+## PR / Commit
+
+- Küçük, odaklı değişiklikler
+- Commit mesajı: `feat:`, `fix:`, `docs:`, `refactor:` prefix kullan
+- Her sprint görevi için ayrı branch: `feat/sprint-1-calendar-setup`

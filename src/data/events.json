@@ -1,0 +1,78 @@
+[
+  {
+    "id": "evt-001",
+    "title": "Haftalık ekip toplantısı",
+    "description": "Sprint review ve planlama",
+    "type": "meeting",
+    "status": "scheduled",
+    "startAt": "2026-06-09T10:00:00",
+    "endAt": "2026-06-09T11:00:00",
+    "allDay": false,
+    "color": "#3B82F6",
+    "reminderIds": ["rem-001"],
+    "createdAt": "2026-06-01T08:00:00",
+    "updatedAt": "2026-06-01T08:00:00"
+  },
+  {
+    "id": "evt-002",
+    "title": "React hooks çalışma oturumu",
+    "description": "useEffect ve custom hooks pratiği",
+    "type": "study",
+    "status": "scheduled",
+    "startAt": "2026-06-06T14:00:00",
+    "endAt": "2026-06-06T16:00:00",
+    "allDay": false,
+    "color": "#8B5CF6",
+    "createdAt": "2026-06-04T10:00:00",
+    "updatedAt": "2026-06-04T10:00:00"
+  },
+  {
+    "id": "evt-003",
+    "title": "Spor — koşu",
+    "type": "personal",
+    "status": "scheduled",
+    "startAt": "2026-06-07T07:00:00",
+    "endAt": "2026-06-07T08:00:00",
+    "allDay": false,
+    "color": "#10B981",
+    "createdAt": "2026-06-05T12:00:00",
+    "updatedAt": "2026-06-05T12:00:00"
+  },
+  {
+    "id": "evt-004",
+    "title": "Proje demo hazırlığı",
+    "type": "custom",
+    "status": "scheduled",
+    "startAt": "2026-06-12T00:00:00",
+    "endAt": "2026-06-12T23:59:59",
+    "allDay": true,
+    "color": "#6B7280",
+    "createdAt": "2026-06-06T09:00:00",
+    "updatedAt": "2026-06-06T09:00:00"
+  },
+  {
+    "id": "evt-005",
+    "title": "Mentor görüşmesi",
+    "description": "Haftalık ilerleme değerlendirmesi",
+    "type": "meeting",
+    "status": "scheduled",
+    "startAt": "2026-06-11T15:00:00",
+    "endAt": "2026-06-11T15:30:00",
+    "allDay": false,
+    "color": "#3B82F6",
+    "createdAt": "2026-06-03T11:00:00",
+    "updatedAt": "2026-06-03T11:00:00"
+  },
+  {
+    "id": "evt-006",
+    "title": "TypeScript derinlemesine",
+    "type": "study",
+    "status": "completed",
+    "startAt": "2026-06-03T09:00:00",
+    "endAt": "2026-06-03T11:00:00",
+    "allDay": false,
+    "color": "#8B5CF6",
+    "createdAt": "2026-06-02T08:00:00",
+    "updatedAt": "2026-06-03T11:00:00"
+  }
+]
