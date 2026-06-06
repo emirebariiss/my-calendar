@@ -21,6 +21,8 @@ interface AppContextValue {
   tasks: Task[];
   workflows: Workflow[];
   reminders: Reminder[];
+  addReminder: (reminder: Omit<Reminder, "id" | "createdAt">) => void;
+  updateReminder: (id: string, updates: Partial<Reminder>) => void;
   addEvent: (event: Omit<CalendarEvent, "id" | "createdAt" | "updatedAt">) => void;
   updateEvent: (id: string, updates: Partial<CalendarEvent>) => void;
   deleteEvent: (id: string) => void;
@@ -53,7 +55,27 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const [events, setEvents] = useState<CalendarEvent[]>(() => loadEvents());
   const [tasks, setTasks] = useState<Task[]>(() => loadTasks());
   const [workflows, setWorkflows] = useState<Workflow[]>(() => loadWorkflows());
-  const [reminders] = useState<Reminder[]>(() => loadReminders());
+  const [reminders, setReminders] = useState<Reminder[]>(() => loadReminders());
+
+  const addReminder = (reminder: Omit<Reminder, "id" | "createdAt">) => {
+    const now = new Date().toISOString();
+    setReminders((prev) => [
+      ...prev,
+      {
+        ...reminder,
+        id: createId("rem", prev),
+        createdAt: now,
+      },
+    ]);
+  };
+
+  const updateReminder = (id: string, updates: Partial<Reminder>) => {
+    setReminders((prev) =>
+      prev.map((reminder) =>
+        reminder.id === id ? { ...reminder, ...updates } : reminder
+      )
+    );
+  };
 
   const addEvent = (
     event: Omit<CalendarEvent, "id" | "createdAt" | "updatedAt">
@@ -174,6 +196,8 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       tasks,
       workflows,
       reminders,
+      addReminder,
+      updateReminder,
       addEvent,
       updateEvent,
       deleteEvent,
