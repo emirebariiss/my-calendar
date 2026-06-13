@@ -1,5 +1,5 @@
-import type { Task, TaskPriority, Workflow, WorkflowStep } from "@/lib/types";
-import { isOverdue } from "./date";
+import type { Reminder,Task, TaskPriority, Workflow, WorkflowStep } from "@/lib/types";
+import { isOverdue, isUpcoming } from "./date";
 
 const PRIORITY_ORDER: Record<TaskPriority, number> = {
   high: 0,
@@ -65,4 +65,12 @@ export function getOverdueSteps(workflows: Workflow[]): Array<{
   }
 
   return result;
+}
+export function getUpcomingReminders(
+  reminders: Reminder[],
+  days = 7
+): Reminder[] {
+  return reminders
+  .filter( (reminder) => reminder.isActive && isUpcoming(reminder.triggerAt, days))
+  .sort((a, b) => new Date(a.triggerAt).getTime() - new Date(b.triggerAt).getTime());
 }

@@ -5,15 +5,12 @@ import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { REMINDER_RECURRENCE_LABELS, REMINDER_TARGET_LABELS} from "@/lib/types";
-import { formatDateTime, isUpcoming } from "@/lib/utils/date";
+import { formatDateTime} from "@/lib/utils/date";
+import { getUpcomingReminders } from "@/lib/utils/filters";
 
 export function UpcomingReminders() {
   const { reminders } = useReminders();
-
-  const upcoming = reminders
-  .filter( (reminder) => reminder.isActive && isUpcoming(reminder.triggerAt,7))
-  .sort((a, b) => new Date(a.triggerAt).getTime() - new Date(b.triggerAt).getTime());
-
+  const upcoming = getUpcomingReminders(reminders);
   return (
     <Card
       title="Yaklaşan Hatırlatmalar"
