@@ -1,9 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import type { Task, TaskPriority, TaskStatus } from "@/lib/types";
+import type { Task, TaskPriority, TaskStatus, ReminderInput } from "@/lib/types";
+import { DEFAULT_REMINDER_INPUT } from "@/lib/types";
 import { Modal } from "@/components/ui/Modal";
 import { Button } from "@/components/ui/Button";
+import { ReminderFields } from "@/components/reminders/ReminderFields";
+import { getTaskReminderDefault } from "@/lib/utils/reminder";
 
 export interface TaskFormValues {
   title: string;
@@ -11,6 +14,7 @@ export interface TaskFormValues {
   status: TaskStatus;
   priority: TaskPriority;
   deadline: string;
+  reminder: ReminderInput;
 }
 
 interface TaskFormProps {
@@ -27,6 +31,7 @@ const DEFAULT_VALUES: TaskFormValues = {
   status: "not_started",
   priority: "medium",
   deadline: "",
+  reminder: { ...DEFAULT_REMINDER_INPUT },
 };
 
 export function TaskForm({
@@ -49,6 +54,7 @@ export function TaskForm({
         status: initialTask.status,
         priority: initialTask.priority,
         deadline: initialTask.deadline ?? "",
+        reminder: { ...DEFAULT_REMINDER_INPUT },
       });
     } else {
       setValues(DEFAULT_VALUES);
@@ -61,6 +67,11 @@ export function TaskForm({
 
     if (!values.title.trim()) {
       setError("Başlık zorunludur.");
+      return;
+    }
+
+    if (values.reminder.enabled && !values.reminder.triggerAt) {
+      setError("Hatırlatma için tetikleme zamanı gerekli.");
       return;
     }
 
@@ -180,6 +191,15 @@ export function TaskForm({
             Boş bırakırsan görev süresiz olarak aktif listede kalır.
           </p>
         </div>
+
+        <ReminderFields
+          idPrefix="task-reminder"
+          value={values.reminder}
+          suggestedTriggerAt={getTaskReminderDefault(values.deadline || undefined)}
+          onChange={(reminder) =>
+            setValues((prev) => ({ ...prev, reminder }))
+          }
+        />
       </form>
     </Modal>
   );

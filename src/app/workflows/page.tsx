@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { useWorkflows } from "@/hooks/useWorkflows";
+import { useReminders } from "@/hooks/useReminders";
 import { Button } from "@/components/ui/Button";
 import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
 import { EmptyState } from "@/components/ui/EmptyState";
@@ -10,12 +11,18 @@ import {
   WorkflowForm,
   type WorkflowFormValues,
 } from "@/components/workflows/WorkflowForm";
-import type { Workflow, WorkflowStatus } from "@/lib/types";
+import type { Workflow, WorkflowStatus, WorkflowStep } from "@/lib/types";
+import { DEFAULT_REMINDER_INPUT } from "@/lib/types";
+import {
+  appendReminderId,
+  createReminderFromInput,
+} from "@/lib/utils/reminder";
 import { buildWorkflowSteps, deriveWorkflowStatus } from "@/lib/utils/workflow";
 
 export default function WorkflowsPage() {
-  const { workflows, addWorkflow, updateWorkflow, deleteWorkflow } =
+  const { workflows, addWorkflow, updateWorkflow, deleteWorkflow, updateStep } =
     useWorkflows();
+  const { addReminder } = useReminders();
   const [statusFilter, setStatusFilter] = useState<WorkflowStatus | "all">(
     "all"
   );
@@ -41,6 +48,30 @@ export default function WorkflowsPage() {
     setFormOpen(true);
   };
 
+  const attachStepReminders = (
+    workflowId: string,
+    steps: WorkflowStep[],
+    stepInputs: WorkflowFormValues["steps"]
+  ) => {
+    steps.forEach((step, index) => {
+      const reminderPayload = createReminderFromInput(
+        stepInputs[index]?.reminder ?? DEFAULT_REMINDER_INPUT,
+        {
+          targetType: "workflow_step",
+          targetId: step.id,
+          title: `${step.title} hatırlatması`,
+        }
+      );
+
+      if (reminderPayload) {
+        const reminderId = addReminder(reminderPayload);
+        updateStep(workflowId, step.id, {
+          reminderIds: appendReminderId(step.reminderIds, reminderId),
+        });
+      }
+    });
+  };
+
   const handleSubmit = (values: WorkflowFormValues) => {
     const steps = buildWorkflowSteps(
       values.steps.map((step) => ({
@@ -59,12 +90,14 @@ export default function WorkflowsPage() {
     };
 
     if (formMode === "create") {
-      addWorkflow(payload);
+      const workflowId = addWorkflow(payload);
+      attachStepReminders(workflowId, steps, values.steps);
       return;
     }
 
     if (editingWorkflow) {
       updateWorkflow(editingWorkflow.id, payload);
+      attachStepReminders(editingWorkflow.id, steps, values.steps);
     }
   };
 

@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { useEvents } from "@/hooks/useEvents";
+import { useReminders } from "@/hooks/useReminders";
 import { Button } from "@/components/ui/Button";
 import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
 import { Card } from "@/components/ui/Card";
@@ -10,9 +11,14 @@ import { EventCard } from "@/components/calendar/EventCard";
 import { EventForm, type EventFormValues } from "@/components/calendar/EventForm";
 import type { CalendarEvent } from "@/lib/types";
 import { buildEventPayload, defaultEventTimes } from "@/lib/utils/calendar";
+import {
+  appendReminderId,
+  createReminderFromInput,
+} from "@/lib/utils/reminder";
 
 export default function CalendarPage() {
   const { events, addEvent, updateEvent, deleteEvent } = useEvents();
+  const { addReminder } = useReminders();
   const [formOpen, setFormOpen] = useState(false);
   const [formMode, setFormMode] = useState<"create" | "edit">("create");
   const [editingEvent, setEditingEvent] = useState<CalendarEvent | undefined>();
@@ -62,14 +68,36 @@ export default function CalendarPage() {
 
   const handleSubmit = (values: EventFormValues) => {
     const payload = buildEventPayload(values);
+    const reminderPayload = createReminderFromInput(values.reminder, {
+      targetType: "event",
+      targetId: "",
+      title: `${values.title} hatırlatması`,
+    });
 
     if (formMode === "create") {
-      addEvent(payload);
+      const eventId = addEvent(payload);
+
+      if (reminderPayload) {
+        const reminderId = addReminder({ ...reminderPayload, targetId: eventId });
+        updateEvent(eventId, {
+          reminderIds: appendReminderId(undefined, reminderId),
+        });
+      }
       return;
     }
 
     if (editingEvent) {
       updateEvent(editingEvent.id, payload);
+
+      if (reminderPayload) {
+        const reminderId = addReminder({
+          ...reminderPayload,
+          targetId: editingEvent.id,
+        });
+        updateEvent(editingEvent.id, {
+          reminderIds: appendReminderId(editingEvent.reminderIds, reminderId),
+        });
+      }
     }
   };
 

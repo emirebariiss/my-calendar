@@ -21,17 +21,19 @@ interface AppContextValue {
   tasks: Task[];
   workflows: Workflow[];
   reminders: Reminder[];
-  addReminder: (reminder: Omit<Reminder, "id" | "createdAt">) => void;
+  addReminder: (reminder: Omit<Reminder, "id" | "createdAt">) => string;
   updateReminder: (id: string, updates: Partial<Reminder>) => void;
-  addEvent: (event: Omit<CalendarEvent, "id" | "createdAt" | "updatedAt">) => void;
+  addEvent: (
+    event: Omit<CalendarEvent, "id" | "createdAt" | "updatedAt">
+  ) => string;
   updateEvent: (id: string, updates: Partial<CalendarEvent>) => void;
   deleteEvent: (id: string) => void;
-  addTask: (task: Omit<Task, "id" | "createdAt" | "updatedAt">) => void;
+  addTask: (task: Omit<Task, "id" | "createdAt" | "updatedAt">) => string;
   updateTask: (id: string, updates: Partial<Task>) => void;
   deleteTask: (id: string) => void;
   addWorkflow: (
     workflow: Omit<Workflow, "id" | "createdAt" | "updatedAt">
-  ) => void;
+  ) => string;
   updateWorkflow: (id: string, updates: Partial<Workflow>) => void;
   deleteWorkflow: (id: string) => void;
   updateStep: (
@@ -57,16 +59,23 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const [workflows, setWorkflows] = useState<Workflow[]>(() => loadWorkflows());
   const [reminders, setReminders] = useState<Reminder[]>(() => loadReminders());
 
-  const addReminder = (reminder: Omit<Reminder, "id" | "createdAt">) => {
+  const addReminder = (reminder: Omit<Reminder, "id" | "createdAt">): string => {
     const now = new Date().toISOString();
-    setReminders((prev) => [
-      ...prev,
-      {
-        ...reminder,
-        id: createId("rem", prev),
-        createdAt: now,
-      },
-    ]);
+    let newId = "";
+
+    setReminders((prev) => {
+      newId = createId("rem", prev);
+      return [
+        ...prev,
+        {
+          ...reminder,
+          id: newId,
+          createdAt: now,
+        },
+      ];
+    });
+
+    return newId;
   };
 
   const updateReminder = (id: string, updates: Partial<Reminder>) => {
@@ -79,17 +88,24 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
 
   const addEvent = (
     event: Omit<CalendarEvent, "id" | "createdAt" | "updatedAt">
-  ) => {
+  ): string => {
     const now = new Date().toISOString();
-    setEvents((prev) => [
-      ...prev,
-      {
-        ...event,
-        id: createId("evt", prev),
-        createdAt: now,
-        updatedAt: now,
-      },
-    ]);
+    let newId = "";
+
+    setEvents((prev) => {
+      newId = createId("evt", prev);
+      return [
+        ...prev,
+        {
+          ...event,
+          id: newId,
+          createdAt: now,
+          updatedAt: now,
+        },
+      ];
+    });
+
+    return newId;
   };
 
   const updateEvent = (id: string, updates: Partial<CalendarEvent>) => {
@@ -106,17 +122,26 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     setEvents((prev) => prev.filter((event) => event.id !== id));
   };
 
-  const addTask = (task: Omit<Task, "id" | "createdAt" | "updatedAt">) => {
+  const addTask = (
+    task: Omit<Task, "id" | "createdAt" | "updatedAt">
+  ): string => {
     const now = new Date().toISOString();
-    setTasks((prev) => [
-      ...prev,
-      {
-        ...task,
-        id: createId("task", prev),
-        createdAt: now,
-        updatedAt: now,
-      },
-    ]);
+    let newId = "";
+
+    setTasks((prev) => {
+      newId = createId("task", prev);
+      return [
+        ...prev,
+        {
+          ...task,
+          id: newId,
+          createdAt: now,
+          updatedAt: now,
+        },
+      ];
+    });
+
+    return newId;
   };
 
   const updateTask = (id: string, updates: Partial<Task>) => {
@@ -149,17 +174,24 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
 
   const addWorkflow = (
     workflow: Omit<Workflow, "id" | "createdAt" | "updatedAt">
-  ) => {
+  ): string => {
     const now = new Date().toISOString();
-    setWorkflows((prev) => [
-      ...prev,
-      {
-        ...workflow,
-        id: createId("wf", prev),
-        createdAt: now,
-        updatedAt: now,
-      },
-    ]);
+    let newId = "";
+
+    setWorkflows((prev) => {
+      newId = createId("wf", prev);
+      return [
+        ...prev,
+        {
+          ...workflow,
+          id: newId,
+          createdAt: now,
+          updatedAt: now,
+        },
+      ];
+    });
+
+    return newId;
   };
 
   const updateWorkflow = (id: string, updates: Partial<Workflow>) => {

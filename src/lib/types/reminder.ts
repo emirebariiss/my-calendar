@@ -13,6 +13,18 @@ export interface Reminder {
   createdAt: string;
 }
 
+export interface ReminderInput {
+  enabled: boolean;
+  triggerAt: string;
+  recurrence: ReminderRecurrence;
+}
+
+export const DEFAULT_REMINDER_INPUT: ReminderInput = {
+  enabled: false,
+  triggerAt: "",
+  recurrence: "once",
+};
+
 export const REMINDER_TARGET_LABELS: Record<ReminderTargetType, string> = {
   event: "Etkinlik",
   task: "Görev",

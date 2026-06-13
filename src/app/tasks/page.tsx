@@ -2,14 +2,20 @@
 
 import { useState } from "react";
 import { useTasks } from "@/hooks/useTasks";
+import { useReminders } from "@/hooks/useReminders";
 import { Button } from "@/components/ui/Button";
 import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
 import { TaskForm, type TaskFormValues } from "@/components/tasks/TaskForm";
 import { TaskList } from "@/components/tasks/TaskList";
 import type { Task } from "@/lib/types";
+import {
+  appendReminderId,
+  createReminderFromInput,
+} from "@/lib/utils/reminder";
 
 export default function TasksPage() {
   const { tasks, addTask, updateTask, deleteTask } = useTasks();
+  const { addReminder } = useReminders();
   const [formOpen, setFormOpen] = useState(false);
   const [formMode, setFormMode] = useState<"create" | "edit">("create");
   const [editingTask, setEditingTask] = useState<Task | undefined>();
@@ -45,14 +51,36 @@ export default function TasksPage() {
       completedAt:
         values.status === "done" ? new Date().toISOString() : undefined,
     };
+    const reminderPayload = createReminderFromInput(values.reminder, {
+      targetType: "task",
+      targetId: "",
+      title: `${values.title} hatırlatması`,
+    });
 
     if (formMode === "create") {
-      addTask(payload);
+      const taskId = addTask(payload);
+
+      if (reminderPayload) {
+        const reminderId = addReminder({ ...reminderPayload, targetId: taskId });
+        updateTask(taskId, {
+          reminderIds: appendReminderId(undefined, reminderId),
+        });
+      }
       return;
     }
 
     if (editingTask) {
       updateTask(editingTask.id, payload);
+
+      if (reminderPayload) {
+        const reminderId = addReminder({
+          ...reminderPayload,
+          targetId: editingTask.id,
+        });
+        updateTask(editingTask.id, {
+          reminderIds: appendReminderId(editingTask.reminderIds, reminderId),
+        });
+      }
     }
   };
 

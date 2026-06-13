@@ -1,14 +1,16 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import type { CalendarEvent, EventStatus, EventType } from "@/lib/types";
-import { EVENT_TYPE_LABELS } from "@/lib/types";
+import type { CalendarEvent, EventStatus, EventType, ReminderInput } from "@/lib/types";
+import { DEFAULT_REMINDER_INPUT, EVENT_TYPE_LABELS } from "@/lib/types";
 import { Modal } from "@/components/ui/Modal";
 import { Button } from "@/components/ui/Button";
+import { ReminderFields } from "@/components/reminders/ReminderFields";
 import {
   toDateTimeLocalValue,
   toDateValue,
 } from "@/lib/utils/calendar";
+import { getEventReminderDefault } from "@/lib/utils/reminder";
 
 export interface EventFormValues {
   title: string;
@@ -20,6 +22,7 @@ export interface EventFormValues {
   startTime: string;
   endDate: string;
   endTime: string;
+  reminder: ReminderInput;
 }
 
 interface EventFormProps {
@@ -48,6 +51,7 @@ function getDefaultValues(defaultRange?: EventFormProps["defaultRange"]): EventF
     startTime: toDateTimeLocalValue(startAt).split("T")[1] ?? "09:00",
     endDate: toDateValue(endAt),
     endTime: toDateTimeLocalValue(endAt).split("T")[1] ?? "10:00",
+    reminder: { ...DEFAULT_REMINDER_INPUT },
   };
 }
 
@@ -62,6 +66,7 @@ function eventToFormValues(event: CalendarEvent): EventFormValues {
     startTime: toDateTimeLocalValue(event.startAt).split("T")[1] ?? "09:00",
     endDate: toDateValue(event.endAt),
     endTime: toDateTimeLocalValue(event.endAt).split("T")[1] ?? "10:00",
+    reminder: { ...DEFAULT_REMINDER_INPUT },
   };
 }
 
@@ -102,6 +107,11 @@ export function EventForm({
         setError("Bitiş zamanı başlangıçtan sonra olmalıdır.");
         return;
       }
+    }
+
+    if (values.reminder.enabled && !values.reminder.triggerAt) {
+      setError("Hatırlatma için tetikleme zamanı gerekli.");
+      return;
     }
 
     onSubmit({
@@ -281,6 +291,19 @@ export function EventForm({
             </div>
           )}
         </div>
+
+        <ReminderFields
+          idPrefix="event-reminder"
+          value={values.reminder}
+          suggestedTriggerAt={getEventReminderDefault(
+            values.startDate,
+            values.startTime,
+            values.allDay
+          )}
+          onChange={(reminder) =>
+            setValues((prev) => ({ ...prev, reminder }))
+          }
+        />
       </form>
     </Modal>
   );

@@ -1,13 +1,17 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import type { Workflow } from "@/lib/types";
+import type { ReminderInput, Workflow } from "@/lib/types";
+import { DEFAULT_REMINDER_INPUT } from "@/lib/types";
 import { Modal } from "@/components/ui/Modal";
 import { Button } from "@/components/ui/Button";
+import { ReminderFields } from "@/components/reminders/ReminderFields";
+import { getStepReminderDefault } from "@/lib/utils/reminder";
 
 export interface WorkflowStepInput {
   title: string;
   dueDate: string;
+  reminder: ReminderInput;
 }
 
 export interface WorkflowFormValues {
@@ -24,7 +28,11 @@ interface WorkflowFormProps {
   onSubmit: (values: WorkflowFormValues) => void;
 }
 
-const EMPTY_STEP: WorkflowStepInput = { title: "", dueDate: "" };
+const EMPTY_STEP: WorkflowStepInput = {
+  title: "",
+  dueDate: "",
+  reminder: { ...DEFAULT_REMINDER_INPUT },
+};
 
 const DEFAULT_VALUES: WorkflowFormValues = {
   title: "",
@@ -40,6 +48,7 @@ function workflowToFormValues(workflow: Workflow): WorkflowFormValues {
     steps: sorted.map((step) => ({
       title: step.title,
       dueDate: step.dueDate ?? "",
+      reminder: { ...DEFAULT_REMINDER_INPUT },
     })),
   };
 }
@@ -103,12 +112,21 @@ export function WorkflowForm({
       return;
     }
 
+    const invalidReminder = validSteps.find(
+      (step) => step.reminder.enabled && !step.reminder.triggerAt
+    );
+    if (invalidReminder) {
+      setError("Hatırlatması açık adımlar için tetikleme zamanı gerekli.");
+      return;
+    }
+
     onSubmit({
       title: values.title.trim(),
       description: values.description.trim(),
       steps: validSteps.map((step) => ({
         title: step.title.trim(),
         dueDate: step.dueDate,
+        reminder: step.reminder,
       })),
     });
     onClose();
@@ -171,29 +189,39 @@ export function WorkflowForm({
           {values.steps.map((step, index) => (
             <div
               key={index}
-              className="grid gap-2 rounded-lg border border-border p-3 sm:grid-cols-[1fr_auto_auto]"
+              className="space-y-3 rounded-lg border border-border p-3"
             >
-              <input
-                value={step.title}
-                onChange={(e) => updateStep(index, { title: e.target.value })}
-                placeholder={`Adım ${index + 1} başlığı`}
-                className="rounded-lg border border-border px-3 py-2 text-sm"
+              <div className="grid gap-2 sm:grid-cols-[1fr_auto_auto]">
+                <input
+                  value={step.title}
+                  onChange={(e) => updateStep(index, { title: e.target.value })}
+                  placeholder={`Adım ${index + 1} başlığı`}
+                  className="rounded-lg border border-border px-3 py-2 text-sm"
+                />
+                <input
+                  type="date"
+                  value={step.dueDate}
+                  onChange={(e) => updateStep(index, { dueDate: e.target.value })}
+                  className="rounded-lg border border-border px-3 py-2 text-sm"
+                  aria-label={`Adım ${index + 1} tarihi`}
+                />
+                <Button
+                  variant="ghost"
+                  type="button"
+                  onClick={() => removeStep(index)}
+                  disabled={values.steps.length <= 2}
+                >
+                  Sil
+                </Button>
+              </div>
+
+              <ReminderFields
+                idPrefix={`workflow-step-${index}`}
+                value={step.reminder}
+                suggestedTriggerAt={getStepReminderDefault(step.dueDate || undefined)}
+                onChange={(reminder) => updateStep(index, { reminder })}
+                compact
               />
-              <input
-                type="date"
-                value={step.dueDate}
-                onChange={(e) => updateStep(index, { dueDate: e.target.value })}
-                className="rounded-lg border border-border px-3 py-2 text-sm"
-                aria-label={`Adım ${index + 1} tarihi`}
-              />
-              <Button
-                variant="ghost"
-                type="button"
-                onClick={() => removeStep(index)}
-                disabled={values.steps.length <= 2}
-              >
-                Sil
-              </Button>
             </div>
           ))}
         </div>
