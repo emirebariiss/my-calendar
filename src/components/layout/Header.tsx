@@ -13,8 +13,8 @@ export function Header({ onMenuClick }: HeaderProps) {
     PAGE_TITLES[pathname] ??
     (pathname.startsWith("/workflows/") ? "Süreç Detayı" : "My Calendar");
 
-    return (
-      <header className="flex h-16 items-center justify-between gap-4 border-b border-border bg-sidebar px-4 md:px-6">
+  return (
+    <header className="flex h-16 items-center justify-between gap-4 border-b border-border bg-sidebar px-4 md:px-6">
         <div className="flex min-w-0 items-center gap-3">
           <button
             type="button"
@@ -37,6 +37,6 @@ export function Header({ onMenuClick }: HeaderProps) {
           <span className="md:hidden">MVP</span>
           <span className="hidden md:inline">MVP — Sprint 6</span>
         </div>
-      </header>
-    );
+    </header>
+  );
 }

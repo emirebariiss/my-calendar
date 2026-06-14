@@ -191,7 +191,7 @@ export function WorkflowForm({
               key={index}
               className="space-y-3 rounded-lg border border-border p-3"
             >
-              <div className="grid gap-2 sm:grid-cols-[1fr_auto_auto]">
+              <div className="grid grid-cols-1 gap-2 sm:grid-cols-[1fr_auto_auto]">
                 <input
                   value={step.title}
                   onChange={(e) => updateStep(index, { title: e.target.value })}

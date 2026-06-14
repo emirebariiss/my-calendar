@@ -64,7 +64,7 @@ export function CalendarView({
   };
 
   return (
-    <div className="calendar-wrapper rounded-xl border border-border bg-white p-4">
+    <div className="calendar-wrapper rounded-xl border border-border bg-white p-2 sm:p-4">
       <FullCalendar
         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
         locale={trLocale}

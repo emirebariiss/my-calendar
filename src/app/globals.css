@@ -59,3 +59,27 @@ body {
   padding: 1px 2px;
   cursor: pointer;
 }
+
+/* Mobil: takvim toolbar'ı dikey diz, butonlar taşmasın */
+@media (max-width: 640px) {
+  .calendar-wrapper .fc .fc-toolbar {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .calendar-wrapper .fc .fc-toolbar-chunk {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.25rem;
+  }
+
+  .calendar-wrapper .fc .fc-toolbar-title {
+    font-size: 1rem;
+  }
+
+  .calendar-wrapper .fc .fc-button {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+  }
+}
