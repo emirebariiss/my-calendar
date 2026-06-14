@@ -63,14 +63,14 @@ MVP'nin "bitti" sayılması için aşağıdaki tüm maddeler karşılanmalıdır
 
 | # | Özellik | Durum |
 |---|---------|-------|
-| D1 | Reminder oluşturulabiliyor | ⬜ |
-| D2 | Event bazlı reminder | ⬜ |
-| D3 | Task bazlı reminder | ⬜ |
-| D4 | Step bazlı reminder | ⬜ |
-| D5 | Tek seferlik (once) tekrar | ⬜ |
-| D6 | Günlük (daily) tekrar | ⬜ |
-| D7 | Haftalık (weekly) tekrar | ⬜ |
-| D8 | Aktif/pasif toggle | ⬜ |
+| D1 | Reminder oluşturulabiliyor | ✅ |
+| D2 | Event bazlı reminder | ✅ |
+| D3 | Task bazlı reminder | ✅ |
+| D4 | Step bazlı reminder | ✅ |
+| D5 | Tek seferlik (once) tekrar | ✅ |
+| D6 | Günlük (daily) tekrar | ✅ |
+| D7 | Haftalık (weekly) tekrar | ✅ |
+| D8 | Aktif/pasif toggle | ✅ |
 | D9 | Reminder listesi ve filtre | ✅ |
 
 ---
