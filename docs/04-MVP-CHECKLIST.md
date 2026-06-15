@@ -85,6 +85,7 @@ MVP'nin "bitti" sayılması için aşağıdaki tüm maddeler karşılanmalıdır
 | E4 | Overdue (gecikmiş) işler bölümü | ✅ |
 | E5 | Her bölümde "Tümünü gör" linki | ✅ |
 | E6 | Boş state mesajları | ✅ |
+| E7 | Yaklaşan Hatırlatmalar (7 gün) listeleniyor  | ✅ |
 
 ---
 
