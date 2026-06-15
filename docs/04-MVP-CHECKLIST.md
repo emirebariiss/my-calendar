@@ -94,7 +94,7 @@ MVP'nin "bitti" sayılması için aşağıdaki tüm maddeler karşılanmalıdır
 | # | Özellik | Durum |
 |---|---------|-------|
 | F1 | Tüm sayfalar arası navigasyon çalışıyor | ✅ |
-| F2 | Responsive tasarım (mobile + desktop) | ⬜ |
+| F2 | Responsive tasarım (mobile + desktop) | ✅ |
 | F3 | TypeScript tip hatası yok | ✅ |
 | F4 | `npm run build` başarılı | ✅ |
 | F5 | `npm run lint` başarılı | ✅ |
@@ -111,7 +111,7 @@ MVP'nin "bitti" sayılması için aşağıdaki tüm maddeler karşılanmalıdır
 | Takvim | 11 | 11 | 100% |
 | Görevler | 11 | 11 | 100% |
 | Workflow | 10 | 10 | 100% |
-| Hatırlatmalar | 9 | 1 | 11% |
-| Dashboard | 6 | 6 | 100% |
-| Genel | 8 | 7 | 88% |
-| **Toplam** | **55** | **46** | **84%** |
+| Hatırlatmalar | 9 | 9 | 100% |
+| Dashboard | 6+1 | 6+1 | 100% |
+| Genel | 8 | 8 | 100% |
+| **Toplam** | **56** | **56** | **100%** |
