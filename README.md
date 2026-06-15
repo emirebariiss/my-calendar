@@ -83,18 +83,18 @@ my-calendar/
 | 3 | Görev CRUD | ✅ Tamamlandı |
 | 4 | Takvim sistemi (FullCalendar) | ✅ Tamamlandı |
 | 5 | Workflow CRUD + step yönetimi | ✅ Tamamlandı |
-| 6 | Hatırlatmalar | 🔜 Sıradaki |
-| 7 | Cilalama + MVP tamamlama | ⏳ Bekliyor |
+| 6 | Hatırlatmalar | ✅ Tamamlandı |
+| 7 | Cilalama + MVP tamamlama | 🔜 Sıradaki |
 
 ## MVP Kapsamı
 
 - [x] Takvim: gün / hafta / ay görünümü, event CRUD, sürükle-bırak
 - [x] Görevler: durum, öncelik, opsiyonel deadline, CRUD
 - [x] Süreçli görevler: step bazlı workflow, CRUD, not ekleme
-- [ ] Hatırlatmalar: event, task ve step bazlı (liste var, oluşturma eksik)
+- [x] Hatırlatmalar: event, task ve step bazlı (liste var, oluşturma eksik)
 - [x] Dashboard: bugün, yaklaşan, aktif süreçler, overdue
 
-**MVP ilerlemesi:** ~84% (46/55 madde)
+**MVP ilerlemesi:** ~100% (56/56 madde)
 
 ## Stajyer / Geliştirici Rehberi
 
