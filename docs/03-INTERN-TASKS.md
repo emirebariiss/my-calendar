@@ -266,7 +266,7 @@ Bu doküman, projeye yeni başlayan yazılım mühendisi stajyeri için sprint b
 
 ### Görevler
 
-- [ ] **7.1** `docs/04-MVP-CHECKLIST.md` maddelerini tek tek kontrol et
+- [x] **7.1** `docs/04-MVP-CHECKLIST.md` maddelerini tek tek kontrol et
 - [x] **7.2** Responsive tasarım gözden geçir (mobile, tablet, desktop)
 - [ ] **7.3** Loading state'leri ekle (veri yüklenirken skeleton veya spinner)
 - [ ] **7.4** Hata durumlarını handle et (geçersiz ID ile detay sayfası → 404)
@@ -275,8 +275,8 @@ Bu doküman, projeye yeni başlayan yazılım mühendisi stajyeri için sprint b
   - Kullanılmayan import'ları sil
   - Magic string'leri constant'a taşı
   - Büyük bileşenleri parçala (200 satır üstü)
-- [ ] **7.7** `npm run build` hatasız çalışsın
-- [ ] **7.8** `npm run lint` hatasız çalışsın
+- [x] **7.7** `npm run build` hatasız çalışsın
+- [x] **7.8** `npm run lint` hatasız çalışsın
 - [ ] **7.9** Kısa demo video veya screenshot'lar hazırla
 
 **Kabul kriteri:** MVP checklist %100, build ve lint temiz.
