@@ -241,20 +241,20 @@ Bu doküman, projeye yeni başlayan yazılım mühendisi stajyeri için sprint b
 
 ### Görevler
 
-- [ ] **6.1** `ReminderItem` bileşeni
+- [x] **6.1** `ReminderItem` bileşeni
   - Başlık, hedef tipi (event/task/step), tetikleme zamanı
   - Tekrar bilgisi (once/daily/weekly)
   - Aktif/pasif toggle
-- [ ] **6.2** `ReminderForm` modal
+- [x] **6.2** `ReminderForm` modal
   - Alanlar: başlık*, hedef tipi*, hedef seçimi (dropdown), tetikleme zamanı*, tekrar
   - Hedef seçiminde ilgili entity listesi gösterilsin
-- [ ] **6.3** Hatırlatmalar sayfası (`src/app/reminders/page.tsx`)
+- [x] **6.3** Hatırlatmalar sayfası (`src/app/reminders/page.tsx`)
   - ReminderItem listesi
   - Aktif/pasif filtre
   - "Yeni Hatırlatma" butonu
-- [ ] **6.4** Event/Task/Step formlarına "Hatırlatma ekle" opsiyonel alanı
+- [x] **6.4** Event/Task/Step formlarına "Hatırlatma ekle" opsiyonel alanı
   - Form kaydedilirken reminder da oluşturulsun
-- [ ] **6.5** Dashboard'da yaklaşan hatırlatmalar mini bölümü (opsiyonel bonus)
+- [x] **6.5** Dashboard'da yaklaşan hatırlatmalar mini bölümü (opsiyonel bonus)
 
 **Kabul kriteri:** 3 hedef tipine reminder oluşturulabiliyor. Tekrar seçenekleri çalışıyor. Aktif/pasif toggle çalışıyor.
 
@@ -267,7 +267,7 @@ Bu doküman, projeye yeni başlayan yazılım mühendisi stajyeri için sprint b
 ### Görevler
 
 - [ ] **7.1** `docs/04-MVP-CHECKLIST.md` maddelerini tek tek kontrol et
-- [ ] **7.2** Responsive tasarım gözden geçir (mobile, tablet, desktop)
+- [x] **7.2** Responsive tasarım gözden geçir (mobile, tablet, desktop)
 - [ ] **7.3** Loading state'leri ekle (veri yüklenirken skeleton veya spinner)
 - [ ] **7.4** Hata durumlarını handle et (geçersiz ID ile detay sayfası → 404)
 - [ ] **7.5** Tutarlı boş state mesajları (her listede EmptyState)
