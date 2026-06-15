@@ -91,7 +91,7 @@ my-calendar/
 - [x] Takvim: gün / hafta / ay görünümü, event CRUD, sürükle-bırak
 - [x] Görevler: durum, öncelik, opsiyonel deadline, CRUD
 - [x] Süreçli görevler: step bazlı workflow, CRUD, not ekleme
-- [x] Hatırlatmalar: event, task ve step bazlı (liste var, oluşturma eksik)
+- [x] Hatırlatmalar: event, task ve step bazlı 
 - [x] Dashboard: bugün, yaklaşan, aktif süreçler, overdue
 
 **MVP ilerlemesi:** ~100% (56/56 madde)
