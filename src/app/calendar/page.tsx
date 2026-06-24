@@ -11,10 +11,8 @@ import { EventCard } from "@/components/calendar/EventCard";
 import { EventForm, type EventFormValues } from "@/components/calendar/EventForm";
 import type { CalendarEvent } from "@/lib/types";
 import { buildEventPayload, defaultEventTimes } from "@/lib/utils/calendar";
-import {
-  appendReminderId,
-  createReminderFromInput,
-} from "@/lib/utils/reminder";
+import { appendReminderId, createReminderFromInput } from "@/lib/utils/reminder";
+import { EmptyState } from "@/components/ui/EmptyState";
 
 export default function CalendarPage() {
   const { events, addEvent, updateEvent, deleteEvent } = useEvents();
@@ -138,7 +136,9 @@ export default function CalendarPage() {
 
       <Card title="Yaklaşan Etkinlikler">
         {scheduledEvents.length === 0 ? (
-          <p className="text-sm text-muted">Planlanmış etkinlik yok.</p>
+          <EmptyState 
+          title="Planlanmış etkinlik yok" 
+          description="Yeni bir etkinlik oluşturarak başla." />
         ) : (
           <ul className="space-y-3">
             {scheduledEvents.slice(0, 5).map((event) => (
