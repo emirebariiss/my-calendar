@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useMemo, useState } from "react";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import {
   loadEvents,
   loadReminders,
@@ -17,6 +17,7 @@ import type {
 import { applyStepUpdate } from "@/lib/utils/workflow";
 
 interface AppContextValue {
+  isLoading: boolean;
   events: CalendarEvent[];
   tasks: Task[];
   workflows: Workflow[];
@@ -54,11 +55,22 @@ function createId(prefix: string, items: { id: string }[]): string {
 }
 
 export function AppProvider({ children }: { children: React.ReactNode }) {
-  const [events, setEvents] = useState<CalendarEvent[]>(() => loadEvents());
-  const [tasks, setTasks] = useState<Task[]>(() => loadTasks());
-  const [workflows, setWorkflows] = useState<Workflow[]>(() => loadWorkflows());
-  const [reminders, setReminders] = useState<Reminder[]>(() => loadReminders());
-
+  const [isLoading, setIsLoading] = useState(true);
+  const [events, setEvents] = useState<CalendarEvent[]>([]);
+  const [tasks, setTasks] = useState<Task[]>([]);
+  const [workflows, setWorkflows] = useState<Workflow[]>([]);
+  const [reminders, setReminders] = useState<Reminder[]>([]);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setEvents(loadEvents());
+      setTasks(loadTasks());
+      setWorkflows(loadWorkflows());
+      setReminders(loadReminders());
+      setIsLoading(false);
+    }, 400);
+  
+    return () => clearTimeout(timer);
+  }, []);
   const addReminder = (reminder: Omit<Reminder, "id" | "createdAt">): string => {
     const now = new Date().toISOString();
     let newId = "";
@@ -224,6 +236,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
 
   const value = useMemo(
     () => ({
+      isLoading,
       events,
       tasks,
       workflows,
@@ -241,7 +254,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       updateTask,
       deleteTask,
     }),
-    [events, tasks, workflows, reminders]
+    [isLoading, events, tasks, workflows, reminders]
   );
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
