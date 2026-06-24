@@ -1,12 +1,11 @@
 "use client";
 
-import { useParams } from "next/navigation";
+import { notFound, useParams } from "next/navigation";
 import Link from "next/link";
 import { useWorkflows } from "@/hooks/useWorkflows";
 import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { ProgressBar } from "@/components/ui/ProgressBar";
-import { EmptyState } from "@/components/ui/EmptyState";
 import { StepList } from "@/components/workflows/StepList";
 import { WORKFLOW_STATUS_LABELS, type WorkflowStep } from "@/lib/types";
 import { getWorkflowProgress } from "@/lib/utils/filters";
@@ -17,12 +16,7 @@ export default function WorkflowDetailPage() {
   const workflow = workflows.find((item) => item.id === params.id);
 
   if (!workflow) {
-    return (
-      <EmptyState
-        title="Süreç bulunamadı"
-        description="Geçersiz veya silinmiş bir süreç ID'si."
-      />
-    );
+    notFound();
   }
 
   const progress = getWorkflowProgress(workflow);
