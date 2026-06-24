@@ -1,4 +1,4 @@
-import type { Reminder,Task, TaskPriority, Workflow, WorkflowStep } from "@/lib/types";
+import type { Reminder, Task, TaskPriority, Workflow, WorkflowStep } from "@/lib/types";
 import { isOverdue, isUpcoming } from "./date";
 
 const PRIORITY_ORDER: Record<TaskPriority, number> = {

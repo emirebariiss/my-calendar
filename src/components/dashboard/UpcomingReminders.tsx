@@ -1,11 +1,12 @@
 "use client";
+
 import Link from "next/link";
-import { useReminders } from "@/hooks/useReminders"
+import { useReminders } from "@/hooks/useReminders";
 import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { EmptyState } from "@/components/ui/EmptyState";
-import { REMINDER_RECURRENCE_LABELS, REMINDER_TARGET_LABELS} from "@/lib/types";
-import { formatDateTime} from "@/lib/utils/date";
+import { REMINDER_RECURRENCE_LABELS, REMINDER_TARGET_LABELS } from "@/lib/types";
+import { formatDateTime } from "@/lib/utils/date";
 import { getUpcomingReminders } from "@/lib/utils/filters";
 
 export function UpcomingReminders() {

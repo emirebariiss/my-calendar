@@ -1,26 +1,20 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import type {
-  ReminderRecurrence,
-  ReminderTargetType,
-} from "@/lib/types";
-import {
-  REMINDER_RECURRENCE_LABELS,
-  REMINDER_TARGET_LABELS,
-} from "@/lib/types";
+import type { ReminderRecurrence } from "@/lib/types";
+import { REMINDER_RECURRENCE_LABELS } from "@/lib/types";
 import { Modal } from "@/components/ui/Modal";
 import { Button } from "@/components/ui/Button";
+import { ReminderTargetSelect } from "@/components/reminders/ReminderTargetSelect";
 import { useApp } from "@/providers/AppProvider";
-import { fromDateTimeLocalValue, toDateTimeLocalValue } from "@/lib/utils/calendar";
+import { fromDateTimeLocalValue } from "@/lib/utils/calendar";
+import {
+  getDefaultReminderTriggerAt,
+  getReminderTargetOptions,
+} from "@/lib/utils/reminder";
+import type { ReminderFormValues } from "@/lib/utils/reminderForm";
 
-export interface ReminderFormValues {
-  title: string;
-  targetType: ReminderTargetType;
-  targetId: string;
-  triggerAt: string;
-  recurrence: ReminderRecurrence;
-}
+export type { ReminderFormValues } from "@/lib/utils/reminderForm";
 
 interface ReminderFormProps {
   open: boolean;
@@ -28,55 +22,37 @@ interface ReminderFormProps {
   onSubmit: (values: ReminderFormValues) => void;
 }
 
-function getDefaultTriggerAt(): string {
-  const next = new Date();
-  next.setMinutes(0, 0, 0);
-  next.setHours(next.getHours() + 1);
-  return toDateTimeLocalValue(next.toISOString());
-}
-
-const DEFAULT_VALUES: ReminderFormValues = {
-  title: "",
-  targetType: "task",
-  targetId: "",
-  triggerAt: getDefaultTriggerAt(),
-  recurrence: "once",
-};
-
 export function ReminderForm({ open, onClose, onSubmit }: ReminderFormProps) {
   const { events, tasks, workflows } = useApp();
-  const [values, setValues] = useState<ReminderFormValues>(DEFAULT_VALUES);
+  const [values, setValues] = useState<ReminderFormValues>(() => ({
+    title: "",
+    targetType: "task",
+    targetId: "",
+    triggerAt: getDefaultReminderTriggerAt(),
+    recurrence: "once",
+  }));
   const [error, setError] = useState("");
 
-  const targetOptions = useMemo(() => {
-    if (values.targetType === "event") {
-      return events.map((event) => ({
-        id: event.id,
-        label: event.title,
-      }));
-    }
-
-    if (values.targetType === "task") {
-      return tasks.map((task) => ({
-        id: task.id,
-        label: task.title,
-      }));
-    }
-
-    return workflows.flatMap((workflow) =>
-      workflow.steps.map((step) => ({
-        id: step.id,
-        label: `${step.order}. ${step.title} — ${workflow.title}`,
-      }))
-    );
-  }, [values.targetType, events, tasks, workflows]);
+  const targetOptions = useMemo(
+    () =>
+      getReminderTargetOptions(
+        values.targetType,
+        events,
+        tasks,
+        workflows
+      ),
+    [values.targetType, events, tasks, workflows]
+  );
 
   useEffect(() => {
     if (!open) return;
 
     setValues({
-      ...DEFAULT_VALUES,
-      triggerAt: getDefaultTriggerAt(),
+      title: "",
+      targetType: "task",
+      targetId: "",
+      triggerAt: getDefaultReminderTriggerAt(),
+      recurrence: "once",
     });
     setError("");
   }, [open]);
@@ -159,64 +135,21 @@ export function ReminderForm({ open, onClose, onSubmit }: ReminderFormProps) {
           {error && <p className="mt-1 text-xs text-red-600">{error}</p>}
         </div>
 
-        <div className="grid gap-4 sm:grid-cols-2">
-          <div>
-            <label
-              htmlFor="reminder-target-type"
-              className="mb-1 block text-sm font-medium"
-            >
-              Hedef tipi *
-            </label>
-            <select
-              id="reminder-target-type"
-              value={values.targetType}
-              onChange={(e) =>
-                setValues((prev) => ({
-                  ...prev,
-                  targetType: e.target.value as ReminderTargetType,
-                  targetId: "",
-                }))
-              }
-              className="w-full rounded-lg border border-border px-3 py-2 text-sm"
-            >
-              {(Object.keys(REMINDER_TARGET_LABELS) as ReminderTargetType[]).map(
-                (type) => (
-                  <option key={type} value={type}>
-                    {REMINDER_TARGET_LABELS[type]}
-                  </option>
-                )
-              )}
-            </select>
-          </div>
-
-          <div>
-            <label
-              htmlFor="reminder-target-id"
-              className="mb-1 block text-sm font-medium"
-            >
-              Hedef seçimi *
-            </label>
-            <select
-              id="reminder-target-id"
-              value={values.targetId}
-              onChange={(e) =>
-                setValues((prev) => ({ ...prev, targetId: e.target.value }))
-              }
-              disabled={targetOptions.length === 0}
-              className="w-full rounded-lg border border-border px-3 py-2 text-sm disabled:opacity-60"
-            >
-              {targetOptions.length === 0 ? (
-                <option value="">Kayıt bulunamadı</option>
-              ) : (
-                targetOptions.map((option) => (
-                  <option key={option.id} value={option.id}>
-                    {option.label}
-                  </option>
-                ))
-              )}
-            </select>
-          </div>
-        </div>
+        <ReminderTargetSelect
+          targetType={values.targetType}
+          targetId={values.targetId}
+          options={targetOptions}
+          onTargetTypeChange={(targetType) =>
+            setValues((prev) => ({
+              ...prev,
+              targetType,
+              targetId: "",
+            }))
+          }
+          onTargetIdChange={(targetId) =>
+            setValues((prev) => ({ ...prev, targetId }))
+          }
+        />
 
         <div className="grid gap-4 sm:grid-cols-2">
           <div>

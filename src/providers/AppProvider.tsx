@@ -15,6 +15,7 @@ import type {
   WorkflowStep,
 } from "@/lib/types";
 import { applyStepUpdate } from "@/lib/utils/workflow";
+import { MOCK_LOAD_DELAY_MS } from "@/lib/constants/mock";
 
 interface AppContextValue {
   isLoading: boolean;
@@ -67,7 +68,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       setWorkflows(loadWorkflows());
       setReminders(loadReminders());
       setIsLoading(false);
-    }, 400);
+    }, MOCK_LOAD_DELAY_MS);
   
     return () => clearTimeout(timer);
   }, []);

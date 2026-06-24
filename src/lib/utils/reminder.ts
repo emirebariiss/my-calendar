@@ -1,6 +1,53 @@
 import { subMinutes } from "date-fns";
-import type { Reminder, ReminderInput, ReminderTargetType } from "@/lib/types";
+import type {
+  CalendarEvent,
+  Reminder,
+  ReminderInput,
+  ReminderTargetType,
+  Task,
+  Workflow,
+} from "@/lib/types";
 import { fromDateTimeLocalValue, toDateTimeLocalValue } from "@/lib/utils/calendar";
+
+export interface ReminderTargetOption {
+  id: string;
+  label: string;
+}
+
+export function getDefaultReminderTriggerAt(): string {
+  const next = new Date();
+  next.setMinutes(0, 0, 0);
+  next.setHours(next.getHours() + 1);
+  return toDateTimeLocalValue(next.toISOString());
+}
+
+export function getReminderTargetOptions(
+  targetType: ReminderTargetType,
+  events: CalendarEvent[],
+  tasks: Task[],
+  workflows: Workflow[]
+): ReminderTargetOption[] {
+  if (targetType === "event") {
+    return events.map((event) => ({
+      id: event.id,
+      label: event.title,
+    }));
+  }
+
+  if (targetType === "task") {
+    return tasks.map((task) => ({
+      id: task.id,
+      label: task.title,
+    }));
+  }
+
+  return workflows.flatMap((workflow) =>
+    workflow.steps.map((step) => ({
+      id: step.id,
+      label: `${step.order}. ${step.title} — ${workflow.title}`,
+    }))
+  );
+}
 
 export function getEventReminderDefault(
   startDate: string,
