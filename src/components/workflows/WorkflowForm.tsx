@@ -148,7 +148,7 @@ export function WorkflowForm({
         </>
       }
     >
-      <form id="workflow-form" onSubmit={handleSubmit} className="space-y-4">
+      <form id="workflow-form" onSubmit={handleSubmit} className="min-w-0 space-y-4 overflow-x-hidden">
         <div>
           <label htmlFor="workflow-title" className="mb-1 block text-sm font-medium">
             Başlık *

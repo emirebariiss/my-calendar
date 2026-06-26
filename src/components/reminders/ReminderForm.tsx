@@ -118,7 +118,7 @@ export function ReminderForm({ open, onClose, onSubmit }: ReminderFormProps) {
         </>
       }
     >
-      <form id="reminder-form" onSubmit={handleSubmit} className="space-y-4">
+      <form id="reminder-form" onSubmit={handleSubmit} className="min-w-0 space-y-4 overflow-x-hidden">
         <div>
           <label htmlFor="reminder-title" className="mb-1 block text-sm font-medium">
             Başlık *

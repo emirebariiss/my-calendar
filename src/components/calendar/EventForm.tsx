@@ -138,7 +138,7 @@ export function EventForm({
         </>
       }
     >
-      <form id="event-form" onSubmit={handleSubmit} className="space-y-4">
+      <form id="event-form" onSubmit={handleSubmit} className="min-w-0 space-y-4 overflow-x-hidden">
         <div>
           <label htmlFor="event-title" className="mb-1 block text-sm font-medium">
             Başlık *
