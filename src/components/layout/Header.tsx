@@ -14,7 +14,7 @@ export function Header({ onMenuClick }: HeaderProps) {
     (pathname.startsWith("/workflows/") ? "Süreç Detayı" : "My Calendar");
 
   return (
-    <header className="relative z-[60] flex h-16 items-center justify-between gap-4 border-b border-border bg-sidebar px-4 md:px-6">
+    <header className="relative z-[60] flex h-16 shrink-0 items-center justify-between gap-4 border-b border-border bg-sidebar px-4 md:px-6">
         <div className="flex min-w-0 items-center gap-3">
           <button
             type="button"
