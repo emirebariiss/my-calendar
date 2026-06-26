@@ -12,6 +12,7 @@ import type {
   EventInput,
 } from "@fullcalendar/core";
 import trLocale from "@fullcalendar/core/locales/tr";
+import { format } from "date-fns";
 import type { CalendarEvent } from "@/lib/types";
 import { toFullCalendarEvent } from "@/lib/utils/calendar";
 
@@ -66,35 +67,45 @@ export function CalendarView({
   return (
     <div className="calendar-wrapper rounded-xl border border-border bg-white p-2 sm:p-4">
       <FullCalendar
-        plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-        locale={trLocale}
-        initialView="timeGridWeek"
-        headerToolbar={{
-          left: "prev,next today",
-          center: "title",
-          right: "dayGridMonth,timeGridWeek,timeGridDay",
-        }}
-        buttonText={{
-          today: "Bugün",
-          month: "Ay",
-          week: "Hafta",
-          day: "Gün",
-        }}
-        height="auto"
-        slotMinTime="06:00:00"
-        slotMaxTime="22:00:00"
-        dayHeaderFormat={{ weekday: "short", day: "numeric", omitCommas: true }}
-        slotLabelFormat={{ hour: "2-digit", minute: "2-digit", hour12: false }}
-        allDaySlot
-        editable
-        selectable
-        selectMirror
-        dayMaxEvents
-        weekends
-        events={calendarEvents}
-        eventClick={handleEventClick}
-        select={handleDateSelect}
-        eventDrop={handleEventDrop}
+      plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+      locale={trLocale}
+      initialView="timeGridWeek"
+      headerToolbar={{
+        left: "prev,next today",
+        center: "title",
+        right: "dayGridMonth,timeGridWeek,timeGridDay",
+      }}
+      buttonText={{
+        today: "Bugün",
+        month: "Ay",
+        week: "Hafta",
+        day: "Gün",
+      }}
+      height="auto"
+      slotMinTime="06:00:00"
+      slotMaxTime="22:00:00"
+      views={{
+        dayGridMonth: {
+          dayHeaderFormat: { weekday: "short" },
+        },
+        timeGridWeek: {
+          dayHeaderContent: (arg) => format(arg.date, "dd/MM"),
+        },
+        timeGridDay: {
+          dayHeaderFormat: { weekday: "long", day: "numeric", month: "long" },
+        },
+      }}
+      slotLabelFormat={{ hour: "2-digit", minute: "2-digit", hour12: false }}
+      allDaySlot
+      editable
+      selectable
+      selectMirror
+      dayMaxEvents
+      weekends
+      events={calendarEvents}
+      eventClick={handleEventClick}
+      select={handleDateSelect}
+      eventDrop={handleEventDrop}
       />
     </div>
   );

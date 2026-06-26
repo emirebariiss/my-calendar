@@ -115,17 +115,12 @@ input[type="time"] {
     font-size: 0.75rem;
   }
 
-  .calendar-wrapper .fc .fc-col-header-cell {
-    overflow: hidden;
-  }
-
   .calendar-wrapper .fc .fc-col-header-cell-cushion {
     display: block;
-    overflow: hidden;
-    padding: 0.25rem;
-    font-size: 0.65rem;
-    line-height: 1.2;
-    text-overflow: ellipsis;
+    padding: 0.125rem 0.0625rem;
+    font-size: 0.625rem;
+    line-height: 1.1;
+    text-align: center;
     white-space: nowrap;
   }
 
