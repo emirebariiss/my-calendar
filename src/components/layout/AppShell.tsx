@@ -23,7 +23,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       <Sidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
       <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
         <Header onMenuClick={() => setSidebarOpen(true)} />
-        <main className="min-h-0 flex-1 overflow-y-auto overscroll-y-containp-4 md:p-6">{children}</main>
+        <main className="min-h-0 flex-1 overflow-y-auto overscroll-y-contain p-4 md:p-6">{children}</main>
       </div>
       {sidebarOpen && (
         <button

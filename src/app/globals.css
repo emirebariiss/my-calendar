@@ -28,11 +28,6 @@ body {
   color: var(--foreground);
   font-family: var(--font-sans), system-ui, sans-serif;
 }
-html,
-body {
-  height: 100%;
-  overflow: hidden;
-}
 
 /* Mobil: tarayıcı date/time picker'ları kutudan taşmasın */
 input[type="date"],
