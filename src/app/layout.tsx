@@ -23,7 +23,9 @@ export default function RootLayout({
     <html lang="tr" className="h-full">
       <body className={`${geistSans.variable} h-full overflow-hidden antialiased`}>
         <AppProvider>
-          <AppShell>{children}</AppShell>
+          <div className="h-full min-h-0">
+            <AppShell>{children}</AppShell>
+          </div>
         </AppProvider>
       </body>
     </html>
