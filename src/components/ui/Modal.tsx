@@ -31,7 +31,7 @@ export function Modal({ open, title, onClose, children, footer }: ModalProps) {
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div className="fixed bottom-0 left-0 right-0 top-16 z-50 flex items-center justify-center p-4 md:left-64">
       <button
         type="button"
         aria-label="Kapat"
@@ -42,7 +42,7 @@ export function Modal({ open, title, onClose, children, footer }: ModalProps) {
         role="dialog"
         aria-modal="true"
         aria-labelledby="modal-title"
-        className="relative z-10 flex w-full max-w-lg min-w-0 max-h-[min(calc(100dvh-2rem),900px)] flex-col overflow-hidden rounded-xl border border-border bg-white shadow-xl"
+        className="relative z-10 flex w-full max-w-lg min-w-0 max-h-[min(calc(100dvh-4rem-2rem),900px)] flex-col overflow-hidden rounded-xl border border-border bg-white shadow-xl"
       >
         <div className="flex shrink-0 items-center justify-between border-b border-border px-5 py-4">
           <h2 id="modal-title" className="text-lg font-semibold">
