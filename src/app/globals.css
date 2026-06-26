@@ -29,11 +29,10 @@ body {
   font-family: var(--font-sans), system-ui, sans-serif;
 }
 
-/* Mobil / iOS: native date/time picker taşmasını önle */
+/* iOS Safari: native date/time picker taşmasını önle */
 .native-picker-input,
 input[type="date"],
-input[type="time"],
-input[type="datetime-local"] {
+input[type="time"] {
   display: block;
   width: 100% !important;
   max-width: 100% !important;
@@ -51,8 +50,7 @@ input[type="datetime-local"] {
 @supports (-webkit-touch-callout: none) {
   .native-picker-input,
   input[type="date"],
-  input[type="time"],
-  input[type="datetime-local"] {
+  input[type="time"] {
     -webkit-min-logical-width: 0;
     padding-inline: 0.5rem;
   }

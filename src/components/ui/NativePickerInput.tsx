@@ -13,7 +13,7 @@ interface DateTimeLocalInputProps {
   "aria-label"?: string;
 }
 
-/** Mobilde date+time (iOS Safari), sm+ datetime-local */
+/** Tarih + saat (iOS Safari uyumlu; datetime-local kullanılmaz) */
 export function DateTimeLocalInput({
   id,
   value,
@@ -23,39 +23,24 @@ export function DateTimeLocalInput({
   const { date, time } = splitDateTimeLocalValue(value);
 
   return (
-    <>
-      <div className="grid min-w-0 grid-cols-1 gap-2 sm:hidden">
-        <input
-          id={`${id}-date`}
-          type="date"
-          value={date}
-          aria-label={ariaLabel ? `${ariaLabel} — tarih` : "Tarih"}
-          onChange={(e) =>
-            onChange(joinDateTimeLocalValue(e.target.value, time))
-          }
-          className={NATIVE_PICKER_INPUT_CLASS}
-        />
-        <input
-          id={`${id}-time`}
-          type="time"
-          value={time}
-          aria-label={ariaLabel ? `${ariaLabel} — saat` : "Saat"}
-          onChange={(e) =>
-            onChange(joinDateTimeLocalValue(date, e.target.value))
-          }
-          className={NATIVE_PICKER_INPUT_CLASS}
-        />
-      </div>
-
+    <div className="grid min-w-0 grid-cols-1 gap-2">
       <input
-        id={id}
-        type="datetime-local"
-        value={value}
-        aria-label={ariaLabel}
-        onChange={(e) => onChange(e.target.value)}
-        className={`${NATIVE_PICKER_INPUT_CLASS} hidden sm:block`}
+        id={`${id}-date`}
+        type="date"
+        value={date}
+        aria-label={ariaLabel ? `${ariaLabel} — tarih` : "Tarih"}
+        onChange={(e) => onChange(joinDateTimeLocalValue(e.target.value, time))}
+        className={NATIVE_PICKER_INPUT_CLASS}
       />
-    </>
+      <input
+        id={`${id}-time`}
+        type="time"
+        value={time}
+        aria-label={ariaLabel ? `${ariaLabel} — saat` : "Saat"}
+        onChange={(e) => onChange(joinDateTimeLocalValue(date, e.target.value))}
+        className={NATIVE_PICKER_INPUT_CLASS}
+      />
+    </div>
   );
 }
 
