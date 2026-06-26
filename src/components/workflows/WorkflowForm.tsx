@@ -191,18 +191,18 @@ export function WorkflowForm({
               key={index}
               className="space-y-3 rounded-lg border border-border p-3"
             >
-              <div className="grid grid-cols-1 gap-2 sm:grid-cols-[1fr_auto_auto]">
+              <div className="grid min-w-0 grid-cols-1 gap-2 sm:grid-cols-[1fr_auto_auto] [&>*]:min-w-0">
                 <input
                   value={step.title}
                   onChange={(e) => updateStep(index, { title: e.target.value })}
                   placeholder={`Adım ${index + 1} başlığı`}
-                  className="rounded-lg border border-border px-3 py-2 text-sm"
+                  className="min-w-0 rounded-lg border border-border px-3 py-2 text-sm"
                 />
                 <input
                   type="date"
                   value={step.dueDate}
                   onChange={(e) => updateStep(index, { dueDate: e.target.value })}
-                  className="rounded-lg border border-border px-3 py-2 text-sm"
+                  className="min-w-0 max-w-full rounded-lg border border-border px-3 py-2 text-sm"
                   aria-label={`Adım ${index + 1} tarihi`}
                 />
                 <Button

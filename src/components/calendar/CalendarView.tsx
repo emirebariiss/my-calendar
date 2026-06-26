@@ -83,6 +83,8 @@ export function CalendarView({
         height="auto"
         slotMinTime="06:00:00"
         slotMaxTime="22:00:00"
+        dayHeaderFormat={{ weekday: "short", day: "numeric", omitCommas: true }}
+        slotLabelFormat={{ hour: "2-digit", minute: "2-digit", hour12: false }}
         allDaySlot
         editable
         selectable

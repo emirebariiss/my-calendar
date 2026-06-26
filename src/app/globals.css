@@ -29,6 +29,17 @@ body {
   font-family: var(--font-sans), system-ui, sans-serif;
 }
 
+/* Mobil: tarayıcı date/time picker'ları kutudan taşmasın */
+input[type="date"],
+input[type="time"],
+input[type="datetime-local"] {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
 /* FullCalendar — proje temasına uyum */
 .calendar-wrapper .fc {
   --fc-border-color: #e2e8f0;
@@ -60,6 +71,11 @@ body {
   cursor: pointer;
 }
 
+.calendar-wrapper {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
 /* Mobil: takvim toolbar'ı dikey diz, butonlar taşmasın */
 @media (max-width: 640px) {
   .calendar-wrapper .fc .fc-toolbar {
@@ -81,5 +97,29 @@ body {
   .calendar-wrapper .fc .fc-button {
     padding: 0.25rem 0.5rem;
     font-size: 0.75rem;
+  }
+
+  .calendar-wrapper .fc .fc-col-header-cell {
+    overflow: hidden;
+  }
+
+  .calendar-wrapper .fc .fc-col-header-cell-cushion {
+    display: block;
+    overflow: hidden;
+    padding: 0.25rem;
+    font-size: 0.65rem;
+    line-height: 1.2;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .calendar-wrapper .fc .fc-timegrid-axis-cushion,
+  .calendar-wrapper .fc .fc-timegrid-slot-label-cushion {
+    font-size: 0.65rem;
+  }
+
+  .calendar-wrapper .fc .fc-daygrid-day-number {
+    font-size: 0.75rem;
+    padding: 0.25rem;
   }
 }

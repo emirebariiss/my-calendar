@@ -130,7 +130,7 @@ export function TaskForm({
           />
         </div>
 
-        <div className="grid gap-4 sm:grid-cols-2">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 [&>*]:min-w-0">
           <div>
             <label htmlFor="task-status" className="mb-1 block text-sm font-medium">
               Durum
@@ -174,7 +174,7 @@ export function TaskForm({
           </div>
         </div>
 
-        <div>
+        <div className="min-w-0">
           <label htmlFor="task-deadline" className="mb-1 block text-sm font-medium">
             Deadline (opsiyonel)
           </label>
@@ -185,7 +185,7 @@ export function TaskForm({
             onChange={(e) =>
               setValues((prev) => ({ ...prev, deadline: e.target.value }))
             }
-            className="w-full rounded-lg border border-border px-3 py-2 text-sm"
+            className="w-full min-w-0 max-w-full rounded-lg border border-border px-3 py-2 text-sm"
           />
           <p className="mt-1 text-xs text-muted">
             Boş bırakırsan görev süresiz olarak aktif listede kalır.

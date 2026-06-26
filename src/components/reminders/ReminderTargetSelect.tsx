@@ -20,8 +20,8 @@ export function ReminderTargetSelect({
   onTargetIdChange,
 }: ReminderTargetSelectProps) {
   return (
-    <div className="grid gap-4 sm:grid-cols-2">
-      <div>
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 [&>*]:min-w-0">
+      <div className="min-w-0">
         <label
           htmlFor="reminder-target-type"
           className="mb-1 block text-sm font-medium"
@@ -46,7 +46,7 @@ export function ReminderTargetSelect({
         </select>
       </div>
 
-      <div>
+      <div className="min-w-0">
         <label
           htmlFor="reminder-target-id"
           className="mb-1 block text-sm font-medium"
