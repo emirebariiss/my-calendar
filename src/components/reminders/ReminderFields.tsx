@@ -27,7 +27,11 @@ export function ReminderFields({
   };
 
   return (
-    <div className={compact ? "space-y-2" : "space-y-3 rounded-lg border border-dashed border-border p-3"}>
+<div
+  className={`min-w-0 overflow-x-hidden ${
+    compact ? "space-y-2" : "space-y-3 rounded-lg border border-dashed border-border p-3"
+  }`}
+>
       <label className="flex items-center gap-2 text-sm">
         <input
           type="checkbox"

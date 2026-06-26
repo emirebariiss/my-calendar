@@ -166,7 +166,7 @@ export function WorkflowForm({
             id="workflow-title"
             value={values.title}
             onChange={(e) => setValues((prev) => ({ ...prev, title: e.target.value }))}
-            className="w-full rounded-lg border border-border px-3 py-2 text-sm"
+            className="w-full min-w-0 rounded-lg border border-border px-3 py-2 text-sm"
             placeholder="Örn: Şirkete başvuru"
           />
           {error && <p className="mt-1 text-xs text-red-600">{error}</p>}
@@ -198,7 +198,7 @@ export function WorkflowForm({
           {values.steps.map((step, index) => (
             <div
               key={index}
-              className="space-y-3 rounded-lg border border-border p-3"
+              className="min-w-0 space-y-3 owerflow-x-hidden rounded-lg border border-border p-3"
             >
               <div className="grid min-w-0 grid-cols-1 gap-2 sm:grid-cols-[1fr_auto_auto] [&>*]:min-w-0">
                 <input
@@ -211,7 +211,7 @@ export function WorkflowForm({
                   type="date"
                   value={step.dueDate}
                   onChange={(e) => updateStep(index, { dueDate: e.target.value })}
-                  className="min-w-0 max-w-full rounded-lg border border-border px-3 py-2 text-sm"
+                  className="w-full min-w-0 max-w-full rounded-lg border border-border px-3 py-2 text-sm"
                   aria-label={`Adım ${index + 1} tarihi`}
                 />
                 <Button
