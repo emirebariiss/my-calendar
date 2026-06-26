@@ -29,18 +29,33 @@ body {
   font-family: var(--font-sans), system-ui, sans-serif;
 }
 
-/* Mobil: tarayıcı date/time picker'ları kutudan taşmasın */
+/* Mobil / iOS: native date/time picker taşmasını önle */
+.native-picker-input,
 input[type="date"],
 input[type="time"],
 input[type="datetime-local"] {
   display: block;
   width: 100% !important;
   max-width: 100% !important;
-  min-width: 0;
+  min-width: 0 !important;
   box-sizing: border-box;
-  font-size: 16px;        /* iOS zoom + taşma azaltır */
-  padding-left: 0.5rem;
-  padding-right: 0.5rem;
+  font-size: 16px;
+  line-height: 1.25;
+  min-height: 2.75rem;
+  margin: 0;
+  -webkit-appearance: none;
+  appearance: none;
+  background-color: #ffffff;
+}
+
+@supports (-webkit-touch-callout: none) {
+  .native-picker-input,
+  input[type="date"],
+  input[type="time"],
+  input[type="datetime-local"] {
+    -webkit-min-logical-width: 0;
+    padding-inline: 0.5rem;
+  }
 }
 
 /* FullCalendar — proje temasına uyum */

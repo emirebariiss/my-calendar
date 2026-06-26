@@ -2,6 +2,7 @@
 
 import type { ReminderInput, ReminderRecurrence } from "@/lib/types";
 import { REMINDER_RECURRENCE_LABELS } from "@/lib/types";
+import { DateTimeLocalInput } from "@/components/ui/NativePickerInput";
 
 interface ReminderFieldsProps {
   idPrefix: string;
@@ -53,14 +54,13 @@ export function ReminderFields({
             >
               Tetikleme zamanı
             </label>
-            <input
+            <DateTimeLocalInput
               id={`${idPrefix}-trigger-at`}
-              type="datetime-local"
               value={value.triggerAt}
-              onChange={(e) =>
-                onChange({ ...value, triggerAt: e.target.value })
+              aria-label="Tetikleme zamanı"
+              onChange={(triggerAt) =>
+                onChange({ ...value, triggerAt })
               }
-              className="box-border w-full min-w-0 max-w-full rounded-lg border border-border px-2 py-2 text-base sm:px-3 sm:text-sm"
             />
           </div>
 

@@ -6,6 +6,7 @@ import { DEFAULT_REMINDER_INPUT, EVENT_TYPE_LABELS } from "@/lib/types";
 import { Modal } from "@/components/ui/Modal";
 import { Button } from "@/components/ui/Button";
 import { ReminderFields } from "@/components/reminders/ReminderFields";
+import { NativePickerInput } from "@/components/ui/NativePickerInput";
 import {
   toDateTimeLocalValue,
   toDateValue,
@@ -231,14 +232,14 @@ export function EventForm({
             <label htmlFor="event-start-date" className="mb-1 block text-sm font-medium">
               Başlangıç tarihi
             </label>
-            <input
+            <NativePickerInput
               id="event-start-date"
               type="date"
               value={values.startDate}
-              onChange={(e) =>
-                setValues((prev) => ({ ...prev, startDate: e.target.value }))
+              aria-label="Başlangıç tarihi"
+              onChange={(startDate) =>
+                setValues((prev) => ({ ...prev, startDate }))
               }
-              className="box-border w-full min-w-0 max-w-full rounded-lg border border-border px-2 py-2 text-base sm:px-3 sm:text-sm"
             />
           </div>
 
@@ -247,14 +248,14 @@ export function EventForm({
               <label htmlFor="event-start-time" className="mb-1 block text-sm font-medium">
                 Başlangıç saati
               </label>
-              <input
+              <NativePickerInput
                 id="event-start-time"
                 type="time"
                 value={values.startTime}
-                onChange={(e) =>
-                  setValues((prev) => ({ ...prev, startTime: e.target.value }))
+                aria-label="Başlangıç saati"
+                onChange={(startTime) =>
+                  setValues((prev) => ({ ...prev, startTime }))
                 }
-                className="box-border w-full min-w-0 max-w-full rounded-lg border border-border px-2 py-2 text-base sm:px-3 sm:text-sm"
               />
             </div>
           )}
@@ -263,14 +264,14 @@ export function EventForm({
             <label htmlFor="event-end-date" className="mb-1 block text-sm font-medium">
               Bitiş tarihi
             </label>
-            <input
+            <NativePickerInput
               id="event-end-date"
               type="date"
               value={values.endDate}
-              onChange={(e) =>
-                setValues((prev) => ({ ...prev, endDate: e.target.value }))
+              aria-label="Bitiş tarihi"
+              onChange={(endDate) =>
+                setValues((prev) => ({ ...prev, endDate }))
               }
-              className="box-border w-full min-w-0 max-w-full rounded-lg border border-border px-2 py-2 text-base sm:px-3 sm:text-sm"
             />
           </div>
 
@@ -279,14 +280,14 @@ export function EventForm({
               <label htmlFor="event-end-time" className="mb-1 block text-sm font-medium">
                 Bitiş saati
               </label>
-              <input
+              <NativePickerInput
                 id="event-end-time"
                 type="time"
                 value={values.endTime}
-                onChange={(e) =>
-                  setValues((prev) => ({ ...prev, endTime: e.target.value }))
+                aria-label="Bitiş saati"
+                onChange={(endTime) =>
+                  setValues((prev) => ({ ...prev, endTime }))
                 }
-                className="box-border w-full min-w-0 max-w-full rounded-lg border border-border px-2 py-2 text-base sm:px-3 sm:text-sm"
               />
             </div>
           )}

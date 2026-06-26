@@ -6,6 +6,7 @@ import { DEFAULT_REMINDER_INPUT } from "@/lib/types";
 import { Modal } from "@/components/ui/Modal";
 import { Button } from "@/components/ui/Button";
 import { ReminderFields } from "@/components/reminders/ReminderFields";
+import { NativePickerInput } from "@/components/ui/NativePickerInput";
 import { getTaskReminderDefault } from "@/lib/utils/reminder";
 
 export interface TaskFormValues {
@@ -178,14 +179,14 @@ export function TaskForm({
           <label htmlFor="task-deadline" className="mb-1 block text-sm font-medium">
             Deadline (opsiyonel)
           </label>
-          <input
+          <NativePickerInput
             id="task-deadline"
             type="date"
             value={values.deadline}
-            onChange={(e) =>
-              setValues((prev) => ({ ...prev, deadline: e.target.value }))
-            } 
-            className="box-border w-full min-w-0 max-w-full rounded-lg border border-border px-2 py-2 text-base sm:px-3 sm:text-sm"
+            aria-label="Deadline"
+            onChange={(deadline) =>
+              setValues((prev) => ({ ...prev, deadline }))
+            }
           />
           <p className="mt-1 text-xs text-muted">
             Boş bırakırsan görev süresiz olarak aktif listede kalır.

@@ -6,6 +6,7 @@ import { REMINDER_RECURRENCE_LABELS } from "@/lib/types";
 import { Modal } from "@/components/ui/Modal";
 import { Button } from "@/components/ui/Button";
 import { ReminderTargetSelect } from "@/components/reminders/ReminderTargetSelect";
+import { DateTimeLocalInput } from "@/components/ui/NativePickerInput";
 import { useApp } from "@/providers/AppProvider";
 import { fromDateTimeLocalValue } from "@/lib/utils/calendar";
 import {
@@ -159,14 +160,13 @@ export function ReminderForm({ open, onClose, onSubmit }: ReminderFormProps) {
             >
               Tetikleme zamanı *
             </label>
-            <input
+            <DateTimeLocalInput
               id="reminder-trigger-at"
-              type="datetime-local"
               value={values.triggerAt}
-              onChange={(e) =>
-                setValues((prev) => ({ ...prev, triggerAt: e.target.value }))
+              aria-label="Tetikleme zamanı"
+              onChange={(triggerAt) =>
+                setValues((prev) => ({ ...prev, triggerAt }))
               }
-              className="box-border w-full min-w-0 max-w-full rounded-lg border border-border px-2 py-2 text-base sm:px-3 sm:text-sm"
             />
           </div>
 

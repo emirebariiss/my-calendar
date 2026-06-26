@@ -6,6 +6,7 @@ import { DEFAULT_REMINDER_INPUT } from "@/lib/types";
 import { Modal } from "@/components/ui/Modal";
 import { Button } from "@/components/ui/Button";
 import { ReminderFields } from "@/components/reminders/ReminderFields";
+import { NativePickerInput } from "@/components/ui/NativePickerInput";
 import { getStepReminderDefault } from "@/lib/utils/reminder";
 
 export interface WorkflowStepInput {
@@ -207,12 +208,12 @@ export function WorkflowForm({
                   placeholder={`Adım ${index + 1} başlığı`}
                   className="min-w-0 rounded-lg border border-border px-3 py-2 text-sm"
                 />
-                <input
+                <NativePickerInput
+                  id={`workflow-step-${index}-date`}
                   type="date"
                   value={step.dueDate}
-                  onChange={(e) => updateStep(index, { dueDate: e.target.value })}
-                  className="w-full min-w-0 max-w-full rounded-lg border border-border px-3 py-2 text-sm"
                   aria-label={`Adım ${index + 1} tarihi`}
+                  onChange={(dueDate) => updateStep(index, { dueDate })}
                 />
                 <Button
                   variant="ghost"
