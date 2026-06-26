@@ -152,7 +152,7 @@ export function ReminderForm({ open, onClose, onSubmit }: ReminderFormProps) {
         />
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 [&>*]:min-w-0">
-          <div className="min-w-0">
+          <div className="min-w-0 owerflow-hidden">
             <label
               htmlFor="reminder-trigger-at"
               className="mb-1 block text-sm font-medium"
@@ -166,7 +166,7 @@ export function ReminderForm({ open, onClose, onSubmit }: ReminderFormProps) {
               onChange={(e) =>
                 setValues((prev) => ({ ...prev, triggerAt: e.target.value }))
               }
-              className="w-full min-w-0 max-w-full rounded-lg border border-border px-3 py-2 text-sm"
+              className="box-border w-full min-w-0 max-w-full rounded-lg border border-border px-3 py-2 text-sm"
             />
           </div>
 

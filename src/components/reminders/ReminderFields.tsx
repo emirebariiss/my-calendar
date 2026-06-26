@@ -44,9 +44,9 @@ export function ReminderFields({
 
       {value.enabled && (
         <div
-          className={`grid min-w-0 gap-3 ${compact ? "grid-cols-1" : "grid-cols-1 sm:grid-cols-2"} [&>*]:min-w-0`}
+          className={`grid min-w-0 gap-3 grid-cols-1 sm:grid-cols-2 [&>*]:min-w-0`}
         >
-          <div className="min-w-0">
+          <div className="min-w-0 owerflow-hidden">
             <label
               htmlFor={`${idPrefix}-trigger-at`}
               className="mb-1 block text-sm font-medium"
@@ -60,7 +60,7 @@ export function ReminderFields({
               onChange={(e) =>
                 onChange({ ...value, triggerAt: e.target.value })
               }
-              className="w-full min-w-0 max-w-full rounded-lg border border-border px-3 py-2 text-sm"
+              className="box-border w-full min-w-0 max-w-full rounded-lg border border-border px-2 py-2 text-base sm:px-3 sm:text-sm"
             />
           </div>
 

@@ -169,7 +169,7 @@ export function EventForm({
         </div>
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 [&>*]:min-w-0">
-          <div className="min-w-0">
+          <div className="min-w-0 owerflow-hidden">
             <label htmlFor="event-type" className="mb-1 block text-sm font-medium">
               Tip
             </label>
@@ -227,7 +227,7 @@ export function EventForm({
         </label>
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 [&>*]:min-w-0">
-          <div className="min-w-0">
+          <div className="min-w-0 owerflow-hidden">
             <label htmlFor="event-start-date" className="mb-1 block text-sm font-medium">
               Başlangıç tarihi
             </label>
@@ -238,12 +238,12 @@ export function EventForm({
               onChange={(e) =>
                 setValues((prev) => ({ ...prev, startDate: e.target.value }))
               }
-              className="w-full min-w-0 max-w-full rounded-lg border border-border px-3 py-2 text-sm"
+              className="box-border w-full min-w-0 max-w-full rounded-lg border border-border px-3 py-2 text-sm"
             />
           </div>
 
           {!values.allDay && (
-            <div className="min-w-0">
+            <div className="min-w-0 owerflow-hidden">
               <label htmlFor="event-start-time" className="mb-1 block text-sm font-medium">
                 Başlangıç saati
               </label>
@@ -254,12 +254,12 @@ export function EventForm({
                 onChange={(e) =>
                   setValues((prev) => ({ ...prev, startTime: e.target.value }))
                 }
-                className="w-full min-w-0 max-w-full rounded-lg border border-border px-3 py-2 text-sm"
+                className="box-border w-full min-w-0 max-w-full rounded-lg border border-border px-3 py-2 text-sm"
               />
             </div>
           )}
 
-          <div className="min-w-0">
+          <div className="min-w-0 owerflow-hidden">
             <label htmlFor="event-end-date" className="mb-1 block text-sm font-medium">
               Bitiş tarihi
             </label>
@@ -270,12 +270,12 @@ export function EventForm({
               onChange={(e) =>
                 setValues((prev) => ({ ...prev, endDate: e.target.value }))
               }
-              className="w-full min-w-0 max-w-full rounded-lg border border-border px-3 py-2 text-sm"
+              className="box-border w-full min-w-0 max-w-full rounded-lg border border-border px-3 py-2 text-sm"
             />
           </div>
 
           {!values.allDay && (
-            <div className="min-w-0">
+            <div className="min-w-0 owerflow-hidden">
               <label htmlFor="event-end-time" className="mb-1 block text-sm font-medium">
                 Bitiş saati
               </label>
@@ -286,7 +286,7 @@ export function EventForm({
                 onChange={(e) =>
                   setValues((prev) => ({ ...prev, endTime: e.target.value }))
                 }
-                className="w-full min-w-0 max-w-full rounded-lg border border-border px-3 py-2 text-sm"
+                className="box-border w-full min-w-0 max-w-full rounded-lg border border-border px-3 py-2 text-sm"
               />
             </div>
           )}

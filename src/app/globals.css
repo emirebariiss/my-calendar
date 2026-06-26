@@ -38,6 +38,9 @@ input[type="datetime-local"] {
   max-width: 100%;
   min-width: 0;
   box-sizing: border-box;
+  font-size: 16px;        /* iOS zoom + taşma azaltır */
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
 }
 
 /* FullCalendar — proje temasına uyum */
