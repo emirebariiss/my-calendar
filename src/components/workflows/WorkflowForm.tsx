@@ -198,7 +198,7 @@ export function WorkflowForm({
           {values.steps.map((step, index) => (
             <div
               key={index}
-              className="min-w-0 space-y-3 owerflow-x-hidden rounded-lg border border-border p-3"
+              className="min-w-0 space-y-3 overflow-x-hidden rounded-lg border border-border p-3"
             >
               <div className="grid min-w-0 grid-cols-1 gap-2 sm:grid-cols-[1fr_auto_auto] [&>*]:min-w-0">
                 <input

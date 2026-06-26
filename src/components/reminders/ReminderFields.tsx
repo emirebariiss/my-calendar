@@ -46,7 +46,7 @@ export function ReminderFields({
         <div
           className={`grid min-w-0 gap-3 grid-cols-1 sm:grid-cols-2 [&>*]:min-w-0`}
         >
-          <div className="min-w-0 owerflow-hidden">
+          <div className="min-w-0 overflow-hidden">
             <label
               htmlFor={`${idPrefix}-trigger-at`}
               className="mb-1 block text-sm font-medium"
