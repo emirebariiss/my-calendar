@@ -15,7 +15,7 @@ export function WorkflowCard({ workflow, onEdit }: WorkflowCardProps) {
   const activeStep = workflow.steps.find((step) => step.status === "in_progress");
 
   return (
-    <article className="rounded-lg border border-border bg-white p-4">
+    <article className="min-w-0 rounded-lg border border-border bg-white p-4">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="min-w-0 flex-1">
           <Link

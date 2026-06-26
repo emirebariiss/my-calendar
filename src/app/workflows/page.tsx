@@ -133,7 +133,7 @@ export default function WorkflowsPage() {
           description="Yeni bir süreç oluşturarak başla."
         />
       ) : (
-        <div className="grid gap-4 md:grid-cols-2">
+        <div className="grid min-w-0 grid-cols-1 gap-4 md:grid-cols-2 [&>*]:min-w-0">
           {filtered.map((workflow) => (
             <WorkflowCard
               key={workflow.id}
@@ -148,24 +148,21 @@ export default function WorkflowsPage() {
         open={formOpen}
         mode={formMode}
         initialWorkflow={editingWorkflow}
-        onClose={() => setFormOpen(false)}
+        onClose={() => {
+          setFormOpen(false);
+          setFormMode("create");
+          setEditingWorkflow(undefined);
+        }}
         onSubmit={handleSubmit}
+        onDelete={
+          formMode === "edit" && editingWorkflow
+            ? () => {
+                setFormOpen(false);
+                setDeletingWorkflow(editingWorkflow);
+              }
+            : undefined
+        }
       />
-
-      {formMode === "edit" && editingWorkflow && (
-        <div className="flex justify-end">
-          <Button
-            variant="danger"
-            type="button"
-            onClick={() => {
-              setFormOpen(false);
-              setDeletingWorkflow(editingWorkflow);
-            }}
-          >
-            Süreci Sil
-          </Button>
-        </div>
-      )}
 
       <ConfirmDialog
         open={Boolean(deletingWorkflow)}

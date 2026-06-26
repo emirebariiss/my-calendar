@@ -20,8 +20,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="tr">
-      <body className={`${geistSans.variable} antialiased`}>
+    <html lang="tr" className="h-full">
+      <body className={`${geistSans.variable} h-full overflow-hidden antialiased`}>
         <AppProvider>
           <AppShell>{children}</AppShell>
         </AppProvider>

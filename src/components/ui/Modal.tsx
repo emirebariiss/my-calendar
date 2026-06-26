@@ -56,7 +56,7 @@ export function Modal({ open, title, onClose, children, footer }: ModalProps) {
           {children}
         </div>
         {footer && (
-          <div className="flex shrink-0 justify-end gap-2 border-t border-border px-5 py-4">
+          <div className="flex w-full shrink-0 justify-end gap-2 border-t border-border px-5 py-4">
             {footer}
           </div>
         )}
