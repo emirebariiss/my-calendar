@@ -150,21 +150,6 @@ export default function CalendarPage() {
         )}
       </Card>
 
-      {formMode === "edit" && editingEvent && (
-        <div className="flex justify-end">
-          <Button
-            variant="danger"
-            type="button"
-            onClick={() => {
-              setFormOpen(false);
-              setDeletingEvent(editingEvent);
-            }}
-          >
-            Etkinliği Sil
-          </Button>
-        </div>
-      )}
-
       <EventForm
         open={formOpen}
         mode={formMode}
@@ -172,6 +157,14 @@ export default function CalendarPage() {
         defaultRange={defaultRange}
         onClose={() => setFormOpen(false)}
         onSubmit={handleSubmit}
+        onDelete={
+          formMode === "edit" && editingEvent
+            ? () => {
+                setFormOpen(false);
+                setDeletingEvent(editingEvent);
+              }
+            : undefined
+        }
       />
 
       <ConfirmDialog

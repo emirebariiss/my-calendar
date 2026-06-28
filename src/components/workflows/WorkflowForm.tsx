@@ -27,7 +27,6 @@ interface WorkflowFormProps {
   initialWorkflow?: Workflow;
   onClose: () => void;
   onSubmit: (values: WorkflowFormValues) => void;
-  onDelete?: () => void;
 }
 
 const EMPTY_STEP: WorkflowStepInput = {
@@ -61,7 +60,6 @@ export function WorkflowForm({
   initialWorkflow,
   onClose,
   onSubmit,
-  onDelete,
 }: WorkflowFormProps) {
   const [values, setValues] = useState<WorkflowFormValues>(DEFAULT_VALUES);
   const [error, setError] = useState("");
@@ -141,21 +139,14 @@ export function WorkflowForm({
       title={mode === "create" ? "Yeni Süreç" : "Süreci Düzenle"}
       onClose={onClose}
       footer={
-        <div className="flex w-full items-center gap-2">
-          {mode === "edit" && onDelete && (
-            <Button variant="danger" type="button" onClick={onDelete}>
-              Sil
-            </Button>
-          )}
-          <div className="ml-auto flex gap-2">
-            <Button variant="secondary" type="button" onClick={onClose}>
-              Vazgeç
-            </Button>
-            <Button type="submit" form="workflow-form">
-              {mode === "create" ? "Oluştur" : "Kaydet"}
-            </Button>
-          </div>
-        </div>
+        <>
+          <Button variant="secondary" type="button" onClick={onClose}>
+            Vazgeç
+          </Button>
+          <Button type="submit" form="workflow-form">
+            {mode === "create" ? "Oluştur" : "Kaydet"}
+          </Button>
+        </>
       }
     >
       <form id="workflow-form" onSubmit={handleSubmit} className="min-w-0 space-y-4 overflow-x-hidden">

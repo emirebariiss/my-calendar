@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import type { ReminderRecurrence } from "@/lib/types";
+import type { Reminder, ReminderRecurrence } from "@/lib/types";
 import { REMINDER_RECURRENCE_LABELS } from "@/lib/types";
 import { Modal } from "@/components/ui/Modal";
 import { Button } from "@/components/ui/Button";
@@ -10,28 +10,33 @@ import { DateTimeLocalInput } from "@/components/ui/NativePickerInput";
 import { useApp } from "@/providers/AppProvider";
 import { fromDateTimeLocalValue } from "@/lib/utils/calendar";
 import {
-  getDefaultReminderTriggerAt,
   getReminderTargetOptions,
 } from "@/lib/utils/reminder";
-import type { ReminderFormValues } from "@/lib/utils/reminderForm";
+import {
+  getDefaultReminderFormValues,
+  reminderToFormValues,
+  type ReminderFormValues,
+} from "@/lib/utils/reminderForm";
 
 export type { ReminderFormValues } from "@/lib/utils/reminderForm";
 
 interface ReminderFormProps {
   open: boolean;
+  mode: "create" | "edit";
+  initialReminder?: Reminder;
   onClose: () => void;
   onSubmit: (values: ReminderFormValues) => void;
 }
 
-export function ReminderForm({ open, onClose, onSubmit }: ReminderFormProps) {
+export function ReminderForm({
+  open,
+  mode,
+  initialReminder,
+  onClose,
+  onSubmit,
+}: ReminderFormProps) {
   const { events, tasks, workflows } = useApp();
-  const [values, setValues] = useState<ReminderFormValues>(() => ({
-    title: "",
-    targetType: "task",
-    targetId: "",
-    triggerAt: getDefaultReminderTriggerAt(),
-    recurrence: "once",
-  }));
+  const [values, setValues] = useState<ReminderFormValues>(getDefaultReminderFormValues);
   const [error, setError] = useState("");
 
   const targetOptions = useMemo(
@@ -48,18 +53,16 @@ export function ReminderForm({ open, onClose, onSubmit }: ReminderFormProps) {
   useEffect(() => {
     if (!open) return;
 
-    setValues({
-      title: "",
-      targetType: "task",
-      targetId: "",
-      triggerAt: getDefaultReminderTriggerAt(),
-      recurrence: "once",
-    });
+    if (mode === "edit" && initialReminder) {
+      setValues(reminderToFormValues(initialReminder));
+    } else {
+      setValues(getDefaultReminderFormValues());
+    }
     setError("");
-  }, [open]);
+  }, [open, mode, initialReminder]);
 
   useEffect(() => {
-    if (!open) return;
+    if (!open || mode === "edit") return;
 
     const hasCurrentTarget = targetOptions.some(
       (option) => option.id === values.targetId
@@ -71,7 +74,7 @@ export function ReminderForm({ open, onClose, onSubmit }: ReminderFormProps) {
         targetId: targetOptions[0]?.id ?? "",
       }));
     }
-  }, [open, targetOptions, values.targetId]);
+  }, [open, mode, targetOptions, values.targetId]);
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
@@ -102,7 +105,7 @@ export function ReminderForm({ open, onClose, onSubmit }: ReminderFormProps) {
   return (
     <Modal
       open={open}
-      title="Yeni Hatırlatma"
+      title={mode === "create" ? "Yeni Hatırlatma" : "Hatırlatmayı Düzenle"}
       onClose={onClose}
       footer={
         <>
@@ -112,9 +115,9 @@ export function ReminderForm({ open, onClose, onSubmit }: ReminderFormProps) {
           <Button
             type="submit"
             form="reminder-form"
-            disabled={targetOptions.length === 0}
+            disabled={targetOptions.length === 0 && mode === "create"}
           >
-            Oluştur
+            {mode === "create" ? "Oluştur" : "Kaydet"}
           </Button>
         </>
       }

@@ -20,12 +20,30 @@ export function StepItem({
   onUpdateNotes,
   onSetInProgress,
 }: StepItemProps) {
-  const [notesOpen, setNotesOpen] = useState(Boolean(step.notes));
-  const [notesDraft, setNotesDraft] = useState(step.notes ?? "");
+  const savedNotes = step.notes ?? "";
+  const [isEditingNotes, setIsEditingNotes] = useState(false);
+  const [notesDraft, setNotesDraft] = useState(savedNotes);
 
   useEffect(() => {
     setNotesDraft(step.notes ?? "");
   }, [step.notes]);
+
+  const isDirty = notesDraft.trim() !== savedNotes;
+
+  const startEditing = () => {
+    setNotesDraft(savedNotes);
+    setIsEditingNotes(true);
+  };
+
+  const handleSaveNotes = () => {
+    onUpdateNotes(step, notesDraft.trim());
+    setIsEditingNotes(false);
+  };
+
+  const handleCancelNotes = () => {
+    setNotesDraft(savedNotes);
+    setIsEditingNotes(false);
+  };
 
   const overdue =
     step.dueDate &&
@@ -33,10 +51,6 @@ export function StepItem({
     step.status !== "skipped" &&
     isOverdue(step.dueDate);
   const isCompleted = step.status === "completed";
-
-  const handleSaveNotes = () => {
-    onUpdateNotes(step, notesDraft.trim());
-  };
 
   return (
     <li
@@ -83,16 +97,25 @@ export function StepItem({
                 Devam et
               </Button>
             )}
-            <Button
-              variant="ghost"
-              type="button"
-              onClick={() => setNotesOpen((open) => !open)}
-            >
-              {notesOpen ? "Notu gizle" : "Not ekle"}
-            </Button>
+            {!isEditingNotes && !savedNotes && (
+              <Button variant="ghost" type="button" onClick={startEditing}>
+                Not ekle
+              </Button>
+            )}
           </div>
 
-          {notesOpen && (
+          {!isEditingNotes && savedNotes && (
+            <div className="mt-3 space-y-2">
+              <p className="whitespace-pre-wrap rounded-lg bg-accent px-3 py-2 text-sm">
+                {savedNotes}
+              </p>
+              <Button variant="ghost" type="button" onClick={startEditing}>
+                Düzenle
+              </Button>
+            </div>
+          )}
+
+          {isEditingNotes && (
             <div className="mt-3 space-y-2">
               <textarea
                 value={notesDraft}
@@ -101,12 +124,19 @@ export function StepItem({
                 placeholder="Bu adım için notlar..."
                 className="w-full rounded-lg border border-border px-3 py-2 text-sm"
               />
-              <Button type="button" onClick={handleSaveNotes}>
-                Notu kaydet
-              </Button>
-              {step.notes && (
-                <p className="text-xs text-muted">Kayıtlı not görüntüleniyor</p>
-              )}
+              <div className="flex flex-wrap gap-2">
+                <Button
+                  variant="secondary"
+                  type="button"
+                  disabled={!isDirty}
+                  onClick={handleSaveNotes}
+                >
+                  Kaydet
+                </Button>
+                <Button variant="ghost" type="button" onClick={handleCancelNotes}>
+                  İptal
+                </Button>
+              </div>
             </div>
           )}
         </div>

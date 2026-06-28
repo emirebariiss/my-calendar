@@ -57,17 +57,23 @@ export function ReminderTargetSelect({
           id="reminder-target-id"
           value={targetId}
           onChange={(e) => onTargetIdChange(e.target.value)}
-          disabled={options.length === 0}
+          disabled={options.length === 0 && !targetId}
           className="w-full rounded-lg border border-border px-3 py-2 text-sm disabled:opacity-60"
         >
-          {options.length === 0 ? (
+          {options.length === 0 && !targetId ? (
             <option value="">Kayıt bulunamadı</option>
           ) : (
-            options.map((option) => (
-              <option key={option.id} value={option.id}>
-                {option.label}
-              </option>
-            ))
+            <>
+              {targetId &&
+                !options.some((option) => option.id === targetId) && (
+                  <option value={targetId}>Mevcut hedef (liste dışı)</option>
+                )}
+              {options.map((option) => (
+                <option key={option.id} value={option.id}>
+                  {option.label}
+                </option>
+              ))}
+            </>
           )}
         </select>
       </div>

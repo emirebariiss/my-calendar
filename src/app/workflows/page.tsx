@@ -139,6 +139,7 @@ export default function WorkflowsPage() {
               key={workflow.id}
               workflow={workflow}
               onEdit={() => openEditForm(workflow)}
+              onDelete={() => setDeletingWorkflow(workflow)}
             />
           ))}
         </div>
@@ -154,14 +155,6 @@ export default function WorkflowsPage() {
           setEditingWorkflow(undefined);
         }}
         onSubmit={handleSubmit}
-        onDelete={
-          formMode === "edit" && editingWorkflow
-            ? () => {
-                setFormOpen(false);
-                setDeletingWorkflow(editingWorkflow);
-              }
-            : undefined
-        }
       />
 
       <ConfirmDialog

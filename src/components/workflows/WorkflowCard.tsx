@@ -1,16 +1,20 @@
+"use client";
+
 import Link from "next/link";
 import type { Workflow } from "@/lib/types";
 import { WORKFLOW_STATUS_LABELS } from "@/lib/types";
 import { Badge } from "@/components/ui/Badge";
+import { Button } from "@/components/ui/Button";
 import { ProgressBar } from "@/components/ui/ProgressBar";
 import { getWorkflowProgress } from "@/lib/utils/filters";
 
 interface WorkflowCardProps {
   workflow: Workflow;
   onEdit?: () => void;
+  onDelete?: () => void;
 }
 
-export function WorkflowCard({ workflow, onEdit }: WorkflowCardProps) {
+export function WorkflowCard({ workflow, onEdit, onDelete }: WorkflowCardProps) {
   const progress = getWorkflowProgress(workflow);
   const activeStep = workflow.steps.find((step) => step.status === "in_progress");
 
@@ -45,14 +49,19 @@ export function WorkflowCard({ workflow, onEdit }: WorkflowCardProps) {
         />
       </div>
 
-      {onEdit && (
-        <button
-          type="button"
-          onClick={onEdit}
-          className="mt-3 text-sm font-medium text-muted hover:text-foreground"
-        >
-          Düzenle
-        </button>
+      {(onEdit || onDelete) && (
+        <div className="mt-3 flex flex-wrap gap-2">
+          {onEdit && (
+            <Button variant="secondary" type="button" onClick={onEdit}>
+              Düzenle
+            </Button>
+          )}
+          {onDelete && (
+            <Button variant="ghost" type="button" onClick={onDelete}>
+              Sil
+            </Button>
+          )}
+        </div>
       )}
     </article>
   );

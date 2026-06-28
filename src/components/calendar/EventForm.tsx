@@ -24,6 +24,7 @@ interface EventFormProps {
   defaultRange?: EventFormDefaultRange;
   onClose: () => void;
   onSubmit: (values: EventFormValues) => void;
+  onDelete?: () => void;
 }
 
 export function EventForm({
@@ -33,6 +34,7 @@ export function EventForm({
   defaultRange,
   onClose,
   onSubmit,
+  onDelete,
 }: EventFormProps) {
   const [values, setValues] = useState<EventFormValues>(getDefaultValues());
   const [error, setError] = useState("");
@@ -88,14 +90,21 @@ export function EventForm({
       title={mode === "create" ? "Yeni Etkinlik" : "Etkinliği Düzenle"}
       onClose={onClose}
       footer={
-        <>
-          <Button variant="secondary" type="button" onClick={onClose}>
-            Vazgeç
-          </Button>
-          <Button type="submit" form="event-form">
-            {mode === "create" ? "Oluştur" : "Kaydet"}
-          </Button>
-        </>
+        <div className="flex w-full items-center gap-2">
+          {mode === "edit" && onDelete && (
+            <Button variant="danger" type="button" onClick={onDelete}>
+              Sil
+            </Button>
+          )}
+          <div className="ml-auto flex gap-2">
+            <Button variant="secondary" type="button" onClick={onClose}>
+              Vazgeç
+            </Button>
+            <Button type="submit" form="event-form">
+              {mode === "create" ? "Oluştur" : "Kaydet"}
+            </Button>
+          </div>
+        </div>
       }
     >
       <form

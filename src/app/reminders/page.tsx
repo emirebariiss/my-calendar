@@ -13,25 +13,58 @@ export default function RemindersPage() {
   const { reminders, addReminder, updateReminder } = useReminders();
   const [showActiveOnly, setShowActiveOnly] = useState(true);
   const [formOpen, setFormOpen] = useState(false);
+  const [formMode, setFormMode] = useState<"create" | "edit">("create");
+  const [editingReminder, setEditingReminder] = useState<Reminder>();
 
   const filtered = useMemo(() => {
     if (!showActiveOnly) return reminders;
     return reminders.filter((reminder) => reminder.isActive);
   }, [reminders, showActiveOnly]);
 
+  const openCreateForm = () => {
+    setFormMode("create");
+    setEditingReminder(undefined);
+    setFormOpen(true);
+  };
+
+  const openEditForm = (reminder: Reminder) => {
+    setFormMode("edit");
+    setEditingReminder(reminder);
+    setFormOpen(true);
+  };
+
+  const handleCloseForm = () => {
+    setFormOpen(false);
+    setFormMode("create");
+    setEditingReminder(undefined);
+  };
+
   const handleToggleActive = (reminder: Reminder) => {
     updateReminder(reminder.id, { isActive: !reminder.isActive });
   };
 
   const handleSubmit = (values: ReminderFormValues) => {
-    addReminder({
-      title: values.title,
-      targetType: values.targetType,
-      targetId: values.targetId,
-      triggerAt: values.triggerAt,
-      recurrence: values.recurrence,
-      isActive: true,
-    });
+    if (formMode === "create") {
+      addReminder({
+        title: values.title,
+        targetType: values.targetType,
+        targetId: values.targetId,
+        triggerAt: values.triggerAt,
+        recurrence: values.recurrence,
+        isActive: true,
+      });
+      return;
+    }
+
+    if (editingReminder) {
+      updateReminder(editingReminder.id, {
+        title: values.title,
+        targetType: values.targetType,
+        targetId: values.targetId,
+        triggerAt: values.triggerAt,
+        recurrence: values.recurrence,
+      });
+    }
   };
 
   return (
@@ -46,7 +79,7 @@ export default function RemindersPage() {
           />
           Sadece aktif hatırlatmaları göster
         </label>
-        <Button type="button" onClick={() => setFormOpen(true)}>
+        <Button type="button" onClick={openCreateForm}>
           + Yeni Hatırlatma
         </Button>
       </div>
@@ -61,6 +94,7 @@ export default function RemindersPage() {
                 key={reminder.id}
                 reminder={reminder}
                 onToggleActive={handleToggleActive}
+                onEdit={openEditForm}
               />
             ))}
           </ul>
@@ -69,7 +103,9 @@ export default function RemindersPage() {
 
       <ReminderForm
         open={formOpen}
-        onClose={() => setFormOpen(false)}
+        mode={formMode}
+        initialReminder={editingReminder}
+        onClose={handleCloseForm}
         onSubmit={handleSubmit}
       />
     </div>

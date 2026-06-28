@@ -6,14 +6,16 @@ import {
   REMINDER_TARGET_LABELS,
 } from "@/lib/types";
 import { Badge } from "@/components/ui/Badge";
+import { Button } from "@/components/ui/Button";
 import { formatDateTime } from "@/lib/utils/date";
 
 interface ReminderItemProps {
   reminder: Reminder;
   onToggleActive: (reminder: Reminder) => void;
+  onEdit: (reminder: Reminder) => void;
 }
 
-export function ReminderItem({ reminder, onToggleActive }: ReminderItemProps) {
+export function ReminderItem({ reminder, onToggleActive, onEdit }: ReminderItemProps) {
   return (
     <li
       className={`rounded-lg border px-4 py-3 ${
@@ -56,6 +58,12 @@ export function ReminderItem({ reminder, onToggleActive }: ReminderItemProps) {
                 {reminder.isActive ? "Aktif" : "Pasif"}
               </Badge>
             </div>
+          </div>
+
+          <div className="mt-3 flex flex-wrap gap-2">
+            <Button variant="secondary" type="button" onClick={() => onEdit(reminder)}>
+              Düzenle
+            </Button>
           </div>
         </div>
       </div>
