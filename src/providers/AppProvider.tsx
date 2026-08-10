@@ -1,12 +1,7 @@
 "use client";
 
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
-import {
-  loadEvents,
-  loadReminders,
-  loadTasks,
-  loadWorkflows,
-} from "@/lib/mock/loader";
+import { loadInitialAppData, saveAppData } from "@/lib/storage/appStorage";
 import type {
   CalendarEvent,
   Reminder,
@@ -63,15 +58,22 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const [reminders, setReminders] = useState<Reminder[]>([]);
   useEffect(() => {
     const timer = setTimeout(() => {
-      setEvents(loadEvents());
-      setTasks(loadTasks());
-      setWorkflows(loadWorkflows());
-      setReminders(loadReminders());
+      const data = loadInitialAppData();
+      setEvents(data.events);
+      setTasks(data.tasks);
+      setWorkflows(data.workflows);
+      setReminders(data.reminders);
       setIsLoading(false);
     }, MOCK_LOAD_DELAY_MS);
-  
+
     return () => clearTimeout(timer);
   }, []);
+
+  useEffect(() => {
+    if (isLoading) return;
+
+    saveAppData({ events, tasks, workflows, reminders });
+  }, [isLoading, events, tasks, workflows, reminders]);
   const addReminder = (reminder: Omit<Reminder, "id" | "createdAt">): string => {
     const now = new Date().toISOString();
     let newId = "";
