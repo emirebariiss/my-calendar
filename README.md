@@ -4,6 +4,12 @@ Takvim, görev yönetimi ve süreç (workflow) planlamasını tek bir uygulamada
 
 > **Klasik takvim + todo değil:** Gerçek hayattaki işleri modelleyen esnek bir planlama sistemi.
 
+## Canlı Demo
+
+| | |
+|---|---|
+| 🌐 **Canlı uygulama** | https://my-calendar-eosin-kappa.vercel.app/ |
+
 ## Ürün Özeti
 
 Bu uygulama üç şeyi aynı anda yönetir:
@@ -84,7 +90,7 @@ my-calendar/
 | 4 | Takvim sistemi (FullCalendar) | ✅ Tamamlandı |
 | 5 | Workflow CRUD + step yönetimi | ✅ Tamamlandı |
 | 6 | Hatırlatmalar | ✅ Tamamlandı |
-| 7 | Cilalama + MVP tamamlama | 🔜 Sıradaki |
+| 7 | Cilalama + MVP tamamlama | ✅ Tamamlandı |
 
 ## MVP Kapsamı
 
@@ -101,7 +107,7 @@ my-calendar/
 **Yeni başlayanlar için okuma sırası:**
 
 1. [`docs/completed/README.md`](./docs/completed/README.md) — Biten sprintlerin detaylı açıklamaları (önce bunu oku!)
-2. [`docs/03-INTERN-TASKS.md`](./docs/03-INTERN-TASKS.md) — Aktif görev listesi → **Sprint 6'dan devam et**
+2. [`docs/03-INTERN-TASKS.md`](./docs/03-INTERN-TASKS.md) — Görev listesi (MVP tamamlandı; bonus görevlere bak)
 3. [`docs/01-ARCHITECTURE.md`](./docs/01-ARCHITECTURE.md) — Mimari ve klasör yapısı
 4. [`docs/02-MOCK-DATA.md`](./docs/02-MOCK-DATA.md) — Mock veri şemaları
 5. [`docs/04-MVP-CHECKLIST.md`](./docs/04-MVP-CHECKLIST.md) — MVP tamamlanma kontrol listesi
