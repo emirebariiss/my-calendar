@@ -145,6 +145,18 @@ src/components/calendar/
 └── eventFormUtils.ts       ← EventFormValues, getDefaultValues, eventToFormValues
 ```
 
+### WorkflowForm parçalama
+
+Aynı pattern `WorkflowForm` için de uygulandı:
+
+```
+src/components/workflows/
+├── WorkflowForm.tsx         ← modal kabuğu (~145 satır)
+├── WorkflowBasicFields.tsx  ← başlık + açıklama
+├── WorkflowStepFields.tsx   ← dinamik adımlar + hatırlatma
+└── workflowFormUtils.ts     ← WorkflowFormValues, getDefaultWorkflowFormValues, workflowToFormValues
+```
+
 ### Düzenle / sil — tutarlı pattern
 
 Tüm modüllerde `mode: "create" | "edit"` + `ConfirmDialog`:
@@ -154,9 +166,11 @@ Tüm modüllerde `mode: "create" | "edit"` + `ConfirmDialog`:
 | Görevler | TaskForm edit | ✅ | Liste + onay |
 | Takvim | EventForm edit | ✅ | Modal footer + onay |
 | Süreçler | WorkflowForm edit | ✅ | WorkflowCard + onay |
-| Hatırlatmalar | ReminderForm edit | — | Pasif toggle (sil yok) |
+| Hatırlatmalar | ReminderForm edit | ✅ | Liste + onay |
 
-**Onay diyalogları:** `ConfirmDialog` — tasks, calendar, workflows sayfalarında.
+**Onay diyalogları:** `ConfirmDialog` — tasks, calendar, workflows ve reminders sayfalarında.
+
+**Hatırlatma silme:** `deleteReminder()` hatırlatmayı kaldırır; bağlı event / task / step kayıtlarındaki `reminderIds` referansları da temizlenir.
 
 ### StepItem — not UX
 
@@ -170,10 +184,9 @@ Adım notları artık iki modda:
 | Dosya | Satır | Not |
 |-------|-------|-----|
 | `TaskForm.tsx` | ~207 | EventForm gibi parçalanabilir |
-| `WorkflowForm.tsx` | ~232 | Dinamik step alanları |
 | `ReminderForm.tsx` | ~207 | Hedef seçimi ayrılabilir |
 
-MVP kabul kriteri karşılandı; parçalama bonus/refactor olarak bırakılabilir.
+MVP kabul kriteri karşılandı; kalan parçalama bonus/refactor olarak bırakılabilir.
 
 ---
 
@@ -240,8 +253,9 @@ Mentör teslimi veya README için kullanılabilir.
 6. **Workflow kart sil** — listeden sil, onay sonrası kaybol
 7. **Step notu** — okuma modu → düzenle → kaydet / iptal
 8. **localStorage** — görev ekle → F5 → görev hâlâ listede
-9. **Build** — `npm run build` başarılı
-10. **Checklist** — `04-MVP-CHECKLIST.md` maddelerini tek tek dene
+9. **Hatırlatma sil** — listeden sil, onay sonrası kaybol; entity `reminderIds` temizlensin
+10. **Build** — `npm run build` başarılı
+11. **Checklist** — `04-MVP-CHECKLIST.md` maddelerini tek tek dene
 
 ---
 
@@ -253,7 +267,8 @@ Mentör teslimi veya README için kullanılabilir.
 - [x] 404 sayfası + geçersiz workflow id
 - [x] EmptyState tüm listelerde
 - [x] EventForm parçalandı
-- [x] Düzenle/sil + ConfirmDialog (tasks, calendar, workflows)
+- [x] WorkflowForm parçalandı
+- [x] Düzenle/sil + ConfirmDialog (tasks, calendar, workflows, reminders)
 - [x] StepItem not okuma/düzenleme modu
 - [x] localStorage kalıcılığı
 - [x] `npm run build` temiz

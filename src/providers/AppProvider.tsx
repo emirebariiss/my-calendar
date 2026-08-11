@@ -20,6 +20,7 @@ interface AppContextValue {
   reminders: Reminder[];
   addReminder: (reminder: Omit<Reminder, "id" | "createdAt">) => string;
   updateReminder: (id: string, updates: Partial<Reminder>) => void;
+  deleteReminder: (id: string) => void;
   addEvent: (
     event: Omit<CalendarEvent, "id" | "createdAt" | "updatedAt">
   ) => string;
@@ -98,6 +99,56 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       prev.map((reminder) =>
         reminder.id === id ? { ...reminder, ...updates } : reminder
       )
+    );
+  };
+
+  const deleteReminder = (id: string) => {
+    setReminders((prev) => prev.filter((reminder) => reminder.id !== id));
+
+    setEvents((prev) =>
+      prev.map((event) => {
+        if (!event.reminderIds?.includes(id)) return event;
+        const reminderIds = event.reminderIds.filter((rid) => rid !== id);
+        return {
+          ...event,
+          reminderIds: reminderIds.length > 0 ? reminderIds : undefined,
+          updatedAt: new Date().toISOString(),
+        };
+      })
+    );
+
+    setTasks((prev) =>
+      prev.map((task) => {
+        if (!task.reminderIds?.includes(id)) return task;
+        const reminderIds = task.reminderIds.filter((rid) => rid !== id);
+        return {
+          ...task,
+          reminderIds: reminderIds.length > 0 ? reminderIds : undefined,
+          updatedAt: new Date().toISOString(),
+        };
+      })
+    );
+
+    setWorkflows((prev) =>
+      prev.map((workflow) => {
+        const hasReference = workflow.steps.some((step) =>
+          step.reminderIds?.includes(id)
+        );
+        if (!hasReference) return workflow;
+
+        return {
+          ...workflow,
+          steps: workflow.steps.map((step) => {
+            if (!step.reminderIds?.includes(id)) return step;
+            const reminderIds = step.reminderIds.filter((rid) => rid !== id);
+            return {
+              ...step,
+              reminderIds: reminderIds.length > 0 ? reminderIds : undefined,
+            };
+          }),
+          updatedAt: new Date().toISOString(),
+        };
+      })
     );
   };
 
@@ -246,6 +297,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       reminders,
       addReminder,
       updateReminder,
+      deleteReminder,
       addEvent,
       updateEvent,
       deleteEvent,

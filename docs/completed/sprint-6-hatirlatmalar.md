@@ -27,7 +27,7 @@ My Calendar’da bir hatırlatma şu bilgileri taşır:
 
 ```
 src/components/reminders/
-├── ReminderItem.tsx         ← liste satırı (toggle, düzenle)
+├── ReminderItem.tsx         ← liste satırı (toggle, düzenle, sil)
 ├── ReminderForm.tsx         ← oluştur / düzenle modal
 ├── ReminderFields.tsx       ← gömülü hatırlatma alanı (checkbox + tarih)
 └── ReminderTargetSelect.tsx ← hedef tipi + hedef seçimi
@@ -68,10 +68,9 @@ Label sabitleri: `REMINDER_TARGET_LABELS`, `REMINDER_RECURRENCE_LABELS`.
 |-----------|-----------|
 | `addReminder` | Yeni hatırlatma oluşturur (`rem-001` formatında id) |
 | `updateReminder` | Başlık, hedef, zaman, tekrar, aktif/pasif günceller |
+| `deleteReminder` | Hatırlatmayı kalıcı siler; entity `reminderIds` referanslarını temizler |
 
-`useReminders()` hook’u bu fonksiyonları expose eder.
-
-**Not:** MVP’de ayrı `deleteReminder` yok; pasif yapmak için `isActive: false` kullanılır.
+Pasif yapmak için `isActive: false` da kullanılabilir.
 
 ---
 
@@ -133,6 +132,7 @@ Her satırda:
 - Başlık, tetikleme zamanı
 - Badge: hedef tipi, tekrar, aktif/pasif
 - **Düzenle** butonu → `ReminderForm` edit modunda açılır
+- **Sil** butonu → onay sonrası `deleteReminder`
 
 ---
 
@@ -144,6 +144,7 @@ Her satırda:
 - `ReminderItem` listesi + `EmptyState`
 - `+ Yeni Hatırlatma` → create modu
 - Satırdan **Düzenle** → edit modu
+- Satırdan **Sil** → onay diyalogu
 
 ---
 
@@ -178,6 +179,7 @@ Yükleme: `loadReminders()` → `AppProvider` → `useReminders()`.
 6. **EventForm’dan hatırlatma** — yeni etkinlik + hatırlatma checkbox → iki kayıt oluşmalı
 7. **Dashboard** — 7 gün içindeki aktif hatırlatmalar görünmeli
 8. **Validasyon** — başlık veya tetikleme boş → hata mesajı
+9. **Sil** — onay sonrası listeden kaybolmalı
 
 ---
 
@@ -192,6 +194,7 @@ Yükleme: `loadReminders()` → `AppProvider` → `useReminders()`.
 - [x] Dashboard UpcomingReminders
 - [x] 3 hedef tipi + 3 tekrar seçeneği
 - [x] Aktif/pasif toggle
+- [x] Silme + onay diyalogu (Sprint 7)
 
 ---
 

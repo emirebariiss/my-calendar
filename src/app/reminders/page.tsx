@@ -5,16 +5,18 @@ import { ReminderForm, type ReminderFormValues } from "@/components/reminders/Re
 import { ReminderItem } from "@/components/reminders/ReminderItem";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
+import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { useReminders } from "@/hooks/useReminders";
 import type { Reminder } from "@/lib/types";
 
 export default function RemindersPage() {
-  const { reminders, addReminder, updateReminder } = useReminders();
+  const { reminders, addReminder, updateReminder, deleteReminder } = useReminders();
   const [showActiveOnly, setShowActiveOnly] = useState(true);
   const [formOpen, setFormOpen] = useState(false);
   const [formMode, setFormMode] = useState<"create" | "edit">("create");
   const [editingReminder, setEditingReminder] = useState<Reminder>();
+  const [deletingReminder, setDeletingReminder] = useState<Reminder>();
 
   const filtered = useMemo(() => {
     if (!showActiveOnly) return reminders;
@@ -67,6 +69,13 @@ export default function RemindersPage() {
     }
   };
 
+  const handleDeleteConfirm = () => {
+    if (deletingReminder) {
+      deleteReminder(deletingReminder.id);
+      setDeletingReminder(undefined);
+    }
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-4">
@@ -95,6 +104,7 @@ export default function RemindersPage() {
                 reminder={reminder}
                 onToggleActive={handleToggleActive}
                 onEdit={openEditForm}
+                onDelete={setDeletingReminder}
               />
             ))}
           </ul>
@@ -107,6 +117,14 @@ export default function RemindersPage() {
         initialReminder={editingReminder}
         onClose={handleCloseForm}
         onSubmit={handleSubmit}
+      />
+
+      <ConfirmDialog
+        open={Boolean(deletingReminder)}
+        title="Hatırlatmayı sil"
+        message={`"${deletingReminder?.title}" hatırlatmasını silmek istediğine emin misin? Bu işlem geri alınamaz.`}
+        onConfirm={handleDeleteConfirm}
+        onCancel={() => setDeletingReminder(undefined)}
       />
     </div>
   );

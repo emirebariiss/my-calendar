@@ -13,9 +13,15 @@ interface ReminderItemProps {
   reminder: Reminder;
   onToggleActive: (reminder: Reminder) => void;
   onEdit: (reminder: Reminder) => void;
+  onDelete: (reminder: Reminder) => void;
 }
 
-export function ReminderItem({ reminder, onToggleActive, onEdit }: ReminderItemProps) {
+export function ReminderItem({
+  reminder,
+  onToggleActive,
+  onEdit,
+  onDelete,
+}: ReminderItemProps) {
   return (
     <li
       className={`rounded-lg border px-4 py-3 ${
@@ -63,6 +69,9 @@ export function ReminderItem({ reminder, onToggleActive, onEdit }: ReminderItemP
           <div className="mt-3 flex flex-wrap gap-2">
             <Button variant="secondary" type="button" onClick={() => onEdit(reminder)}>
               Düzenle
+            </Button>
+            <Button variant="ghost" type="button" onClick={() => onDelete(reminder)}>
+              Sil
             </Button>
           </div>
         </div>
