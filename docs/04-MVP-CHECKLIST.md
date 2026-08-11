@@ -2,7 +2,7 @@
 
 MVP'nin "bitti" sayılması için aşağıdaki tüm maddeler karşılanmalıdır.
 
-**Son güncelleme:** Sprint 5 tamamlandı (Workflow CRUD + step yönetimi)
+**Son güncelleme:** Sprint 7 / MVP tamamlandı
 
 ---
 
@@ -99,7 +99,7 @@ MVP'nin "bitti" sayılması için aşağıdaki tüm maddeler karşılanmalıdır
 | F4 | `npm run build` başarılı | ✅ |
 | F5 | `npm run lint` başarılı | ✅ |
 | F6 | Mock veri doğru yükleniyor | ✅ |
-| F7 | CRUD işlemleri session boyunca kalıcı (bellekte) | ✅ |
+| F7 | localStorage ile sayfa yenilemede kalıcı | ✅ |
 | F8 | Türkçe UI metinleri tutarlı | ✅ |
 
 ---

@@ -12,7 +12,7 @@ Bu doküman, projeye yeni başlayan yazılım mühendisi stajyeri için sprint b
 
 **Tahmini süre:** 3–4 hafta (part-time)
 
-**Güncel durum:** Sprint 0–5 tamamlandı. Sprint 6'dan devam et.
+**Güncel durum:** Sprint 0–7 tamamlandı. MVP bitti — bonus görevlere geçilebilir.
 
 ---
 
@@ -258,6 +258,8 @@ Bu doküman, projeye yeni başlayan yazılım mühendisi stajyeri için sprint b
 
 **Kabul kriteri:** 3 hedef tipine reminder oluşturulabiliyor. Tekrar seçenekleri çalışıyor. Aktif/pasif toggle çalışıyor.
 
+📖 Detaylı açıklama → [`docs/completed/sprint-6-hatirlatmalar.md`](./completed/sprint-6-hatirlatmalar.md)
+
 ---
 
 ## Sprint 7 — Cilalama ve MVP Tamamlama (2–3 gün)
@@ -268,18 +270,20 @@ Bu doküman, projeye yeni başlayan yazılım mühendisi stajyeri için sprint b
 
 - [x] **7.1** `docs/04-MVP-CHECKLIST.md` maddelerini tek tek kontrol et
 - [x] **7.2** Responsive tasarım gözden geçir (mobile, tablet, desktop)
-- [ ] **7.3** Loading state'leri ekle (veri yüklenirken skeleton veya spinner)
-- [ ] **7.4** Hata durumlarını handle et (geçersiz ID ile detay sayfası → 404)
-- [ ] **7.5** Tutarlı boş state mesajları (her listede EmptyState)
-- [ ] **7.6** Kod temizliği
+- [x] **7.3** Loading state'leri ekle (veri yüklenirken skeleton veya spinner)
+- [x] **7.4** Hata durumlarını handle et (geçersiz ID ile detay sayfası → 404)
+- [x] **7.5** Tutarlı boş state mesajları (her listede EmptyState)
+- [x] **7.6** Kod temizliği
   - Kullanılmayan import'ları sil
   - Magic string'leri constant'a taşı
   - Büyük bileşenleri parçala (200 satır üstü)
 - [x] **7.7** `npm run build` hatasız çalışsın
 - [x] **7.8** `npm run lint` hatasız çalışsın
-- [ ] **7.9** Kısa demo video veya screenshot'lar hazırla
+- [x] **7.9** Kısa demo video veya screenshot'lar hazırla
 
 **Kabul kriteri:** MVP checklist %100, build ve lint temiz.
+
+📖 Detaylı açıklama → [`docs/completed/sprint-7-cilalama.md`](./completed/sprint-7-cilalama.md)
 
 ---
 
@@ -291,7 +295,7 @@ Stajyer MVP'yi erken bitirirse bu görevlere geçebilir:
 - [ ] **B.2** Tag sistemi — task ve workflow'lara tag ekleme/filtreleme
 - [ ] **B.3** Task → Event bağlantısı (task'a "Takvime ekle" butonu)
 - [ ] **B.4** Step → Calendar blok (step due date'i takvimde event olarak göster)
-- [ ] **B.5** localStorage persist (sayfa yenilenince veri kaybolmasın)
+- [x] **B.5** localStorage persist (sayfa yenilenince veri kaybolmasın)
 - [ ] **B.6** Dark mode
 
 ---
