@@ -2,7 +2,16 @@ import eventsData from "@/data/events.json";
 import tasksData from "@/data/tasks.json";
 import workflowsData from "@/data/workflows.json";
 import remindersData from "@/data/reminders.json";
-import type { CalendarEvent, Task, Workflow, Reminder } from "@/lib/types";
+import paymentsData from "@/data/payments.json";
+import paymentHistoryData from "@/data/paymentHistory.json";
+import type {
+  CalendarEvent,
+  Payment,
+  PaymentHistoryRecord,
+  Reminder,
+  Task,
+  Workflow,
+} from "@/lib/types";
 
 export function loadEvents(): CalendarEvent[] {
   return eventsData as CalendarEvent[];
@@ -18,4 +27,12 @@ export function loadWorkflows(): Workflow[] {
 
 export function loadReminders(): Reminder[] {
   return remindersData as Reminder[];
+}
+
+export function loadPayments(): Payment[] {
+  return paymentsData as Payment[];
+}
+
+export function loadPaymentHistory(): PaymentHistoryRecord[] {
+  return paymentHistoryData as PaymentHistoryRecord[];
 }
