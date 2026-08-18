@@ -296,7 +296,7 @@ Stajyer MVP'yi erken bitirirse bu görevlere geçebilir:
 - [x] **B.3** Task → Event bağlantısı (task'a "Takvime ekle" butonu)
 - [x] **B.4** Step → Calendar blok (step due date'i takvimde event olarak göster)
 - [x] **B.5** localStorage persist (sayfa yenilenince veri kaybolmasın)
-- [ ] **B.6** Dark mode
+- [x] **B.6** Dark mode
 
 ---
 

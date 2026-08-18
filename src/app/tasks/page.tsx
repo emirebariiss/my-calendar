@@ -185,7 +185,7 @@ export default function TasksPage() {
           Görevlerini ekle, düzenle veya tamamlandı olarak işaretle.
         </p>
         <div className="flex flex-wrap items-center gap-2">
-          <div className="flex rounded-lg border border-border bg-white p-1">
+          <div className="flex rounded-lg border border-border bg-card p-1">
             <button
               type="button"
               onClick={() => setView("list")}
@@ -221,7 +221,7 @@ export default function TasksPage() {
           onChange={(e) =>
             setStatusFilter(e.target.value as TaskStatus | "all")
           }
-          className="rounded-lg border border-border bg-white px-3 py-2 text-sm"
+          className="rounded-lg border border-border bg-input px-3 py-2 text-sm"
         >
           <option value="all">Tüm durumlar</option>
           <option value="not_started">Başlanmadı</option>
@@ -234,7 +234,7 @@ export default function TasksPage() {
           onChange={(e) =>
             setPriorityFilter(e.target.value as TaskPriority | "all")
           }
-          className="rounded-lg border border-border bg-white px-3 py-2 text-sm"
+          className="rounded-lg border border-border bg-input px-3 py-2 text-sm"
         >
           <option value="all">Tüm öncelikler</option>
           <option value="high">Yüksek</option>

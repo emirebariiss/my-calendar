@@ -2,9 +2,9 @@ type ButtonVariant = "primary" | "secondary" | "danger" | "ghost";
 
 const VARIANT_CLASSES: Record<ButtonVariant, string> = {
   primary: "bg-primary text-primary-foreground hover:bg-blue-700",
-  secondary: "border border-border bg-white text-foreground hover:bg-slate-50",
+  secondary: "border border-border bg-card text-foreground hover:bg-hover",
   danger: "bg-red-600 text-white hover:bg-red-700",
-  ghost: "text-muted hover:bg-slate-100 hover:text-foreground",
+  ghost: "text-muted hover:bg-hover hover:text-foreground",
 };
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {

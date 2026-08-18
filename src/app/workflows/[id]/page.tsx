@@ -9,7 +9,7 @@ import { useReminders } from "@/hooks/useReminders";
 import { Button } from "@/components/ui/Button";
 import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
 import { Card } from "@/components/ui/Card";
-import { Badge } from "@/components/ui/Badge";
+import { StatusBadge } from "@/components/ui/StatusBadge";
 import { ProgressBar } from "@/components/ui/ProgressBar";
 import { TagList } from "@/components/ui/TagList";
 import { StepList } from "@/components/workflows/StepList";
@@ -145,11 +145,11 @@ export default function WorkflowDetailPage() {
 
       <Card title={workflow.title}>
         <div className="mb-4 flex flex-wrap items-center gap-2">
-          <Badge
+          <StatusBadge
             variant={workflow.status === "completed" ? "success" : "info"}
           >
             {WORKFLOW_STATUS_LABELS[workflow.status]}
-          </Badge>
+          </StatusBadge>
           <TagList tags={workflow.tags} customTags={customTags} />
         </div>
         {workflow.description && (

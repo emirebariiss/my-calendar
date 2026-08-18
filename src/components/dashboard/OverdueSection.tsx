@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useTasks } from "@/hooks/useTasks";
 import { useWorkflows } from "@/hooks/useWorkflows";
 import { Card } from "@/components/ui/Card";
-import { Badge } from "@/components/ui/Badge";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { getOverdueSteps, getOverdueTasks } from "@/lib/utils/filters";
 import { formatDate } from "@/lib/utils/date";
@@ -33,29 +32,27 @@ export function OverdueSection() {
           {overdueTasks.map((task) => (
             <li
               key={task.id}
-              className="flex items-center justify-between gap-3 rounded-lg border border-red-100 bg-red-50/50 px-3 py-2"
+              className="flex items-center justify-between gap-3 rounded-lg border border-red-100 bg-red-50/50 px-3 py-2 dark:border-red-900 dark:bg-red-950/40"
             >
               <div>
                 <p className="text-sm font-medium">{task.title}</p>
-                <p className="text-xs text-red-600">
+                <p className="text-xs text-red-600 dark:text-red-400">
                   Görev · {task.deadline && formatDate(task.deadline)}
                 </p>
               </div>
-              <Badge variant="danger">Gecikmiş</Badge>
             </li>
           ))}
           {overdueSteps.map(({ workflow, step }) => (
             <li
               key={step.id}
-              className="flex items-center justify-between gap-3 rounded-lg border border-red-100 bg-red-50/50 px-3 py-2"
+              className="flex items-center justify-between gap-3 rounded-lg border border-red-100 bg-red-50/50 px-3 py-2 dark:border-red-900 dark:bg-red-950/40"
             >
               <div>
                 <p className="text-sm font-medium">{step.title}</p>
-                <p className="text-xs text-red-600">
+                <p className="text-xs text-red-600 dark:text-red-400">
                   {workflow.title} · {step.dueDate && formatDate(step.dueDate)}
                 </p>
               </div>
-              <Badge variant="danger">Gecikmiş</Badge>
             </li>
           ))}
         </ul>

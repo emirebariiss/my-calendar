@@ -34,7 +34,7 @@ export function Sidebar({ open, onClose }: SidebarProps) {
               className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
                 isActive
                   ? "bg-accent text-primary"
-                  : "text-foreground hover:bg-slate-50"
+                  : "text-foreground hover:bg-hover"
               }`}
             >
               <span className="text-base">{item.icon}</span>
@@ -45,7 +45,7 @@ export function Sidebar({ open, onClose }: SidebarProps) {
       </nav>
 
       <div className="border-t border-border px-4 py-4">
-        <div className="flex items-center gap-3 rounded-lg bg-slate-50 px-3 py-2">
+        <div className="flex items-center gap-3 rounded-lg bg-hover px-3 py-2">
           <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-xs font-semibold text-primary-foreground">
             MD
           </div>

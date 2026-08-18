@@ -5,7 +5,7 @@ import {
   REMINDER_RECURRENCE_LABELS,
   REMINDER_TARGET_LABELS,
 } from "@/lib/types";
-import { Badge } from "@/components/ui/Badge";
+import { StatusBadge } from "@/components/ui/StatusBadge";
 import { Button } from "@/components/ui/Button";
 import { formatDateTime } from "@/lib/utils/date";
 
@@ -26,8 +26,8 @@ export function ReminderItem({
     <li
       className={`rounded-lg border px-4 py-3 ${
         reminder.isActive
-          ? "border-border bg-white"
-          : "border-border bg-slate-50 opacity-80"
+          ? "border-border bg-card"
+          : "border-border bg-hover opacity-80"
       }`}
     >
       <div className="flex items-start gap-3">
@@ -56,13 +56,13 @@ export function ReminderItem({
             </div>
 
             <div className="flex flex-wrap gap-2">
-              <Badge variant="info">
+              <StatusBadge variant="info">
                 {REMINDER_TARGET_LABELS[reminder.targetType]}
-              </Badge>
-              <Badge>{REMINDER_RECURRENCE_LABELS[reminder.recurrence]}</Badge>
-              <Badge variant={reminder.isActive ? "success" : "default"}>
+              </StatusBadge>
+              <StatusBadge>{REMINDER_RECURRENCE_LABELS[reminder.recurrence]}</StatusBadge>
+              <StatusBadge variant={reminder.isActive ? "success" : "default"}>
                 {reminder.isActive ? "Aktif" : "Pasif"}
-              </Badge>
+              </StatusBadge>
             </div>
           </div>
 

@@ -100,7 +100,7 @@ export default function WorkflowsPage() {
             onChange={(e) =>
               setStatusFilter(e.target.value as WorkflowStatus | "all")
             }
-            className="rounded-lg border border-border bg-white px-3 py-2 text-sm"
+            className="rounded-lg border border-border bg-input px-3 py-2 text-sm"
           >
             <option value="all">Tüm süreçler</option>
             <option value="active">Aktif</option>

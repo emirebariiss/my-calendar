@@ -1,6 +1,6 @@
 import type { CalendarEvent } from "@/lib/types";
 import { EVENT_TYPE_LABELS } from "@/lib/types";
-import { Badge } from "@/components/ui/Badge";
+import { StatusBadge } from "@/components/ui/StatusBadge";
 import { formatDate, formatDateTime, formatTime } from "@/lib/utils/date";
 import { getEventColor } from "@/lib/utils/calendar";
 
@@ -16,7 +16,7 @@ export function EventCard({ event, onClick }: EventCardProps) {
     <button
       type="button"
       onClick={onClick}
-      className="w-full rounded-lg border border-border bg-white p-4 text-left transition-shadow hover:shadow-sm"
+      className="w-full rounded-lg border border-border bg-card p-4 text-left transition-shadow hover:shadow-sm"
     >
       <div className="flex items-start gap-3">
         <span
@@ -27,7 +27,7 @@ export function EventCard({ event, onClick }: EventCardProps) {
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center justify-between gap-2">
             <p className="font-medium">{event.title}</p>
-            <Badge>{EVENT_TYPE_LABELS[event.type]}</Badge>
+            <StatusBadge variant="info">{EVENT_TYPE_LABELS[event.type]}</StatusBadge>
           </div>
           {event.description && (
             <p className="mt-1 text-sm text-muted">{event.description}</p>

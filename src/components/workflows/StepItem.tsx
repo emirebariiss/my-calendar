@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import type { WorkflowStep } from "@/lib/types";
 import { STEP_STATUS_LABELS } from "@/lib/types";
-import { Badge } from "@/components/ui/Badge";
+import { StatusBadge } from "@/components/ui/StatusBadge";
 import { Button } from "@/components/ui/Button";
 import { CalendarLinkActions } from "@/components/ui/CalendarLinkActions";
 import { formatDate, isOverdue } from "@/lib/utils/date";
@@ -59,7 +59,7 @@ export function StepItem({
   return (
     <li
       className={`rounded-lg border px-4 py-3 ${
-        overdue ? "border-red-200 bg-red-50/40" : "border-border bg-white"
+        overdue ? "border-red-200 bg-red-50/40 dark:border-red-900 dark:bg-red-950/40" : "border-border bg-card"
       }`}
     >
       <div className="flex items-start gap-3">
@@ -80,14 +80,19 @@ export function StepItem({
               {step.dueDate && (
                 <p className="mt-1 text-xs text-muted">
                   Tarih: {formatDate(step.dueDate)}
+                  {overdue && (
+                    <span className="font-medium text-red-600 dark:text-red-400">
+                      {" "}
+                      · Gecikmiş
+                    </span>
+                  )}
                 </p>
               )}
             </div>
             <div className="flex flex-wrap gap-2">
-              <Badge variant={isCompleted ? "success" : "default"}>
+              <StatusBadge variant={isCompleted ? "success" : "default"}>
                 {STEP_STATUS_LABELS[step.status]}
-              </Badge>
-              {overdue && <Badge variant="danger">Gecikmiş</Badge>}
+              </StatusBadge>
             </div>
           </div>
 

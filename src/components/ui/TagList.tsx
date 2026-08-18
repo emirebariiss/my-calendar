@@ -7,14 +7,27 @@ interface TagListProps {
   tags?: string[];
   customTags: Tag[];
   className?: string;
+  maxVisible?: number;
 }
 
-export function TagList({ tags, customTags, className = "" }: TagListProps) {
+/**
+ * Stil 1/3: Kategori etiketleri (İş, Kodlama…) — dolu renkli pill
+ * Durum: StatusBadge | Öncelik: PriorityBadge
+ */
+export function TagList({
+  tags,
+  customTags,
+  className = "",
+  maxVisible,
+}: TagListProps) {
   if (!tags?.length) return null;
 
+  const visible = maxVisible ? tags.slice(0, maxVisible) : tags;
+  const hiddenCount = maxVisible ? Math.max(0, tags.length - maxVisible) : 0;
+
   return (
-    <div className={`flex flex-wrap gap-1.5 ${className}`}>
-      {tags.map((slug) => {
+    <div className={`flex flex-wrap items-center gap-1.5 ${className}`}>
+      {visible.map((slug) => {
         const tag = resolveTag(slug, customTags);
         return (
           <span
@@ -26,6 +39,9 @@ export function TagList({ tags, customTags, className = "" }: TagListProps) {
           </span>
         );
       })}
+      {hiddenCount > 0 && (
+        <span className="text-xs font-medium text-muted">+{hiddenCount}</span>
+      )}
     </div>
   );
 }

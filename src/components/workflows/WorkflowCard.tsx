@@ -3,7 +3,7 @@
 import Link from "next/link";
 import type { Workflow } from "@/lib/types";
 import { WORKFLOW_STATUS_LABELS } from "@/lib/types";
-import { Badge } from "@/components/ui/Badge";
+import { StatusBadge } from "@/components/ui/StatusBadge";
 import { ProgressBar } from "@/components/ui/ProgressBar";
 import { TagList } from "@/components/ui/TagList";
 import { useTags } from "@/hooks/useTags";
@@ -19,7 +19,7 @@ export function WorkflowCard({ workflow }: WorkflowCardProps) {
   const activeStep = workflow.steps.find((step) => step.status === "in_progress");
 
   return (
-    <article className="min-w-0 rounded-lg border border-border bg-white p-4">
+    <article className="min-w-0 rounded-lg border border-border bg-card p-4">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="min-w-0 flex-1">
           <Link
@@ -38,9 +38,9 @@ export function WorkflowCard({ workflow }: WorkflowCardProps) {
           )}
           <TagList tags={workflow.tags} customTags={customTags} className="mt-2" />
         </div>
-        <Badge variant={workflow.status === "completed" ? "success" : "info"}>
+        <StatusBadge variant={workflow.status === "completed" ? "success" : "info"}>
           {WORKFLOW_STATUS_LABELS[workflow.status]}
-        </Badge>
+        </StatusBadge>
       </div>
 
       <div className="mt-4">

@@ -3,9 +3,8 @@
 import Link from "next/link";
 import { useTasks } from "@/hooks/useTasks";
 import { Card } from "@/components/ui/Card";
-import { Badge } from "@/components/ui/Badge";
 import { EmptyState } from "@/components/ui/EmptyState";
-import { TASK_PRIORITY_LABELS } from "@/lib/types";
+import { PriorityBadge } from "@/components/tasks/PriorityBadge";
 import { formatDate, isToday } from "@/lib/utils/date";
 
 export function TodayTasks() {
@@ -47,9 +46,7 @@ export function TodayTasks() {
                     : "Süresiz · devam ediyor"}
                 </p>
               </div>
-              <Badge variant="info">
-                {TASK_PRIORITY_LABELS[task.priority]}
-              </Badge>
+              <PriorityBadge priority={task.priority} />
             </li>
           ))}
         </ul>

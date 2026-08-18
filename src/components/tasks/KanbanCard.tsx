@@ -1,13 +1,13 @@
 "use client";
 
 import type { Task } from "@/lib/types";
-import { TASK_PRIORITY_LABELS } from "@/lib/types";
-import { Badge } from "@/components/ui/Badge";
+import { PriorityBadge } from "@/components/tasks/PriorityBadge";
 import { Button } from "@/components/ui/Button";
 import { CalendarLinkActions } from "@/components/ui/CalendarLinkActions";
 import { TagList } from "@/components/ui/TagList";
+import { DeadlineLine } from "@/components/tasks/DeadlineLine";
 import { useTags } from "@/hooks/useTags";
-import { formatDate, isOverdue } from "@/lib/utils/date";
+import { isOverdue } from "@/lib/utils/date";
 import { canAddTaskToCalendar, getCalendarLinkDate } from "@/lib/utils/eventLinking";
 
 interface KanbanCardProps {
@@ -29,26 +29,35 @@ export function KanbanCard({ task, onEdit, onDelete, onAddToCalendar }: KanbanCa
         event.dataTransfer.setData("text/task-id", task.id);
         event.dataTransfer.effectAllowed = "move";
       }}
-      className={`cursor-grab rounded-lg border bg-white p-3 shadow-sm active:cursor-grabbing ${
-        overdue ? "border-red-200" : "border-border"
+      className={`cursor-grab rounded-lg border bg-card p-3 shadow-sm active:cursor-grabbing ${
+        overdue
+          ? "border-red-200 bg-red-50/40 dark:border-red-900 dark:bg-red-950/40"
+          : "border-border"
       }`}
     >
-      <p className="font-medium leading-snug">{task.title}</p>
+      <div className="flex flex-wrap items-start justify-between gap-2">
+        <p className="min-w-0 flex-1 font-medium leading-snug">{task.title}</p>
+        <PriorityBadge priority={task.priority} />
+      </div>
 
       {task.description && (
         <p className="mt-1 line-clamp-2 text-xs text-muted">{task.description}</p>
       )}
 
-      <div className="mt-2 flex flex-wrap gap-1.5">
-        <Badge>{TASK_PRIORITY_LABELS[task.priority]}</Badge>
-        {overdue && <Badge variant="danger">Gecikmiş</Badge>}
-      </div>
+      {task.deadline ? (
+        <DeadlineLine
+          deadline={task.deadline}
+          overdue={Boolean(overdue)}
+          className="mt-2 text-xs text-muted"
+        />
+      ) : null}
 
-      <TagList tags={task.tags} customTags={customTags} className="mt-2" />
-
-      {task.deadline && (
-        <p className="mt-2 text-xs text-muted">{formatDate(task.deadline)}</p>
-      )}
+      <TagList
+        tags={task.tags}
+        customTags={customTags}
+        maxVisible={2}
+        className="mt-2"
+      />
 
       <div className="mt-2 flex flex-wrap gap-1">
         <Button

@@ -20,7 +20,7 @@ export function TagFilterSelect({
     <select
       value={value}
       onChange={(e) => onChange(e.target.value)}
-      className={`rounded-lg border border-border bg-white px-3 py-2 text-sm ${className}`}
+      className={`rounded-lg border border-border bg-input px-3 py-2 text-sm ${className}`}
     >
       <option value="all">Tüm etiketler</option>
       {options.map((tag) => (

@@ -37,11 +37,11 @@ export function KanbanColumn({
     <div
       onDragOver={handleDragOver}
       onDrop={handleDrop}
-      className="flex min-h-[280px] min-w-0 flex-1 flex-col rounded-xl border border-border bg-slate-50/80 p-3"
+      className="flex min-h-[280px] min-w-0 flex-1 flex-col rounded-xl border border-border bg-hover/80 p-3"
     >
       <div className="mb-3 flex items-center justify-between gap-2">
         <h3 className="text-sm font-semibold">{title}</h3>
-        <span className="rounded-full bg-white px-2 py-0.5 text-xs text-muted shadow-sm">
+        <span className="rounded-full bg-card px-2 py-0.5 text-xs text-muted shadow-sm">
           {tasks.length}
         </span>
       </div>

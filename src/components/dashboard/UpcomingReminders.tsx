@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useReminders } from "@/hooks/useReminders";
 import { Card } from "@/components/ui/Card";
-import { Badge } from "@/components/ui/Badge";
+import { StatusBadge } from "@/components/ui/StatusBadge";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { REMINDER_RECURRENCE_LABELS, REMINDER_TARGET_LABELS } from "@/lib/types";
 import { formatDateTime } from "@/lib/utils/date";
@@ -37,12 +37,12 @@ export function UpcomingReminders() {
                 </p>
               </div>
               <div className="flex flex-wrap gap-2">
-                <Badge variant="info">
+                <StatusBadge variant="info">
                   {REMINDER_TARGET_LABELS[reminder.targetType]}
-                </Badge>
-                <Badge>
+                </StatusBadge>
+                <StatusBadge>
                   {REMINDER_RECURRENCE_LABELS[reminder.recurrence]}
-                </Badge>
+                </StatusBadge>
               </div>
             </li>
           ))}

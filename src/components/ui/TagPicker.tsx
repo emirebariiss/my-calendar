@@ -100,7 +100,7 @@ export function TagPicker({
                   <button
                     type="button"
                     onClick={() => handleDeleteCustom(tag)}
-                    className="rounded-full px-1.5 py-0.5 text-xs text-muted hover:bg-red-50 hover:text-red-600"
+                    className="rounded-full px-1.5 py-0.5 text-xs text-muted hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-950 dark:hover:text-red-400"
                     aria-label={`${tag.name} etiketini sistemden sil`}
                     title="Etiketi sistemden sil"
                   >

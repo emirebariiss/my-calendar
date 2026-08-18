@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEvents } from "@/hooks/useEvents";
 import { Card } from "@/components/ui/Card";
-import { Badge } from "@/components/ui/Badge";
+import { StatusBadge } from "@/components/ui/StatusBadge";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { EVENT_TYPE_LABELS } from "@/lib/types";
 import { formatDateTime, isUpcoming } from "@/lib/utils/date";
@@ -45,7 +45,7 @@ export function UpcomingEvents() {
                   {formatDateTime(event.startAt)}
                 </p>
               </div>
-              <Badge>{EVENT_TYPE_LABELS[event.type]}</Badge>
+              <StatusBadge variant="info">{EVENT_TYPE_LABELS[event.type]}</StatusBadge>
             </li>
           ))}
         </ul>
