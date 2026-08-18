@@ -186,6 +186,29 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
 
   const deleteEvent = (id: string) => {
     setEvents((prev) => prev.filter((event) => event.id !== id));
+
+    setTasks((prev) =>
+      prev.map((task) =>
+        task.eventId === id
+          ? { ...task, eventId: undefined, updatedAt: new Date().toISOString() }
+          : task
+      )
+    );
+
+    setWorkflows((prev) =>
+      prev.map((workflow) => {
+        const hasStepLink = workflow.steps.some((step) => step.eventId === id);
+        if (!hasStepLink) return workflow;
+
+        return {
+          ...workflow,
+          steps: workflow.steps.map((step) =>
+            step.eventId === id ? { ...step, eventId: undefined } : step
+          ),
+          updatedAt: new Date().toISOString(),
+        };
+      })
+    );
   };
 
   const addTask = (

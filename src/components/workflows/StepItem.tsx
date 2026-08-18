@@ -5,13 +5,16 @@ import type { WorkflowStep } from "@/lib/types";
 import { STEP_STATUS_LABELS } from "@/lib/types";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
+import { CalendarLinkActions } from "@/components/ui/CalendarLinkActions";
 import { formatDate, isOverdue } from "@/lib/utils/date";
+import { canAddStepToCalendar, getCalendarLinkDate } from "@/lib/utils/eventLinking";
 
 interface StepItemProps {
   step: WorkflowStep;
   onToggleComplete: (step: WorkflowStep) => void;
   onUpdateNotes: (step: WorkflowStep, notes: string) => void;
   onSetInProgress: (step: WorkflowStep) => void;
+  onAddToCalendar: (step: WorkflowStep) => void;
 }
 
 export function StepItem({
@@ -19,6 +22,7 @@ export function StepItem({
   onToggleComplete,
   onUpdateNotes,
   onSetInProgress,
+  onAddToCalendar,
 }: StepItemProps) {
   const savedNotes = step.notes ?? "";
   const [isEditingNotes, setIsEditingNotes] = useState(false);
@@ -102,6 +106,13 @@ export function StepItem({
                 Not ekle
               </Button>
             )}
+            <CalendarLinkActions
+              eventId={step.eventId}
+              canAdd={canAddStepToCalendar(step)}
+              calendarDate={step.dueDate ? getCalendarLinkDate(step.dueDate) : undefined}
+              disabledTitle="Due date gerekli"
+              onAdd={() => onAddToCalendar(step)}
+            />
           </div>
 
           {!isEditingNotes && savedNotes && (

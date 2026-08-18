@@ -4,14 +4,13 @@ import { useMemo, useState } from "react";
 import { useWorkflows } from "@/hooks/useWorkflows";
 import { useReminders } from "@/hooks/useReminders";
 import { Button } from "@/components/ui/Button";
-import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { WorkflowCard } from "@/components/workflows/WorkflowCard";
 import {
   WorkflowForm,
   type WorkflowFormValues,
 } from "@/components/workflows/WorkflowForm";
-import type { Workflow, WorkflowStatus, WorkflowStep } from "@/lib/types";
+import type { WorkflowStatus, WorkflowStep } from "@/lib/types";
 import { DEFAULT_REMINDER_INPUT } from "@/lib/types";
 import {
   appendReminderId,
@@ -20,33 +19,17 @@ import {
 import { buildWorkflowSteps, deriveWorkflowStatus } from "@/lib/utils/workflow";
 
 export default function WorkflowsPage() {
-  const { workflows, addWorkflow, updateWorkflow, deleteWorkflow, updateStep } =
-    useWorkflows();
+  const { workflows, addWorkflow, updateStep } = useWorkflows();
   const { addReminder } = useReminders();
   const [statusFilter, setStatusFilter] = useState<WorkflowStatus | "all">(
     "all"
   );
   const [formOpen, setFormOpen] = useState(false);
-  const [formMode, setFormMode] = useState<"create" | "edit">("create");
-  const [editingWorkflow, setEditingWorkflow] = useState<Workflow>();
-  const [deletingWorkflow, setDeletingWorkflow] = useState<Workflow>();
 
   const filtered = useMemo(() => {
     if (statusFilter === "all") return workflows;
     return workflows.filter((workflow) => workflow.status === statusFilter);
   }, [workflows, statusFilter]);
-
-  const openCreateForm = () => {
-    setFormMode("create");
-    setEditingWorkflow(undefined);
-    setFormOpen(true);
-  };
-
-  const openEditForm = (workflow: Workflow) => {
-    setFormMode("edit");
-    setEditingWorkflow(workflow);
-    setFormOpen(true);
-  };
 
   const attachStepReminders = (
     workflowId: string,
@@ -79,7 +62,7 @@ export default function WorkflowsPage() {
         dueDate: step.dueDate || undefined,
       })),
       workflows,
-      formMode === "edit" && editingWorkflow ? editingWorkflow.steps : []
+      []
     );
 
     const payload = {
@@ -89,23 +72,8 @@ export default function WorkflowsPage() {
       status: deriveWorkflowStatus(steps),
     };
 
-    if (formMode === "create") {
-      const workflowId = addWorkflow(payload);
-      attachStepReminders(workflowId, steps, values.steps);
-      return;
-    }
-
-    if (editingWorkflow) {
-      updateWorkflow(editingWorkflow.id, payload);
-      attachStepReminders(editingWorkflow.id, steps, values.steps);
-    }
-  };
-
-  const handleDeleteConfirm = () => {
-    if (deletingWorkflow) {
-      deleteWorkflow(deletingWorkflow.id);
-      setDeletingWorkflow(undefined);
-    }
+    const workflowId = addWorkflow(payload);
+    attachStepReminders(workflowId, steps, values.steps);
   };
 
   return (
@@ -122,7 +90,7 @@ export default function WorkflowsPage() {
           <option value="active">Aktif</option>
           <option value="completed">Tamamlanmış</option>
         </select>
-        <Button type="button" onClick={openCreateForm}>
+        <Button type="button" onClick={() => setFormOpen(true)}>
           + Yeni Süreç
         </Button>
       </div>
@@ -135,34 +103,16 @@ export default function WorkflowsPage() {
       ) : (
         <div className="grid min-w-0 grid-cols-1 gap-4 md:grid-cols-2 [&>*]:min-w-0">
           {filtered.map((workflow) => (
-            <WorkflowCard
-              key={workflow.id}
-              workflow={workflow}
-              onEdit={() => openEditForm(workflow)}
-              onDelete={() => setDeletingWorkflow(workflow)}
-            />
+            <WorkflowCard key={workflow.id} workflow={workflow} />
           ))}
         </div>
       )}
 
       <WorkflowForm
         open={formOpen}
-        mode={formMode}
-        initialWorkflow={editingWorkflow}
-        onClose={() => {
-          setFormOpen(false);
-          setFormMode("create");
-          setEditingWorkflow(undefined);
-        }}
+        mode="create"
+        onClose={() => setFormOpen(false)}
         onSubmit={handleSubmit}
-      />
-
-      <ConfirmDialog
-        open={Boolean(deletingWorkflow)}
-        title="Süreci sil"
-        message={`"${deletingWorkflow?.title}" sürecini silmek istediğine emin misin?`}
-        onConfirm={handleDeleteConfirm}
-        onCancel={() => setDeletingWorkflow(undefined)}
       />
     </div>
   );

@@ -11,6 +11,7 @@ interface KanbanBoardProps {
   onMoveTask: (taskId: string, status: TaskStatus) => void;
   onEdit: (task: Task) => void;
   onDelete: (task: Task) => void;
+  onAddToCalendar: (task: Task) => void;
 }
 
 export function KanbanBoard({
@@ -18,6 +19,7 @@ export function KanbanBoard({
   onMoveTask,
   onEdit,
   onDelete,
+  onAddToCalendar,
 }: KanbanBoardProps) {
   const tasksByStatus = useMemo(() => {
     const grouped: Record<TaskStatus, Task[]> = {
@@ -48,6 +50,7 @@ export function KanbanBoard({
           onDropTask={onMoveTask}
           onEdit={onEdit}
           onDelete={onDelete}
+          onAddToCalendar={onAddToCalendar}
         />
       ))}
     </div>

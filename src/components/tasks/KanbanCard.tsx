@@ -4,15 +4,18 @@ import type { Task } from "@/lib/types";
 import { TASK_PRIORITY_LABELS } from "@/lib/types";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
+import { CalendarLinkActions } from "@/components/ui/CalendarLinkActions";
 import { formatDate, isOverdue } from "@/lib/utils/date";
+import { canAddTaskToCalendar, getCalendarLinkDate } from "@/lib/utils/eventLinking";
 
 interface KanbanCardProps {
   task: Task;
   onEdit: (task: Task) => void;
   onDelete: (task: Task) => void;
+  onAddToCalendar: (task: Task) => void;
 }
 
-export function KanbanCard({ task, onEdit, onDelete }: KanbanCardProps) {
+export function KanbanCard({ task, onEdit, onDelete, onAddToCalendar }: KanbanCardProps) {
   const overdue =
     task.deadline && task.status !== "done" && isOverdue(task.deadline);
 
@@ -42,7 +45,7 @@ export function KanbanCard({ task, onEdit, onDelete }: KanbanCardProps) {
         <p className="mt-2 text-xs text-muted">{formatDate(task.deadline)}</p>
       )}
 
-      <div className="mt-2 flex gap-1">
+      <div className="mt-2 flex flex-wrap gap-1">
         <Button
           variant="ghost"
           type="button"
@@ -59,6 +62,14 @@ export function KanbanCard({ task, onEdit, onDelete }: KanbanCardProps) {
         >
           Sil
         </Button>
+        <CalendarLinkActions
+          eventId={task.eventId}
+          canAdd={canAddTaskToCalendar(task)}
+          calendarDate={task.deadline ? getCalendarLinkDate(task.deadline) : undefined}
+          disabledTitle="Deadline gerekli"
+          onAdd={() => onAddToCalendar(task)}
+          compact
+        />
       </div>
     </article>
   );

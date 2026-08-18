@@ -9,6 +9,7 @@ interface StepListProps {
   onToggleComplete: (step: WorkflowStep) => void;
   onUpdateNotes: (step: WorkflowStep, notes: string) => void;
   onSetInProgress: (step: WorkflowStep) => void;
+  onAddToCalendar: (step: WorkflowStep) => void;
 }
 
 export function StepList({
@@ -16,6 +17,7 @@ export function StepList({
   onToggleComplete,
   onUpdateNotes,
   onSetInProgress,
+  onAddToCalendar,
 }: StepListProps) {
   const sortedSteps = [...workflow.steps].sort((a, b) => a.order - b.order);
 
@@ -32,6 +34,7 @@ export function StepList({
           onToggleComplete={onToggleComplete}
           onUpdateNotes={onUpdateNotes}
           onSetInProgress={onSetInProgress}
+          onAddToCalendar={onAddToCalendar}
         />
       ))}
     </ul>

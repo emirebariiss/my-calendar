@@ -18,6 +18,7 @@ import { toFullCalendarEvent } from "@/lib/utils/calendar";
 
 interface CalendarViewProps {
   events: CalendarEvent[];
+  initialDate?: string;
   onEventClick: (event: CalendarEvent) => void;
   onDateSelect: (range: { startAt: string; endAt: string; allDay: boolean }) => void;
   onEventDrop: (eventId: string, startAt: string, endAt: string, allDay: boolean) => void;
@@ -25,6 +26,7 @@ interface CalendarViewProps {
 
 export function CalendarView({
   events,
+  initialDate,
   onEventClick,
   onDateSelect,
   onEventDrop,
@@ -70,6 +72,7 @@ export function CalendarView({
       plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
       locale={trLocale}
       initialView="timeGridWeek"
+      initialDate={initialDate}
       headerToolbar={{
         left: "prev,next today",
         center: "title",
