@@ -6,7 +6,7 @@ export type PaymentMethod =
   | "bank_transfer"
   | "credit_card"
   | "cash"
-  | "direct_debit"
+  | "bank_account"
   | "other";
 
 export type PaymentCurrency = "TRY" | "USD" | "EUR";
@@ -85,7 +85,7 @@ export interface PaymentHistoryRecord {
 }
 
 export const PAYMENT_STATUS_LABELS: Record<PaymentStatus, string> = {
-  pending: "Bekliyor",
+  pending: "Ödenmedi",
   paid: "Ödendi",
   overdue: "Gecikmiş",
   skipped: "Atlandı",
@@ -100,9 +100,24 @@ export const PAYMENT_METHOD_LABELS: Record<PaymentMethod, string> = {
   bank_transfer: "Havale / EFT",
   credit_card: "Kredi kartı",
   cash: "Nakit",
-  direct_debit: "Otomatik ödeme",
+  bank_account: "Banka hesabı",
   other: "Diğer",
 };
+
+/** Manuel ödemede kullanılabilir kanallar */
+export const MANUAL_PAYMENT_METHODS: PaymentMethod[] = [
+  "bank_transfer",
+  "credit_card",
+  "cash",
+  "other",
+];
+
+/** Otomatik tahsilatta kullanılabilir kanallar */
+export const AUTO_PAYMENT_METHODS: PaymentMethod[] = [
+  "credit_card",
+  "bank_account",
+  "other",
+];
 
 export const PAYMENT_CURRENCY_LABELS: Record<PaymentCurrency, string> = {
   TRY: "₺ TRY",

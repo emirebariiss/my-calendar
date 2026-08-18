@@ -9,6 +9,7 @@ export const NAV_ITEMS: NavItem[] = [
   { href: "/calendar", label: "Takvim", icon: "📅" },
   { href: "/tasks", label: "Görevler", icon: "✅" },
   { href: "/workflows", label: "Süreçler", icon: "🔁" },
+  { href: "/payments", label: "Ödemeler", icon: "💳" },
   { href: "/reminders", label: "Hatırlatmalar", icon: "🔔" },
 ];
 
@@ -17,5 +18,6 @@ export const PAGE_TITLES: Record<string, string> = {
   "/calendar": "Takvim",
   "/tasks": "Görevler",
   "/workflows": "Süreçler",
+  "/payments": "Ödemeler",
   "/reminders": "Hatırlatmalar",
 };

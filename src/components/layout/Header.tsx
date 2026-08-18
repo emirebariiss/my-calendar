@@ -36,10 +36,6 @@ export function Header({ onMenuClick }: HeaderProps) {
       </div>
       <div className="flex shrink-0 items-center gap-2">
         <ThemeToggle />
-        <div className="rounded-full bg-emerald-50 px-2 py-1 text-xs font-medium text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300 md:px-3">
-          <span className="md:hidden">V1</span>
-          <span className="hidden md:inline">V1 — Bonus özellikler</span>
-        </div>
       </div>
     </header>
   );

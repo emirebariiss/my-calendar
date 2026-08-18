@@ -5,12 +5,15 @@ import { loadInitialAppData, saveAppData } from "@/lib/storage/appStorage";
 import { PREDEFINED_TAGS } from "@/lib/constants/tags";
 import type {
   CalendarEvent,
+  Payment,
+  PaymentHistoryRecord,
   Reminder,
   Tag,
   Task,
   Workflow,
   WorkflowStep,
 } from "@/lib/types";
+import { buildPaymentHistoryRecord } from "@/lib/utils/payment";
 import { applyStepUpdate } from "@/lib/utils/workflow";
 import { createCustomTag } from "@/lib/utils/tags";
 import { MOCK_LOAD_DELAY_MS } from "@/lib/constants/mock";
@@ -22,6 +25,8 @@ interface AppContextValue {
   workflows: Workflow[];
   reminders: Reminder[];
   customTags: Tag[];
+  payments: Payment[];
+  paymentHistory: PaymentHistoryRecord[];
   ensureCustomTag: (name: string) => string;
   deleteCustomTag: (slug: string) => void;
   addReminder: (reminder: Omit<Reminder, "id" | "createdAt">) => string;
@@ -35,6 +40,14 @@ interface AppContextValue {
   addTask: (task: Omit<Task, "id" | "createdAt" | "updatedAt">) => string;
   updateTask: (id: string, updates: Partial<Task>) => void;
   deleteTask: (id: string) => void;
+  addPayment: (
+    payment: Omit<Payment, "id" | "createdAt" | "updatedAt">
+  ) => string;
+  updatePayment: (id: string, updates: Partial<Payment>) => void;
+  deletePayment: (id: string) => void;
+  markPaymentPaid: (id: string, actualAmount?: number) => void;
+  markPaymentPending: (id: string) => void;
+  markPaymentSkipped: (id: string) => void;
   addWorkflow: (
     workflow: Omit<Workflow, "id" | "createdAt" | "updatedAt">
   ) => string;
@@ -64,6 +77,10 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const [workflows, setWorkflows] = useState<Workflow[]>([]);
   const [reminders, setReminders] = useState<Reminder[]>([]);
   const [customTags, setCustomTags] = useState<Tag[]>([]);
+  const [payments, setPayments] = useState<Payment[]>([]);
+  const [paymentHistory, setPaymentHistory] = useState<PaymentHistoryRecord[]>(
+    []
+  );
   useEffect(() => {
     const timer = setTimeout(() => {
       const data = loadInitialAppData();
@@ -72,6 +89,8 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       setWorkflows(data.workflows);
       setReminders(data.reminders);
       setCustomTags(data.customTags);
+      setPayments(data.payments);
+      setPaymentHistory(data.paymentHistory);
       setIsLoading(false);
     }, MOCK_LOAD_DELAY_MS);
 
@@ -81,8 +100,25 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     if (isLoading) return;
 
-    saveAppData({ events, tasks, workflows, reminders, customTags });
-  }, [isLoading, events, tasks, workflows, reminders, customTags]);
+    saveAppData({
+      events,
+      tasks,
+      workflows,
+      reminders,
+      customTags,
+      payments,
+      paymentHistory,
+    });
+  }, [
+    isLoading,
+    events,
+    tasks,
+    workflows,
+    reminders,
+    customTags,
+    payments,
+    paymentHistory,
+  ]);
   const addReminder = (reminder: Omit<Reminder, "id" | "createdAt">): string => {
     const now = new Date().toISOString();
     let newId = "";
@@ -269,6 +305,105 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     setTasks((prev) => prev.filter((task) => task.id !== id));
   };
 
+  const addPayment = (
+    payment: Omit<Payment, "id" | "createdAt" | "updatedAt">
+  ): string => {
+    const now = new Date().toISOString();
+    let newId = "";
+
+    setPayments((prev) => {
+      newId = createId("pay", prev);
+      return [
+        ...prev,
+        {
+          ...payment,
+          id: newId,
+          createdAt: now,
+          updatedAt: now,
+        },
+      ];
+    });
+
+    return newId;
+  };
+
+  const updatePayment = (id: string, updates: Partial<Payment>) => {
+    setPayments((prev) =>
+      prev.map((payment) =>
+        payment.id === id
+          ? { ...payment, ...updates, updatedAt: new Date().toISOString() }
+          : payment
+      )
+    );
+  };
+
+  const deletePayment = (id: string) => {
+    setPayments((prev) => prev.filter((payment) => payment.id !== id));
+  };
+
+  const markPaymentPaid = (id: string, actualAmount?: number) => {
+    const now = new Date().toISOString();
+
+    setPayments((prevPayments) => {
+      const payment = prevPayments.find((item) => item.id === id);
+      if (!payment) return prevPayments;
+
+      const updated: Payment = {
+        ...payment,
+        status: "paid",
+        actualAmount: actualAmount ?? payment.plannedAmount,
+        paidAt: now,
+        updatedAt: now,
+      };
+
+      setPaymentHistory((prevHistory) => [
+        ...prevHistory,
+        {
+          ...buildPaymentHistoryRecord(updated, {
+            actualAmount: updated.actualAmount,
+            paidAt: now,
+            status: "paid",
+          }),
+          id: createId("ph", prevHistory),
+        },
+      ]);
+
+      return prevPayments.map((item) => (item.id === id ? updated : item));
+    });
+  };
+
+  const markPaymentPending = (id: string) => {
+    setPayments((prev) =>
+      prev.map((payment) => {
+        if (payment.id !== id) return payment;
+
+        return {
+          ...payment,
+          status: "pending",
+          actualAmount: undefined,
+          paidAt: undefined,
+          updatedAt: new Date().toISOString(),
+        };
+      })
+    );
+  };
+
+  const markPaymentSkipped = (id: string) => {
+    setPayments((prev) =>
+      prev.map((payment) => {
+        if (payment.id !== id) return payment;
+
+        return {
+          ...payment,
+          status: "skipped",
+          actualAmount: undefined,
+          paidAt: undefined,
+          updatedAt: new Date().toISOString(),
+        };
+      })
+    );
+  };
+
   const addWorkflow = (
     workflow: Omit<Workflow, "id" | "createdAt" | "updatedAt">
   ): string => {
@@ -377,6 +512,8 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       workflows,
       reminders,
       customTags,
+      payments,
+      paymentHistory,
       ensureCustomTag,
       deleteCustomTag,
       addReminder,
@@ -392,8 +529,25 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       addTask,
       updateTask,
       deleteTask,
+      addPayment,
+      updatePayment,
+      deletePayment,
+      markPaymentPaid,
+      markPaymentPending,
+      markPaymentSkipped,
     }),
-    [isLoading, events, tasks, workflows, reminders, customTags, ensureCustomTag, deleteCustomTag]
+    [
+      isLoading,
+      events,
+      tasks,
+      workflows,
+      reminders,
+      customTags,
+      payments,
+      paymentHistory,
+      ensureCustomTag,
+      deleteCustomTag,
+    ]
   );
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

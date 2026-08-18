@@ -31,7 +31,7 @@ export function Modal({ open, title, onClose, children, footer }: ModalProps) {
   if (!open) return null;
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 top-16 z-50 flex items-center justify-center p-4 md:left-64">
+    <div className="fixed bottom-0 left-0 right-0 top-16 z-50 flex items-stretch justify-center p-2 sm:items-center sm:p-4 md:left-64">
       <button
         type="button"
         aria-label="Kapat"
@@ -42,9 +42,9 @@ export function Modal({ open, title, onClose, children, footer }: ModalProps) {
         role="dialog"
         aria-modal="true"
         aria-labelledby="modal-title"
-        className="relative z-10 flex w-full max-w-lg min-w-0 max-h-[min(calc(100dvh-4rem-2rem),900px)] flex-col overflow-hidden rounded-xl border border-border bg-card shadow-xl"
+        className="relative z-10 flex w-full max-w-lg min-w-0 max-h-[calc(100dvh-4rem-0.5rem)] flex-col overflow-hidden rounded-xl border border-border bg-card shadow-xl sm:max-h-[min(calc(100dvh-4rem-2rem),900px)]"
       >
-        <div className="flex shrink-0 items-center justify-between border-b border-border px-5 py-4">
+        <div className="flex shrink-0 items-center justify-between border-b border-border px-4 py-3 sm:px-5 sm:py-4">
           <h2 id="modal-title" className="text-lg font-semibold">
             {title}
           </h2>
@@ -52,11 +52,11 @@ export function Modal({ open, title, onClose, children, footer }: ModalProps) {
             ✕
           </Button>
         </div>
-        <div className="min-h-0 min-w-0 flex-1 overflow-y-auto overflow-x-hidden overscroll-y-contain px-5 py-4">
+        <div className="min-h-0 min-w-0 flex-1 overflow-y-auto overflow-x-hidden overscroll-y-contain px-4 py-3 sm:px-5 sm:py-4">
           {children}
         </div>
         {footer && (
-          <div className="flex w-full shrink-0 justify-end gap-2 border-t border-border px-5 py-4">
+          <div className="flex w-full shrink-0 justify-end gap-2 border-t border-border px-4 py-3 sm:px-5 sm:py-4">
             {footer}
           </div>
         )}

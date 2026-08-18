@@ -50,6 +50,8 @@ interface NativePickerInputProps {
   value: string;
   onChange: (value: string) => void;
   "aria-label"?: string;
+  className?: string;
+  invalid?: boolean;
 }
 
 export function NativePickerInput({
@@ -58,6 +60,8 @@ export function NativePickerInput({
   value,
   onChange,
   "aria-label": ariaLabel,
+  className = "",
+  invalid = false,
 }: NativePickerInputProps) {
   return (
     <input
@@ -65,8 +69,9 @@ export function NativePickerInput({
       type={type}
       value={value}
       aria-label={ariaLabel}
+      aria-invalid={invalid || undefined}
       onChange={(e) => onChange(e.target.value)}
-      className={NATIVE_PICKER_INPUT_CLASS}
+      className={`${NATIVE_PICKER_INPUT_CLASS} ${className}`.trim()}
     />
   );
 }

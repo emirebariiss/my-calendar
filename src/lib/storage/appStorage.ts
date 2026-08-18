@@ -1,11 +1,15 @@
 import {
   loadEvents,
+  loadPaymentHistory,
+  loadPayments,
   loadReminders,
   loadTasks,
   loadWorkflows,
 } from "@/lib/mock/loader";
 import type {
   CalendarEvent,
+  Payment,
+  PaymentHistoryRecord,
   Reminder,
   Tag,
   Task,
@@ -13,7 +17,7 @@ import type {
 } from "@/lib/types";
 
 const STORAGE_KEY = "my-calendar-app-data";
-const STORAGE_VERSION = 2;
+const STORAGE_VERSION = 3;
 
 export interface PersistedAppData {
   version: number;
@@ -22,6 +26,8 @@ export interface PersistedAppData {
   workflows: Workflow[];
   reminders: Reminder[];
   customTags: Tag[];
+  payments: Payment[];
+  paymentHistory: PaymentHistoryRecord[];
 }
 
 function loadMockData(): PersistedAppData {
@@ -32,6 +38,8 @@ function loadMockData(): PersistedAppData {
     workflows: loadWorkflows(),
     reminders: loadReminders(),
     customTags: [],
+    payments: loadPayments(),
+    paymentHistory: loadPaymentHistory(),
   };
 }
 
@@ -40,7 +48,9 @@ function isPersistedAppData(value: unknown): value is PersistedAppData {
 
   const data = value as PersistedAppData;
   return (
-    (data.version === 1 || data.version === STORAGE_VERSION) &&
+    (data.version === 1 ||
+      data.version === 2 ||
+      data.version === STORAGE_VERSION) &&
     Array.isArray(data.events) &&
     Array.isArray(data.tasks) &&
     Array.isArray(data.workflows) &&
@@ -66,6 +76,8 @@ export function loadInitialAppData(): PersistedAppData {
         workflows: parsed.workflows,
         reminders: parsed.reminders,
         customTags: parsed.customTags ?? [],
+        payments: parsed.payments ?? loadPayments(),
+        paymentHistory: parsed.paymentHistory ?? loadPaymentHistory(),
       };
     }
   } catch {
