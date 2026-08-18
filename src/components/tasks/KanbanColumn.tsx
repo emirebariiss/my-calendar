@@ -10,6 +10,7 @@ interface KanbanColumnProps {
   onDropTask: (taskId: string, status: TaskStatus) => void;
   onEdit: (task: Task) => void;
   onDelete: (task: Task) => void;
+  onAddToCalendar: (task: Task) => void;
 }
 
 export function KanbanColumn({
@@ -19,6 +20,7 @@ export function KanbanColumn({
   onDropTask,
   onEdit,
   onDelete,
+  onAddToCalendar,
 }: KanbanColumnProps) {
   const handleDragOver = (event: React.DragEvent) => {
     event.preventDefault();
@@ -52,7 +54,12 @@ export function KanbanColumn({
         ) : (
           tasks.map((task) => (
             <li key={task.id}>
-              <KanbanCard task={task} onEdit={onEdit} onDelete={onDelete} />
+              <KanbanCard
+                task={task}
+                onEdit={onEdit}
+                onDelete={onDelete}
+                onAddToCalendar={onAddToCalendar}
+              />
             </li>
           ))
         )}

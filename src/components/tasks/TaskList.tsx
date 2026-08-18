@@ -12,9 +12,16 @@ interface TaskListProps {
   onToggle: (task: Task) => void;
   onEdit: (task: Task) => void;
   onDelete: (task: Task) => void;
+  onAddToCalendar: (task: Task) => void;
 }
 
-export function TaskList({ tasks, onToggle, onEdit, onDelete }: TaskListProps) {
+export function TaskList({
+  tasks,
+  onToggle,
+  onEdit,
+  onDelete,
+  onAddToCalendar,
+}: TaskListProps) {
   const [statusFilter, setStatusFilter] = useState<TaskStatus | "all">("all");
   const [priorityFilter, setPriorityFilter] = useState<TaskPriority | "all">(
     "all"
@@ -70,6 +77,7 @@ export function TaskList({ tasks, onToggle, onEdit, onDelete }: TaskListProps) {
                 onToggle={onToggle}
                 onEdit={onEdit}
                 onDelete={onDelete}
+                onAddToCalendar={onAddToCalendar}
               />
             ))}
           </ul>

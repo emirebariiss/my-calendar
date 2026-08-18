@@ -1,6 +1,7 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { Suspense, useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { useEvents } from "@/hooks/useEvents";
 import { useReminders } from "@/hooks/useReminders";
 import { Button } from "@/components/ui/Button";
@@ -14,7 +15,9 @@ import { buildEventPayload, defaultEventTimes } from "@/lib/utils/calendar";
 import { appendReminderId, createReminderFromInput } from "@/lib/utils/reminder";
 import { EmptyState } from "@/components/ui/EmptyState";
 
-export default function CalendarPage() {
+function CalendarPageContent() {
+  const searchParams = useSearchParams();
+  const focusDate = searchParams.get("date") ?? undefined;
   const { events, addEvent, updateEvent, deleteEvent } = useEvents();
   const { addReminder } = useReminders();
   const [formOpen, setFormOpen] = useState(false);
@@ -129,6 +132,7 @@ export default function CalendarPage() {
 
       <CalendarView
         events={events}
+        initialDate={focusDate}
         onEventClick={openEditForm}
         onDateSelect={handleDateSelect}
         onEventDrop={handleEventDrop}
@@ -175,5 +179,13 @@ export default function CalendarPage() {
         onCancel={() => setDeletingEvent(undefined)}
       />
     </div>
+  );
+}
+
+export default function CalendarPage() {
+  return (
+    <Suspense fallback={<div className="p-4 text-sm text-muted">Takvim yükleniyor...</div>}>
+      <CalendarPageContent />
+    </Suspense>
   );
 }

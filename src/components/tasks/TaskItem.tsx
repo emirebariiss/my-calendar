@@ -7,16 +7,19 @@ import {
 } from "@/lib/types";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
+import { CalendarLinkActions } from "@/components/ui/CalendarLinkActions";
 import { formatDate, isOverdue } from "@/lib/utils/date";
+import { canAddTaskToCalendar, getCalendarLinkDate } from "@/lib/utils/eventLinking";
 
 interface TaskItemProps {
   task: Task;
   onToggle: (task: Task) => void;
   onEdit: (task: Task) => void;
   onDelete: (task: Task) => void;
+  onAddToCalendar: (task: Task) => void;
 }
 
-export function TaskItem({ task, onToggle, onEdit, onDelete }: TaskItemProps) {
+export function TaskItem({ task, onToggle, onEdit, onDelete, onAddToCalendar }: TaskItemProps) {
   const overdue =
     task.deadline && task.status !== "done" && isOverdue(task.deadline);
   const isDone = task.status === "done";
@@ -61,13 +64,20 @@ export function TaskItem({ task, onToggle, onEdit, onDelete }: TaskItemProps) {
             </div>
           </div>
 
-          <div className="mt-3 flex gap-2">
+          <div className="mt-3 flex flex-wrap gap-2">
             <Button variant="secondary" type="button" onClick={() => onEdit(task)}>
               Düzenle
             </Button>
             <Button variant="ghost" type="button" onClick={() => onDelete(task)}>
               Sil
             </Button>
+            <CalendarLinkActions
+              eventId={task.eventId}
+              canAdd={canAddTaskToCalendar(task)}
+              calendarDate={task.deadline ? getCalendarLinkDate(task.deadline) : undefined}
+              disabledTitle="Deadline gerekli"
+              onAdd={() => onAddToCalendar(task)}
+            />
           </div>
         </div>
       </div>

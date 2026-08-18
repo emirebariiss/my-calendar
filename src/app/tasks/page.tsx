@@ -1,7 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTasks } from "@/hooks/useTasks";
+import { useEvents } from "@/hooks/useEvents";
+import { useApp } from "@/providers/AppProvider";
 import { useReminders } from "@/hooks/useReminders";
 import { Button } from "@/components/ui/Button";
 import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
@@ -13,17 +15,45 @@ import {
   appendReminderId,
   createReminderFromInput,
 } from "@/lib/utils/reminder";
+import {
+  buildEventFromTask,
+  canAddTaskToCalendar,
+  findEventsForTask,
+} from "@/lib/utils/eventLinking";
 
 type TaskView = "list" | "kanban";
 
 export default function TasksPage() {
+  const { isLoading } = useApp();
   const { tasks, addTask, updateTask, deleteTask } = useTasks();
+  const { events, addEvent, deleteEvent } = useEvents();
   const { addReminder } = useReminders();
   const [view, setView] = useState<TaskView>("list");
   const [formOpen, setFormOpen] = useState(false);
   const [formMode, setFormMode] = useState<"create" | "edit">("create");
   const [editingTask, setEditingTask] = useState<Task | undefined>();
   const [deletingTask, setDeletingTask] = useState<Task | undefined>();
+
+  // Aynı göreve bağlı yinelenen event'leri temizle (çoklu tıklama sonrası)
+  useEffect(() => {
+    if (isLoading) return;
+
+    for (const task of tasks) {
+      const linked = findEventsForTask(events, task.id);
+      if (linked.length <= 1) continue;
+
+      const primary =
+        linked.find((event) => event.id === task.eventId) ?? linked[0];
+
+      linked
+        .filter((event) => event.id !== primary.id)
+        .forEach((event) => deleteEvent(event.id));
+
+      if (task.eventId !== primary.id) {
+        updateTask(task.id, { eventId: primary.id });
+      }
+    }
+  }, [isLoading, tasks, events, deleteEvent, updateTask]);
 
   const openCreateForm = () => {
     setFormMode("create");
@@ -53,6 +83,24 @@ export default function TasksPage() {
       status,
       completedAt: status === "done" ? new Date().toISOString() : undefined,
     });
+  };
+
+  const handleAddToCalendar = (task: Task) => {
+    const linked = findEventsForTask(events, task.id);
+
+    if (linked.length > 0) {
+      const primary = linked[0];
+      linked.slice(1).forEach((event) => deleteEvent(event.id));
+      if (task.eventId !== primary.id) {
+        updateTask(task.id, { eventId: primary.id });
+      }
+      return;
+    }
+
+    if (!canAddTaskToCalendar(task)) return;
+
+    const eventId = addEvent(buildEventFromTask(task));
+    updateTask(task.id, { eventId });
   };
 
   const handleSubmit = (values: TaskFormValues) => {
@@ -148,6 +196,7 @@ export default function TasksPage() {
           onToggle={handleToggle}
           onEdit={openEditForm}
           onDelete={setDeletingTask}
+          onAddToCalendar={handleAddToCalendar}
         />
       ) : (
         <KanbanBoard
@@ -155,6 +204,7 @@ export default function TasksPage() {
           onMoveTask={handleMoveTask}
           onEdit={openEditForm}
           onDelete={setDeletingTask}
+          onAddToCalendar={handleAddToCalendar}
         />
       )}
 

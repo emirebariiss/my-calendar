@@ -4,6 +4,7 @@ import { useState } from "react";
 import { notFound, useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { useWorkflows } from "@/hooks/useWorkflows";
+import { useEvents } from "@/hooks/useEvents";
 import { useReminders } from "@/hooks/useReminders";
 import { Button } from "@/components/ui/Button";
 import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
@@ -26,11 +27,16 @@ import {
   createReminderFromInput,
 } from "@/lib/utils/reminder";
 import { buildWorkflowSteps, deriveWorkflowStatus } from "@/lib/utils/workflow";
+import {
+  buildEventFromStep,
+  canAddStepToCalendar,
+} from "@/lib/utils/eventLinking";
 
 export default function WorkflowDetailPage() {
   const params = useParams();
   const router = useRouter();
   const { workflows, updateWorkflow, deleteWorkflow, updateStep } = useWorkflows();
+  const { addEvent } = useEvents();
   const { addReminder } = useReminders();
   const [formOpen, setFormOpen] = useState(false);
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
@@ -105,6 +111,14 @@ export default function WorkflowDetailPage() {
     updateStep(workflow.id, step.id, { notes: notes || undefined });
   };
 
+  const handleAddStepToCalendar = (step: WorkflowStep) => {
+    if (step.eventId) return;
+    if (!canAddStepToCalendar(step)) return;
+
+    const eventId = addEvent(buildEventFromStep(step, workflow.title));
+    updateStep(workflow.id, step.id, { eventId });
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-4">
@@ -148,6 +162,7 @@ export default function WorkflowDetailPage() {
           onToggleComplete={handleToggleComplete}
           onUpdateNotes={handleUpdateNotes}
           onSetInProgress={handleSetInProgress}
+          onAddToCalendar={handleAddStepToCalendar}
         />
       </Card>
 
