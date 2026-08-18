@@ -3,8 +3,10 @@
 import { useMemo, useState } from "react";
 import { useWorkflows } from "@/hooks/useWorkflows";
 import { useReminders } from "@/hooks/useReminders";
+import { useTags } from "@/hooks/useTags";
 import { Button } from "@/components/ui/Button";
 import { EmptyState } from "@/components/ui/EmptyState";
+import { TagFilterSelect } from "@/components/ui/TagFilterSelect";
 import { WorkflowCard } from "@/components/workflows/WorkflowCard";
 import {
   WorkflowForm,
@@ -17,19 +19,31 @@ import {
   createReminderFromInput,
 } from "@/lib/utils/reminder";
 import { buildWorkflowSteps, deriveWorkflowStatus } from "@/lib/utils/workflow";
+import { filterByTag } from "@/lib/utils/filters";
+import { buildTagFilterOptions } from "@/lib/utils/tags";
 
 export default function WorkflowsPage() {
   const { workflows, addWorkflow, updateStep } = useWorkflows();
   const { addReminder } = useReminders();
+  const { customTags } = useTags();
   const [statusFilter, setStatusFilter] = useState<WorkflowStatus | "all">(
     "all"
   );
+  const [tagFilter, setTagFilter] = useState<string>("all");
   const [formOpen, setFormOpen] = useState(false);
 
+  const tagFilterOptions = useMemo(
+    () => buildTagFilterOptions(customTags, workflows),
+    [customTags, workflows]
+  );
+
   const filtered = useMemo(() => {
-    if (statusFilter === "all") return workflows;
-    return workflows.filter((workflow) => workflow.status === statusFilter);
-  }, [workflows, statusFilter]);
+    let result = workflows;
+    if (statusFilter !== "all") {
+      result = result.filter((workflow) => workflow.status === statusFilter);
+    }
+    return filterByTag(result, tagFilter);
+  }, [workflows, statusFilter, tagFilter]);
 
   const attachStepReminders = (
     workflowId: string,
@@ -68,6 +82,7 @@ export default function WorkflowsPage() {
     const payload = {
       title: values.title,
       description: values.description || undefined,
+      tags: values.tags.length > 0 ? values.tags : undefined,
       steps,
       status: deriveWorkflowStatus(steps),
     };
@@ -79,17 +94,24 @@ export default function WorkflowsPage() {
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-4">
-        <select
-          value={statusFilter}
-          onChange={(e) =>
-            setStatusFilter(e.target.value as WorkflowStatus | "all")
-          }
-          className="rounded-lg border border-border bg-white px-3 py-2 text-sm"
-        >
-          <option value="all">Tüm süreçler</option>
-          <option value="active">Aktif</option>
-          <option value="completed">Tamamlanmış</option>
-        </select>
+        <div className="flex flex-wrap gap-3">
+          <select
+            value={statusFilter}
+            onChange={(e) =>
+              setStatusFilter(e.target.value as WorkflowStatus | "all")
+            }
+            className="rounded-lg border border-border bg-white px-3 py-2 text-sm"
+          >
+            <option value="all">Tüm süreçler</option>
+            <option value="active">Aktif</option>
+            <option value="completed">Tamamlanmış</option>
+          </select>
+          <TagFilterSelect
+            value={tagFilter}
+            options={tagFilterOptions}
+            onChange={setTagFilter}
+          />
+        </div>
         <Button type="button" onClick={() => setFormOpen(true)}>
           + Yeni Süreç
         </Button>

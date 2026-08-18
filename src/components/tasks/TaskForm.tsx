@@ -7,6 +7,8 @@ import { Modal } from "@/components/ui/Modal";
 import { Button } from "@/components/ui/Button";
 import { ReminderFields } from "@/components/reminders/ReminderFields";
 import { NativePickerInput } from "@/components/ui/NativePickerInput";
+import { TagPicker } from "@/components/ui/TagPicker";
+import { useTags } from "@/hooks/useTags";
 import { getTaskReminderDefault } from "@/lib/utils/reminder";
 
 export interface TaskFormValues {
@@ -15,6 +17,7 @@ export interface TaskFormValues {
   status: TaskStatus;
   priority: TaskPriority;
   deadline: string;
+  tags: string[];
   reminder: ReminderInput;
 }
 
@@ -32,6 +35,7 @@ const DEFAULT_VALUES: TaskFormValues = {
   status: "not_started",
   priority: "medium",
   deadline: "",
+  tags: [],
   reminder: { ...DEFAULT_REMINDER_INPUT },
 };
 
@@ -44,6 +48,7 @@ export function TaskForm({
 }: TaskFormProps) {
   const [values, setValues] = useState<TaskFormValues>(DEFAULT_VALUES);
   const [error, setError] = useState("");
+  const { customTags, ensureCustomTag, deleteCustomTag } = useTags();
 
   useEffect(() => {
     if (!open) return;
@@ -55,6 +60,7 @@ export function TaskForm({
         status: initialTask.status,
         priority: initialTask.priority,
         deadline: initialTask.deadline ?? "",
+        tags: initialTask.tags ?? [],
         reminder: { ...DEFAULT_REMINDER_INPUT },
       });
     } else {
@@ -192,6 +198,14 @@ export function TaskForm({
             Boş bırakırsan görev süresiz olarak aktif listede kalır.
           </p>
         </div>
+
+        <TagPicker
+          selected={values.tags}
+          customTags={customTags}
+          onChange={(tags) => setValues((prev) => ({ ...prev, tags }))}
+          onAddCustomTag={ensureCustomTag}
+          onDeleteCustomTag={deleteCustomTag}
+        />
 
         <ReminderFields
           idPrefix="task-reminder"

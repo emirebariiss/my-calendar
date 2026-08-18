@@ -10,6 +10,7 @@ export interface WorkflowStepInput {
 export interface WorkflowFormValues {
   title: string;
   description: string;
+  tags: string[];
   steps: WorkflowStepInput[];
 }
 
@@ -23,6 +24,7 @@ export function getDefaultWorkflowFormValues(): WorkflowFormValues {
   return {
     title: "",
     description: "",
+    tags: [],
     steps: [{ ...EMPTY_STEP }, { ...EMPTY_STEP }],
   };
 }
@@ -32,6 +34,7 @@ export function workflowToFormValues(workflow: Workflow): WorkflowFormValues {
   return {
     title: workflow.title,
     description: workflow.description ?? "",
+    tags: workflow.tags ?? [],
     steps: sorted.map((step) => ({
       title: step.title,
       dueDate: step.dueDate ?? "",

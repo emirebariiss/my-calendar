@@ -15,6 +15,14 @@ export function filterByStatus<T extends { status: string }>(
   return items.filter((item) => item.status === status);
 }
 
+export function filterByTag<T extends { tags?: string[] }>(
+  items: T[],
+  tagSlug: string | "all"
+): T[] {
+  if (tagSlug === "all") return items;
+  return items.filter((item) => item.tags?.includes(tagSlug));
+}
+
 export function sortByPriority(tasks: Task[]): Task[] {
   return [...tasks].sort(
     (a, b) => PRIORITY_ORDER[a.priority] - PRIORITY_ORDER[b.priority]

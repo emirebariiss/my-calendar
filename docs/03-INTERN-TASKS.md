@@ -291,8 +291,8 @@ Bu doküman, projeye yeni başlayan yazılım mühendisi stajyeri için sprint b
 
 Stajyer MVP'yi erken bitirirse bu görevlere geçebilir:
 
-- [ ] **B.1** Kanban görünümü (To do / Doing / Done sütunları)
-- [ ] **B.2** Tag sistemi — task ve workflow'lara tag ekleme/filtreleme
+- [x] **B.1** Kanban görünümü (To do / Doing / Done sütunları)
+- [x] **B.2** Tag sistemi — task ve workflow'lara tag ekleme/filtreleme
 - [x] **B.3** Task → Event bağlantısı (task'a "Takvime ekle" butonu)
 - [x] **B.4** Step → Calendar blok (step due date'i takvimde event olarak göster)
 - [x] **B.5** localStorage persist (sayfa yenilenince veri kaybolmasın)

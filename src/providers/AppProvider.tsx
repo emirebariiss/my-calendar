@@ -1,15 +1,18 @@
 "use client";
 
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { createContext, useContext, useEffect, useMemo, useState, useCallback } from "react";
 import { loadInitialAppData, saveAppData } from "@/lib/storage/appStorage";
+import { PREDEFINED_TAGS } from "@/lib/constants/tags";
 import type {
   CalendarEvent,
   Reminder,
+  Tag,
   Task,
   Workflow,
   WorkflowStep,
 } from "@/lib/types";
 import { applyStepUpdate } from "@/lib/utils/workflow";
+import { createCustomTag } from "@/lib/utils/tags";
 import { MOCK_LOAD_DELAY_MS } from "@/lib/constants/mock";
 
 interface AppContextValue {
@@ -18,6 +21,9 @@ interface AppContextValue {
   tasks: Task[];
   workflows: Workflow[];
   reminders: Reminder[];
+  customTags: Tag[];
+  ensureCustomTag: (name: string) => string;
+  deleteCustomTag: (slug: string) => void;
   addReminder: (reminder: Omit<Reminder, "id" | "createdAt">) => string;
   updateReminder: (id: string, updates: Partial<Reminder>) => void;
   deleteReminder: (id: string) => void;
@@ -57,6 +63,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [workflows, setWorkflows] = useState<Workflow[]>([]);
   const [reminders, setReminders] = useState<Reminder[]>([]);
+  const [customTags, setCustomTags] = useState<Tag[]>([]);
   useEffect(() => {
     const timer = setTimeout(() => {
       const data = loadInitialAppData();
@@ -64,6 +71,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       setTasks(data.tasks);
       setWorkflows(data.workflows);
       setReminders(data.reminders);
+      setCustomTags(data.customTags);
       setIsLoading(false);
     }, MOCK_LOAD_DELAY_MS);
 
@@ -73,8 +81,8 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     if (isLoading) return;
 
-    saveAppData({ events, tasks, workflows, reminders });
-  }, [isLoading, events, tasks, workflows, reminders]);
+    saveAppData({ events, tasks, workflows, reminders, customTags });
+  }, [isLoading, events, tasks, workflows, reminders, customTags]);
   const addReminder = (reminder: Omit<Reminder, "id" | "createdAt">): string => {
     const now = new Date().toISOString();
     let newId = "";
@@ -311,6 +319,56 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     );
   };
 
+  const ensureCustomTag = useCallback((name: string): string => {
+    const trimmed = name.trim();
+    if (!trimmed) return "";
+
+    const tag = createCustomTag(trimmed, customTags);
+    const isPredefined = PREDEFINED_TAGS.some((item) => item.slug === tag.slug);
+    const exists = customTags.some((item) => item.slug === tag.slug);
+
+    if (!isPredefined && !exists) {
+      setCustomTags((prev) => {
+        if (prev.some((item) => item.slug === tag.slug)) return prev;
+        return [...prev, tag];
+      });
+    }
+
+    return tag.slug;
+  }, [customTags]);
+
+  const deleteCustomTag = useCallback((slug: string) => {
+    if (PREDEFINED_TAGS.some((item) => item.slug === slug)) return;
+
+    const now = new Date().toISOString();
+
+    setCustomTags((prev) => prev.filter((tag) => tag.slug !== slug));
+
+    setTasks((prev) =>
+      prev.map((task) => {
+        if (!task.tags?.includes(slug)) return task;
+        const tags = task.tags.filter((item) => item !== slug);
+        return {
+          ...task,
+          tags: tags.length > 0 ? tags : undefined,
+          updatedAt: now,
+        };
+      })
+    );
+
+    setWorkflows((prev) =>
+      prev.map((workflow) => {
+        if (!workflow.tags?.includes(slug)) return workflow;
+        const tags = workflow.tags.filter((item) => item !== slug);
+        return {
+          ...workflow,
+          tags: tags.length > 0 ? tags : undefined,
+          updatedAt: now,
+        };
+      })
+    );
+  }, []);
+
   const value = useMemo(
     () => ({
       isLoading,
@@ -318,6 +376,9 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       tasks,
       workflows,
       reminders,
+      customTags,
+      ensureCustomTag,
+      deleteCustomTag,
       addReminder,
       updateReminder,
       deleteReminder,
@@ -332,7 +393,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       updateTask,
       deleteTask,
     }),
-    [isLoading, events, tasks, workflows, reminders]
+    [isLoading, events, tasks, workflows, reminders, customTags, ensureCustomTag, deleteCustomTag]
   );
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

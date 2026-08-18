@@ -7,12 +7,13 @@ import {
 import type {
   CalendarEvent,
   Reminder,
+  Tag,
   Task,
   Workflow,
 } from "@/lib/types";
 
 const STORAGE_KEY = "my-calendar-app-data";
-const STORAGE_VERSION = 1;
+const STORAGE_VERSION = 2;
 
 export interface PersistedAppData {
   version: number;
@@ -20,6 +21,7 @@ export interface PersistedAppData {
   tasks: Task[];
   workflows: Workflow[];
   reminders: Reminder[];
+  customTags: Tag[];
 }
 
 function loadMockData(): PersistedAppData {
@@ -29,6 +31,7 @@ function loadMockData(): PersistedAppData {
     tasks: loadTasks(),
     workflows: loadWorkflows(),
     reminders: loadReminders(),
+    customTags: [],
   };
 }
 
@@ -37,7 +40,7 @@ function isPersistedAppData(value: unknown): value is PersistedAppData {
 
   const data = value as PersistedAppData;
   return (
-    data.version === STORAGE_VERSION &&
+    (data.version === 1 || data.version === STORAGE_VERSION) &&
     Array.isArray(data.events) &&
     Array.isArray(data.tasks) &&
     Array.isArray(data.workflows) &&
@@ -55,7 +58,16 @@ export function loadInitialAppData(): PersistedAppData {
     if (!raw) return loadMockData();
 
     const parsed: unknown = JSON.parse(raw);
-    if (isPersistedAppData(parsed)) return parsed;
+    if (isPersistedAppData(parsed)) {
+      return {
+        version: STORAGE_VERSION,
+        events: parsed.events,
+        tasks: parsed.tasks,
+        workflows: parsed.workflows,
+        reminders: parsed.reminders,
+        customTags: parsed.customTags ?? [],
+      };
+    }
   } catch {
     // Bozuk veri — mock'a dön
   }

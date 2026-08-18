@@ -5,6 +5,8 @@ import type { Workflow } from "@/lib/types";
 import { WORKFLOW_STATUS_LABELS } from "@/lib/types";
 import { Badge } from "@/components/ui/Badge";
 import { ProgressBar } from "@/components/ui/ProgressBar";
+import { TagList } from "@/components/ui/TagList";
+import { useTags } from "@/hooks/useTags";
 import { getWorkflowProgress } from "@/lib/utils/filters";
 
 interface WorkflowCardProps {
@@ -12,6 +14,7 @@ interface WorkflowCardProps {
 }
 
 export function WorkflowCard({ workflow }: WorkflowCardProps) {
+  const { customTags } = useTags();
   const progress = getWorkflowProgress(workflow);
   const activeStep = workflow.steps.find((step) => step.status === "in_progress");
 
@@ -33,6 +36,7 @@ export function WorkflowCard({ workflow }: WorkflowCardProps) {
               Aktif adım: {activeStep.title}
             </p>
           )}
+          <TagList tags={workflow.tags} customTags={customTags} className="mt-2" />
         </div>
         <Badge variant={workflow.status === "completed" ? "success" : "info"}>
           {WORKFLOW_STATUS_LABELS[workflow.status]}

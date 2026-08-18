@@ -11,7 +11,9 @@ import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
 import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { ProgressBar } from "@/components/ui/ProgressBar";
+import { TagList } from "@/components/ui/TagList";
 import { StepList } from "@/components/workflows/StepList";
+import { useTags } from "@/hooks/useTags";
 import {
   WorkflowForm,
   type WorkflowFormValues,
@@ -38,6 +40,7 @@ export default function WorkflowDetailPage() {
   const { workflows, updateWorkflow, deleteWorkflow, updateStep } = useWorkflows();
   const { addEvent } = useEvents();
   const { addReminder } = useReminders();
+  const { customTags } = useTags();
   const [formOpen, setFormOpen] = useState(false);
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
 
@@ -86,6 +89,7 @@ export default function WorkflowDetailPage() {
     updateWorkflow(workflow.id, {
       title: values.title,
       description: values.description || undefined,
+      tags: values.tags.length > 0 ? values.tags : undefined,
       steps,
       status: deriveWorkflowStatus(steps),
     });
@@ -140,12 +144,13 @@ export default function WorkflowDetailPage() {
       </div>
 
       <Card title={workflow.title}>
-        <div className="mb-4 flex items-center gap-2">
+        <div className="mb-4 flex flex-wrap items-center gap-2">
           <Badge
             variant={workflow.status === "completed" ? "success" : "info"}
           >
             {WORKFLOW_STATUS_LABELS[workflow.status]}
           </Badge>
+          <TagList tags={workflow.tags} customTags={customTags} />
         </div>
         {workflow.description && (
           <p className="mb-4 text-sm text-muted">{workflow.description}</p>

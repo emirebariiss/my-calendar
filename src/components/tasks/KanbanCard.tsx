@@ -5,6 +5,8 @@ import { TASK_PRIORITY_LABELS } from "@/lib/types";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { CalendarLinkActions } from "@/components/ui/CalendarLinkActions";
+import { TagList } from "@/components/ui/TagList";
+import { useTags } from "@/hooks/useTags";
 import { formatDate, isOverdue } from "@/lib/utils/date";
 import { canAddTaskToCalendar, getCalendarLinkDate } from "@/lib/utils/eventLinking";
 
@@ -16,6 +18,7 @@ interface KanbanCardProps {
 }
 
 export function KanbanCard({ task, onEdit, onDelete, onAddToCalendar }: KanbanCardProps) {
+  const { customTags } = useTags();
   const overdue =
     task.deadline && task.status !== "done" && isOverdue(task.deadline);
 
@@ -40,6 +43,8 @@ export function KanbanCard({ task, onEdit, onDelete, onAddToCalendar }: KanbanCa
         <Badge>{TASK_PRIORITY_LABELS[task.priority]}</Badge>
         {overdue && <Badge variant="danger">Gecikmiş</Badge>}
       </div>
+
+      <TagList tags={task.tags} customTags={customTags} className="mt-2" />
 
       {task.deadline && (
         <p className="mt-2 text-xs text-muted">{formatDate(task.deadline)}</p>

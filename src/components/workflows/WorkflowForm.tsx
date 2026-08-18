@@ -6,6 +6,8 @@ import { Modal } from "@/components/ui/Modal";
 import { Button } from "@/components/ui/Button";
 import { WorkflowBasicFields } from "./WorkflowBasicFields";
 import { WorkflowStepFields } from "./WorkflowStepFields";
+import { TagPicker } from "@/components/ui/TagPicker";
+import { useTags } from "@/hooks/useTags";
 import {
   EMPTY_STEP,
   getDefaultWorkflowFormValues,
@@ -35,6 +37,7 @@ export function WorkflowForm({
     getDefaultWorkflowFormValues()
   );
   const [error, setError] = useState("");
+  const { customTags, ensureCustomTag, deleteCustomTag } = useTags();
 
   const updateValues = (patch: Partial<WorkflowFormValues>) => {
     setValues((prev) => ({ ...prev, ...patch }));
@@ -100,6 +103,7 @@ export function WorkflowForm({
     onSubmit({
       title: values.title.trim(),
       description: values.description.trim(),
+      tags: values.tags,
       steps: validSteps.map((step) => ({
         title: step.title.trim(),
         dueDate: step.dueDate,
@@ -134,6 +138,14 @@ export function WorkflowForm({
           values={values}
           error={error}
           onChange={updateValues}
+        />
+
+        <TagPicker
+          selected={values.tags}
+          customTags={customTags}
+          onChange={(tags) => updateValues({ tags })}
+          onAddCustomTag={ensureCustomTag}
+          onDeleteCustomTag={deleteCustomTag}
         />
 
         <WorkflowStepFields

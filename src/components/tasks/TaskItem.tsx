@@ -8,6 +8,8 @@ import {
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { CalendarLinkActions } from "@/components/ui/CalendarLinkActions";
+import { TagList } from "@/components/ui/TagList";
+import { useTags } from "@/hooks/useTags";
 import { formatDate, isOverdue } from "@/lib/utils/date";
 import { canAddTaskToCalendar, getCalendarLinkDate } from "@/lib/utils/eventLinking";
 
@@ -20,6 +22,7 @@ interface TaskItemProps {
 }
 
 export function TaskItem({ task, onToggle, onEdit, onDelete, onAddToCalendar }: TaskItemProps) {
+  const { customTags } = useTags();
   const overdue =
     task.deadline && task.status !== "done" && isOverdue(task.deadline);
   const isDone = task.status === "done";
@@ -55,6 +58,7 @@ export function TaskItem({ task, onToggle, onEdit, onDelete, onAddToCalendar }: 
                   ? `Deadline: ${formatDate(task.deadline)}`
                   : "Süresiz"}
               </p>
+              <TagList tags={task.tags} customTags={customTags} className="mt-2" />
             </div>
 
             <div className="flex flex-wrap gap-2">
