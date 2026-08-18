@@ -19,6 +19,8 @@ src/
 ├── app/
 │   ├── layout.tsx              # Root layout, font, providers
 │   ├── page.tsx                # Dashboard (ana sayfa)
+│   ├── not-found.tsx           # Global 404
+│   ├── globals.css             # Tailwind + takvim mobil CSS
 │   ├── calendar/
 │   │   └── page.tsx            # Takvim görünümü
 │   ├── tasks/
@@ -32,10 +34,10 @@ src/
 ├── components/
 │   ├── layout/                 # Sidebar, Header, Nav
 │   ├── ui/                     # Button, Badge, Card, Modal (paylaşılan)
-│   ├── calendar/               # CalendarGrid, EventCard, EventForm
+│   ├── calendar/               # CalendarView, EventCard, EventForm
 │   ├── tasks/                  # TaskList, TaskItem, TaskForm
-│   ├── workflows/              # WorkflowCard, StepList, StepItem
-│   ├── reminders/              # ReminderList, ReminderForm
+│   ├── workflows/              # WorkflowCard, StepList, StepItem, WorkflowForm
+│   ├── reminders/              # ReminderItem, ReminderForm, ReminderFields
 │   └── dashboard/              # TodayTasks, UpcomingEvents, OverdueList
 │
 ├── data/
@@ -58,7 +60,14 @@ src/
 │   │   └── reminder.ts
 │   ├── utils/
 │   │   ├── date.ts             # formatDate, isOverdue, isToday
-│   │   └── filters.ts          # filterByStatus, sortByPriority
+│   │   ├── calendar.ts         # FullCalendar dönüşümleri
+│   │   ├── filters.ts          # filterByStatus, sortByPriority
+│   │   ├── workflow.ts         # step güncelleme, status türetme
+│   │   └── reminder.ts         # hedef listesi, form entegrasyonu
+│   ├── constants/
+│   │   └── navigation.ts       # NAV_ITEMS, PAGE_TITLES
+│   ├── storage/
+│   │   └── appStorage.ts       # localStorage load/save
 │   └── mock/
 │       └── loader.ts           # JSON import + tip dönüşümü
 │
@@ -76,12 +85,16 @@ src/data/*.json
       ↓
 lib/mock/loader.ts  →  TypeScript tiplerine dönüştür
       ↓
-hooks (useTasks, useEvents, ...)  →  CRUD operasyonları (bellekte)
+lib/storage/appStorage.ts  →  loadInitialAppData() (localStorage veya mock)
+      ↓
+AppProvider  →  state + CRUD
+      ↓
+hooks (useTasks, useEvents, ...)  →  CRUD operasyonları
       ↓
 components  →  UI render
 ```
 
-**Önemli:** MVP'de veri kalıcılığı yok. Sayfa yenilendiğinde mock JSON'a döner. İleride `localStorage` veya gerçek API eklenebilir.
+**Önemli:** MVP başlangıcında veri kalıcılığı yoktu; Sprint 7 / bonus B.5 ile `localStorage` eklendi. Sayfa yenilendiğinde veri `my-calendar-app-data` anahtarından yüklenir. İleride gerçek API eklenebilir.
 
 ## Sayfa Haritası
 
@@ -106,8 +119,9 @@ DashboardPage
 │   └── EventCard[]
 ├── ActiveWorkflows
 │   └── WorkflowCard[]
-└── OverdueSection
-    └── OverdueItem[]
+├── OverdueSection
+│   └── OverdueItem[]
+└── UpcomingReminders
 ```
 
 ## State Tasarımı
@@ -117,6 +131,7 @@ DashboardPage
 ```typescript
 // providers/AppProvider.tsx
 interface AppState {
+  isLoading: boolean;
   events: CalendarEvent[];
   tasks: Task[];
   workflows: Workflow[];
@@ -124,7 +139,8 @@ interface AppState {
   // CRUD actions
   addTask: (task: Omit<Task, 'id'>) => void;
   updateTask: (id: string, updates: Partial<Task>) => void;
-  // ...
+  deleteTask: (id: string) => void;
+  // ... events, workflows, reminders benzer şekilde
 }
 ```
 
@@ -139,11 +155,11 @@ Tek store veya feature bazlı slice'lar.
 | Backend yok | Mock JSON | Hızlı MVP, stajyer odaklı frontend |
 | App Router | Evet | Next.js modern standart |
 | State | React Context | MVP için yeterli, Zustand gerekmedi |
-| Persist yok | MVP'de hayır | Scope küçük tutulsun |
+| Persist | localStorage | Bonus B.5 — sayfa yenilemede veri korunur |
 | i18n | Sadece TR | MVP kapsamı |
 | Takvim kütüphanesi | FullCalendar 6 | Gün/hafta/ay + drag-drop hazır |
 
-## Güncel Uygulama Durumu (Sprint 5 sonrası)
+## Güncel Uygulama Durumu (Sprint 7 — MVP tamamlandı)
 
 ### Tamamlanan modüller
 
@@ -152,22 +168,25 @@ Tek store veya feature bazlı slice'lar.
 | Layout + Navigasyon | ✅ | `components/layout/` |
 | Mock veri + tipler | ✅ | `data/`, `lib/types/`, `lib/mock/` |
 | Global state | ✅ | `providers/AppProvider.tsx` |
+| localStorage kalıcılığı | ✅ | `lib/storage/appStorage.ts` |
 | Dashboard | ✅ | `components/dashboard/`, `app/page.tsx` |
 | Görev CRUD | ✅ | `components/tasks/`, `app/tasks/page.tsx` |
 | Takvim + Event CRUD | ✅ | `components/calendar/`, `app/calendar/page.tsx` |
 | Workflow CRUD + step yönetimi | ✅ | `components/workflows/`, `app/workflows/` |
-| Hatırlatma liste (read-only) | 🔶 | `app/reminders/page.tsx` — Sprint 6 |
+| Hatırlatmalar CRUD | ✅ | `components/reminders/`, `app/reminders/page.tsx` |
+| Loading / 404 / EmptyState | ✅ | `AppShell`, `Spinner`, `not-found.tsx` |
 
 ### Bileşen envanteri
 
 ```
 src/components/
 ├── layout/     Sidebar, Header, AppShell
-├── ui/         Badge, Button, Card, ConfirmDialog, EmptyState, Modal, ProgressBar
-├── calendar/   CalendarView, EventForm, EventCard
-├── dashboard/  TodayTasks, UpcomingEvents, ActiveWorkflows, OverdueSection
+├── ui/         Badge, Button, Card, ConfirmDialog, EmptyState, Modal, ProgressBar, Spinner
+├── calendar/   CalendarView, EventForm, EventBasicFields, EventScheduleFields, EventCard
+├── dashboard/  TodayTasks, UpcomingEvents, ActiveWorkflows, OverdueSection, UpcomingReminders
 ├── tasks/      TaskItem, TaskList, TaskForm
-└── workflows/  WorkflowCard, StepList, StepItem, WorkflowForm
+├── workflows/  WorkflowCard, StepList, StepItem, WorkflowForm, WorkflowBasicFields, WorkflowStepFields
+└── reminders/  ReminderItem, ReminderForm, ReminderFields, ReminderTargetSelect
 ```
 
 Detaylı sprint açıklamaları → [`docs/completed/`](./completed/README.md)
